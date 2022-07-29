@@ -26,7 +26,9 @@ const Preferences = () => {
         <hr />
         <hr />
         </div>
+        <div>
         <CheckBox />
+        </div>
         </Container>
        
         
