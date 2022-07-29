@@ -21,6 +21,8 @@ const App = () => (
     <Route exact={true} path="/search" component={Search} />
     <Route exact={true} path="/favourites" component={Favourites} />
     <Route exact={true} path="/recipe/:id" component={Recipe} />
+    <Route exact={true} path="/account" component={Account} />
+
 
   </Switch>
 );
