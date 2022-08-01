@@ -9,10 +9,14 @@ import Favourites from './screens/favourites';
 import Recipe from './screens/recipe';
 import Search from './screens/search';
 import Preferences from './screens/preferences';
+import DrawerNav from './components/DrawerNav';
+import { Box } from '@mui/system';
 
 
 
 const App = () => (
+  <Box sx={{display: 'flex'}} >
+  <DrawerNav />
   <Switch>
     <Route exact={true} path="/" component={Home} />
     <Route exact={true} path="/login" component={LogIn} />
@@ -25,6 +29,8 @@ const App = () => (
 
 
   </Switch>
+  </Box>
+
 );
 
 export default App;
