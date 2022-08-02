@@ -10,6 +10,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { deepOrange } from "@mui/material/colors";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from "@emotion/react";
 
 
 const drawerWidth = 125;
@@ -19,6 +21,17 @@ const useStyles = makeStyles({
     background:'#81c784'
   }
 })
+
+
+
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: '#404040',
+      contrastText: '#fff',
+    },
+  }
+});
 
 
 const DrawerNav = () => {
@@ -61,10 +74,15 @@ const classes = useStyles();
       <Box sx={{display: 'flex', flexDirection:'column', justifyContent: 'space-between', height: '100%'}}>
         <Box>
         <List>
+          <ThemeProvider theme={theme}>
           <Avatar sx={{ margin: "auto", width: 55, height: 55 , bgcolor: deepOrange[500] }}>SP</Avatar>
           <ListItem>
-          <Button variant="contained" onClick={()=> history.push("/account")}>Account</Button>
+          <Button variant="outlined" 
+                  color="neutral" 
+                  onClick={()=> history.push("/account")}  
+                  sx={location.pathname === "/account" ? {backgroundColor: "#81c784"}: null}>Account</Button>
           </ListItem>
+          </ThemeProvider>
         </List>
         <Divider />
         <List>
