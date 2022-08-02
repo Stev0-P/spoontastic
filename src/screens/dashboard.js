@@ -4,7 +4,7 @@ import RecipeList from "../components/RecipeList";
 
 const Dashboard = () => {
     return (
-    <div>Hello</div>
+    <RecipeList label="Reccomended" />
     );
 }
 

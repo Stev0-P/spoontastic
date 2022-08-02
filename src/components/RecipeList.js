@@ -8,16 +8,12 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { Grow, ImageList, ImageListItem } from "@mui/material";
+import { Button, colors, Grow, ImageList, ImageListItem } from "@mui/material";
 import ListItemButton from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
+import { useHistory, useLocation } from "react-router-dom";
 
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    })
-  );
-}
+
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white" ,
@@ -44,25 +40,32 @@ const itemsList = [
     },
 ]
 
-const RecipeList = () => {
+const RecipeList = (props) => {
   const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
+  const history = useHistory();
+  const location = useLocation();
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: '#f7a05e', borderRadius: "1em", margin: 2 }}>
-      <Typography sx={{ mt: 4, mb: 2, marginLeft: 1 }} variant="h6" component="div">
-        Recommended
+      <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1}} variant="h6" component="div">
+        {props.label}
       </Typography>
       <Demo sx={{borderRadius: "1em"}}>
-        <List dense={dense} sx={{}}>
+        <List dense={dense} >
         {itemsList.map((item) => (
             <ListItem key={item.description} sx={{backgroundColor: '#f5efe9', borderRadius: "1em", marginTop: 1, boxShadow: 2 }} disablePadding>
              
-                 <img  style={{ height: '125px', width: '150px', borderBottomLeftRadius: '1em', borderTopLeftRadius: '1em'}}src={`${item.img}`}></img>
+             <img  style={{ height: '125px', width: '150px', borderBottomLeftRadius: '1em', borderTopLeftRadius: '1em'}}src={`${item.img}`}></img>
               
-                <ListItemText primary={item.description}  sx={{marginLeft: 1}}/>
-
-                <IconButton></IconButton>
+                <ListItemText primary={item.description}  sx={{marginLeft: 1}}  onClick={()=> history.push("/recipe/:id")}  />
+               
+                
+                
+              
+                {location.pathname === "/favourites" ?   <Button variant="outline" color="error">Delete</Button> :   <IconButton size="large"sx={{marginRight: 3 }}> <StarIcon fontSize="large"  />  </IconButton> }
+              
+                
+              
                 
             </ListItem>
             

@@ -3,27 +3,24 @@ import SearchBar from '../components/SearchBar';
 import useRecipes from '../hooks/useRecipes';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import RecipeList from "../components/RecipeList";
+
+
 
 const Favourites = () => {
     const [recipes, search] = useRecipes('Pasta');
 
-    const styler = {
-        display: 'flex',
-        alignItems: 'left',
-        justifyContent: '',
-        height: '40vh',
-        fontSize: '1.5em',
-    };
 
     return (
-        <Container maxWidth='lg'>
-            <div style={styler}>
-                <div>
+        
+            <Box sx={{flexGrow: 1}}>
+                <div style={{marginLeft: '1em'}}>
                     <h2>Your Favourite Recipes</h2>
-                    <SearchBar onFormSubmit={search} />
                 </div>
-            </div>
-        </Container>
+                    <SearchBar onFormSubmit={search} />
+                    <RecipeList label="Favourites"/>
+               
+            </Box>
     );
 }
 

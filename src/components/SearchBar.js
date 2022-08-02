@@ -21,11 +21,13 @@ const SearchBar = ({ onFormSubmit }) => {
     }
 
     return (
-        <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
+        <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit} >
             <Box
                 sx={{
-                    width: 1000,
-                    maxWidth: '100%',
+                  flexGrow: 1,
+                 marginLeft: 2,
+                 marginRight: 2
+
                 }}
             >
                 <TextField
