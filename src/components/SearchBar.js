@@ -34,6 +34,8 @@ const SearchBar = ({ onFormSubmit }) => {
                     id="input-with-icon-textfield"
                     placeholder="Eg. Spaghetti Bolognase, Club Sandwich, Homemade Beef Burgers"
                     type="text"
+                    variant="filled"
+                    color="success"
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
