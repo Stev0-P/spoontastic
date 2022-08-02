@@ -62,7 +62,7 @@ const RecipeList = (props) => {
                 
                 
               
-                {location.pathname === "/favourites" ?   <Button variant="outline" color="error">Delete</Button> :   <IconButton size="large"sx={{marginRight: 3 }}> <StarIcon fontSize="large"  />  </IconButton> }
+                {location.pathname === "/favourites" ?  <Box sx={{marginRight: 3,  fontSize: "3em"}}><Button color="warning"  variant="outlined">Delete</Button> </Box> :   <IconButton size="large"sx={{marginRight: 3 }}> <StarIcon fontSize="large"  />  </IconButton> }
               
                 
               
