@@ -75,7 +75,7 @@ const classes = useStyles();
         <Box>
         <List>
           <ThemeProvider theme={theme}>
-          <Avatar sx={{ margin: "auto", width: 55, height: 55 , bgcolor: deepOrange[500] }}>SP</Avatar>
+          <Avatar sx={{ margin: "auto", width: 55, height: 55 , bgcolor: '#f7a05e', color: 'black' }}>SP</Avatar>
           <ListItem>
           <Button variant="outlined" 
                   color="neutral" 

@@ -17,6 +17,7 @@ import { Box } from '@mui/system';
 const App = () => (
   <Box sx={{display: 'flex'}} >
   <DrawerNav />
+  
   <Switch>
     <Route exact={true} path="/" component={Home} />
     <Route exact={true} path="/login" component={LogIn} />
