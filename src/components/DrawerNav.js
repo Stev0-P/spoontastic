@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Box, Button, ListItemAvatar, makeStyles } from "@mui/material";
+import { Avatar, Box, Button, ListItemAvatar } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -8,15 +8,37 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { deepOrange } from "@mui/material/colors";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { makeStyles } from "@material-ui/styles";
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from "@emotion/react";
+
 
 const drawerWidth = 125;
 
+const useStyles = makeStyles({
+  active:{
+    background:'#81c784'
+  }
+})
+
+
+
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: '#404040',
+      contrastText: '#fff',
+    },
+  }
+});
 
 
 const DrawerNav = () => {
 
 const history = useHistory();
+const location = useLocation();
+const classes = useStyles();
 
 
   const itemsList = [
@@ -52,17 +74,25 @@ const history = useHistory();
       <Box sx={{display: 'flex', flexDirection:'column', justifyContent: 'space-between', height: '100%'}}>
         <Box>
         <List>
+          <ThemeProvider theme={theme}>
           <Avatar sx={{ margin: "auto", width: 55, height: 55 , bgcolor: deepOrange[500] }}>SP</Avatar>
           <ListItem>
-          <Button variant="contained" onClick={()=> history.push("/account")}>Account</Button>
+          <Button variant="outlined" 
+                  color="neutral" 
+                  onClick={()=> history.push("/account")}  
+                  sx={location.pathname === "/account" ? {backgroundColor: "#81c784"}: null}>Account</Button>
           </ListItem>
+          </ThemeProvider>
         </List>
         <Divider />
         <List>
-          {itemsList.map(({text, route}, index) => (
+          {itemsList.map((item, index) => (
             <ListItem key={index}  disablePadding>
-              <ListItemButton onClick={() => history.push(route)}>
-                <ListItemText primary={text}  />
+              <ListItemButton 
+              onClick={() => history.push(item.route)}
+              className={location.pathname === item.route ? classes.active : null}
+              >
+                <ListItemText primary={item.text}  />
               </ListItemButton>
             </ListItem>
             
