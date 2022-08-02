@@ -38,9 +38,10 @@ const SearchBar = ({ onFormSubmit }) => {
                     type="text"
                     variant="filled"
                     color="success"
+                    sx={{borderRadius: '15%'}}
                     InputProps={{
                         startAdornment: (
-                            <InputAdornment position="start">
+                            <InputAdornment position="start"  >
                                 <SearchIcon />
                             </InputAdornment>
                         ),

@@ -53,11 +53,11 @@ const RecipeList = (props) => {
       <Demo sx={{borderRadius: "1em"}}>
         <List dense={dense} >
         {itemsList.map((item) => (
-            <ListItem key={item.description} sx={{backgroundColor: '#f5efe9', borderRadius: "1em", marginTop: 1, boxShadow: 2 }} disablePadding>
+            <ListItem key={item.description} sx={{backgroundColor: '#f5efe9', borderRadius: "1em", marginTop: 1, boxShadow: 2 }} disablePadding  >
              
              <img  style={{ height: '125px', width: '150px', borderBottomLeftRadius: '1em', borderTopLeftRadius: '1em'}}src={`${item.img}`}></img>
-              
-                <ListItemText primary={item.description}  sx={{marginLeft: 1}}  onClick={()=> history.push("/recipe/:id")}  />
+             
+                <ListItemText onClick={()=> history.push("/recipe/:id")} primary={item.description}  sx={{ margin: 4 ,height: "3em",backgroundColor: '#FAFAF9', borderRadius: "1em", display: "flex", flexDirection: 'column', justifyContent: 'center', paddingLeft: '2em'}}   />
                
                 
                 
