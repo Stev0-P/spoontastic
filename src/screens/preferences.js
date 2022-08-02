@@ -1,6 +1,6 @@
 import React from "react";
 import Container from '@mui/material/Container';
-import CheckBox from "../components/checkbox";
+import CheckBox from "../components/CheckBox";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
