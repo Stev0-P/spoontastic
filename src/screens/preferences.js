@@ -1,38 +1,43 @@
 import React from "react";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
 import CheckBox from "../components/CheckBox";
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 const Preferences = () => {
-    const styler = {
-        display: 'flex',
-        alignItems: 'left',
-        justifyContent: '',
-        height: '40vh',
-        fontSize: '1.5em',
-    };
+  const styler = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "40vh",
+    fontSize: "1.5em",
+    textAlign: "center"
+  };
 
-
-    return (
-        <Container maxWidth='md'>
-            <div style={styler}>
-                <div>
-                    <h1>Welcome,</h1>
-                    <h1>Please Select Your<br /> Dietary Preferences</h1>
-                </div>
-            </div>
-            <Box>
-                <hr />
-                <hr />
-                <CheckBox />
-            </Box>
-            <Button variant="contained" onClick={()=> window.location.href = "/dashboard"}>
-                Submit
-            </Button >
-        </Container>
-
-    );
-}
+  return (
+    <Container maxWidth="md" sx={{paddingBottom: "1em"}}>
+      <div style={styler}>
+        <div>
+          <h1>Welcome to Spoontastic!</h1>
+          <h2>
+            Please Select Your
+            <br /> Dietary Preferences
+          </h2>
+        </div>
+      </div>
+      <Box>
+        <hr />
+        <hr />
+          <CheckBox />
+      </Box>
+      <Button
+        variant="contained"
+        onClick={() => (window.location.href = "/dashboard")}
+      >
+        Submit
+      </Button>
+    </Container>
+  );
+};
 
 export default Preferences;
