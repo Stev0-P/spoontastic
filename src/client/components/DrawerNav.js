@@ -10,101 +10,120 @@ import ListItemText from "@mui/material/ListItemText";
 import { deepOrange } from "@mui/material/colors";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
-
 
 const drawerWidth = 125;
 
 const useStyles = makeStyles({
-  active:{
-    background:'#81c784'
-  }
-})
-
-
+  active: {
+    background: "#81c784",
+  },
+});
 
 const theme = createTheme({
   palette: {
     neutral: {
-      main: '#404040',
-      contrastText: '#fff',
+      main: "#404040",
+      contrastText: "#fff",
     },
-  }
+  },
 });
 
-
 const DrawerNav = () => {
-
-const history = useHistory();
-const location = useLocation();
-const classes = useStyles();
-
+  const history = useHistory();
+  const location = useLocation();
+  const classes = useStyles();
 
   const itemsList = [
     {
       text: "Dashboard",
-      route: "/dashboard"
+      route: "/dashboard",
     },
     {
       text: "Search",
-      route: "/search"
-      
+      route: "/search",
     },
     {
       text: "Favourites",
-      route: "/favourites"
-      
+      route: "/favourites",
     },
-  ]
-
+  ];
 
   return (
-    <Box sx={{display: 'flex'}}>
-    <Drawer 
-    sx={{
-      width: drawerWidth,
-      flexShrink: 0,
-      '& .MuiDrawer-paper': {
-        width: drawerWidth,
-        boxSizing: 'border-box',
-      },
-    }}
-    variant="permanent" anchor="left">
-      <Box sx={{display: 'flex', flexDirection:'column', justifyContent: 'space-between', height: '100%'}}>
-        <Box>
-        <List>
-          <ThemeProvider theme={theme}>
-          <Avatar sx={{ margin: "auto", width: 55, height: 55 , bgcolor: '#f7a05e', color: 'black' }}>SP</Avatar>
-          <ListItem>
-          <Button variant="outlined" 
-                  color="neutral" 
-                  onClick={()=> history.push("/account")}  
-                  sx={location.pathname === "/account" ? {backgroundColor: "#81c784"}: null}>Account</Button>
-          </ListItem>
-          </ThemeProvider>
-        </List>
-        <Divider />
-        <List>
-          {itemsList.map((item, index) => (
-            <ListItem key={index}  disablePadding>
-              <ListItemButton 
-              onClick={() => history.push(item.route)}
-              className={location.pathname === item.route ? classes.active : null}
-              >
-                <ListItemText primary={item.text}  />
-              </ListItemButton>
-            </ListItem>
-            
-          ))}
-        </List>
+    <Box sx={{ display: "flex" }}>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "100%",
+          }}
+        >
+          <Box>
+            <List>
+              <ThemeProvider theme={theme}>
+                <Avatar
+                  sx={{
+                    margin: "auto",
+                    width: 55,
+                    height: 55,
+                    bgcolor: "#f7a05e",
+                    color: "black",
+                  }}
+                >
+                  SP
+                </Avatar>
+                <ListItem>
+                  <Button
+                    variant="outlined"
+                    color="neutral"
+                    onClick={() => history.push("/account")}
+                    sx={
+                      location.pathname === "/account"
+                        ? { backgroundColor: "#81c784" }
+                        : null
+                    }
+                  >
+                    Account
+                  </Button>
+                </ListItem>
+              </ThemeProvider>
+            </List>
+            <Divider />
+            <List>
+              {itemsList.map((item, index) => (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton
+                    onClick={() => history.push(item.route)}
+                    className={
+                      location.pathname === item.route ? classes.active : null
+                    }
+                  >
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+
+          <Button variant="outlined" color="error" sx={{ margin: 1 }}>
+            Log Out
+          </Button>
         </Box>
-  
-        <Button variant="outlined" color="error" sx={{margin: 1}}>
-          Log Out
-        </Button>
-      </Box>
-    </Drawer>
+      </Drawer>
     </Box>
   );
 };
