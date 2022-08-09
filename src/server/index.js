@@ -54,12 +54,12 @@ export const renderApp = (req, res) => {
 };
 
 const server = express();
+const recipesRoutes = require("./routes/recipes").default;
+
 server
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .get("/protected", (req, res) => {
-    res.status(200).send("Hello");
-  })
+  .use("/recipes/api", recipesRoutes)
   .get("/*", (req, res) => {
     const { context, html } = renderApp(req, res);
     if (context.url) {
@@ -68,7 +68,5 @@ server
       res.status(200).send(html);
     }
   });
-
-require("./auth");
 
 export default server;
