@@ -12,8 +12,7 @@ import { Button, colors, Grow, ImageList, ImageListItem } from "@mui/material";
 import ListItemButton from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useHistory, useLocation } from "react-router-dom";
-
-import UserTime from "./UserTime";
+import useTime from "../hooks/useTime";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
@@ -38,6 +37,7 @@ const itemsList = [
 ];
 const RecipeList = (props) => {
   const [dense, setDense] = React.useState(false);
+  const time = useTime();
   const history = useHistory();
   const location = useLocation();
 
@@ -55,7 +55,11 @@ const RecipeList = (props) => {
         variant="h6"
         component="div"
       >
-        {props.label} 
+        {`${
+          props.label === "Recomended"
+            ? "{props.label} {time.text}"
+            : "{props.label}"
+        }`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>
