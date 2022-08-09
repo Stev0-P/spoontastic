@@ -41,6 +41,7 @@ export const renderApp = (req, res) => {
       <title>Welcome to Razzle</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       ${cssLinksFromAssets(assets, "client")}
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
       <div id="root">${markup}</div>
