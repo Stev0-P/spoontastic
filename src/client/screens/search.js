@@ -14,7 +14,7 @@ const Search = () => {
         <h2>Search</h2>
       </div>
       <SearchBar onFormSubmit={search} />
-      <RecipeList label="Reccomended" />
+      <RecipeList label="Recomended" />
     </Box>
   );
 };

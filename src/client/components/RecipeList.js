@@ -55,11 +55,7 @@ const RecipeList = (props) => {
         variant="h6"
         component="div"
       >
-        {`${
-          props.label === "Recomended"
-            ? "{props.label} {time.text}"
-            : "{props.label}"
-        }`}
+        {props.label} {`${props.label === "Recomended" ? time.text : ""}`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>
