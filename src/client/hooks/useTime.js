@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const useTime = () => {
-  const [timestamp, setTimestamp] = useState();
   const [meal, setMeal] = useState({ text: "", type: "" });
-
-  const timestampChange = (event) => {
-    setTimestamp(event);
-  };
 
   const mealChange = (event) => {
     setMeal(event);
@@ -17,7 +12,6 @@ const useTime = () => {
       (position) => {
         const date = new Date(position.timestamp);
         const time = date.getHours();
-        console.log(time);
 
         if (time >= 3 && time < 11) {
           mealChange({
@@ -29,17 +23,12 @@ const useTime = () => {
             text: "Lunch Recipes",
             type: "salad, snack, bread, appetizer, drink, soup, beverage",
           });
-        } else if (time >= 15 && time < 23) {
+        } else {
           mealChange({
             text: "Dinner Recipes",
             type: "main course, side dish, dessert, marinade, appetizer, soup, drink, beverage, sauce",
           });
-        } else {
-          mealChange({
-            text: "Snacks",
-            type: "fingerfood, drink, beverage",
-          });
-        }
+        } 
       },
       (err) => console.log(err)
     );
