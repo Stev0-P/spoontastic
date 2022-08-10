@@ -56,12 +56,14 @@ export const renderApp = (req, res) => {
 const server = express();
 const bodyParser = require("body-parser");
 const recipesRoutes = require("./routes/recipes").default;
+const preferencesRoutes = require("./routes/preferences").default
 
 server
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .use(bodyParser.json())
   .use("/dashboard/api", recipesRoutes)
+  .use("./preferences/api", preferencesRoutes)
   .use((error, req, res, next) => {
     if (res.headerSent) {
       return next(error);
