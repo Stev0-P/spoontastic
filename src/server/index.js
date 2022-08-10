@@ -54,12 +54,21 @@ export const renderApp = (req, res) => {
 };
 
 const server = express();
+const bodyParser = require("body-parser");
 const recipesRoutes = require("./routes/recipes").default;
 
 server
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .use("/recipes/api", recipesRoutes)
+  .use(bodyParser.json())
+  .use("/dashboard/api", recipesRoutes)
+  .use((error, req, res, next) => {
+    if (res.headerSent) {
+      return next(error);
+    }
+    res.status(error || 500);
+    res.json({ message: error.message } || "An unknown error has occured!");
+  })
   .get("/*", (req, res) => {
     const { context, html } = renderApp(req, res);
     if (context.url) {

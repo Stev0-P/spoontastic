@@ -30,7 +30,8 @@
     "passport-google-oauth20": "^2.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "babel-preset-razzle": "4.2.15",
