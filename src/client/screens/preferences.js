@@ -30,12 +30,6 @@ const Preferences = () => {
         <hr />
           <CheckBox />
       </Box>
-      <Button
-        variant="contained"
-        onClick={() => (window.location.href = "/dashboard")}
-      >
-        Submit
-      </Button>
     </Container>
   );
 };
