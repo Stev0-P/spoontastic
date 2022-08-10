@@ -27,6 +27,11 @@ router.get("/:rid", (req, res, next) => {
   const recipe = DUMMY_RECIPES.find((r) => {
     return r.id === recipeID;
   });
+  if (!recipe) {
+    const error = new Error("Could not find a recipe with the provided id.");
+    error.code = 404;
+    return next(error);
+  }
   res.json({ recipe: recipe });
 });
 
