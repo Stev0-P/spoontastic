@@ -21,7 +21,6 @@ const DUMMY_FAVOURITE_RECIPES = [
 ];
 
 favouritesAPI.get("/", (req, res, next) => {
-  const recipeID = req.params.rid; //{}
   const recipe = DUMMY_FAVOURITE_RECIPES;
   res.json({ listofRecipes: recipe });
 });
@@ -50,6 +49,14 @@ favouritesAPI.post("/addToFav", (req, res, next) => {
 
   DUMMY_FAVOURITE_RECIPES.push(addedRecipe);
   res.status(201).json({ recipe: addedRecipe });
+});
+
+favouritesAPI.delete("/delete/:rid", (req, res, next) => {
+  const recipeId = req.params.rid;
+  DUMMY_FAVOURITE_RECIPES = DUMMY_FAVOURITE_RECIPES.filter(
+    (r) => r.id !== recipeId
+  );
+  res.status(200).json({ message: "Deleted recipe" });
 });
 
 export default favouritesAPI;
