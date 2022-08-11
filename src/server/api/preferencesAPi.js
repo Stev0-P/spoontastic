@@ -1,4 +1,7 @@
+import { Router } from "express";
 import { v4 as uuid4 } from "uuid";
+
+const preferencesAPI = Router();
 
 const DUMMY_PREFERENCES = [
   {
@@ -17,7 +20,7 @@ const DUMMY_PREFERENCES = [
   }
 ];
 
-const createPreferences = (req, res, next) => {
+preferencesAPI.post("/addPreferences",  (req, res, next) => {
   const { diet, intolerance, type} = req.body;
 
   const createdPreferences = {
@@ -30,9 +33,9 @@ const createPreferences = (req, res, next) => {
   DUMMY_PREFERENCES.push(createdPreferences);
 
   res.status(201).json({ preferances: createdPreferences });
-};
+});
 
-const getPreferencesById = (req, res, next) => {
+preferencesAPI.get("/getPreferences/:pid", (req, res, next) => {
   const preferencesID = req.params.pid; //{}
   const preferences = DUMMY_PREFERENCES.find((p) => {
     return p.id === preferencesID;
@@ -45,9 +48,9 @@ const getPreferencesById = (req, res, next) => {
     return next(error);
   }
   res.json({ preferences: preferences });
-};
+});
 
-const updatePreferences = (req, res, next) => {
+preferencesAPI.patch("/patchPreferences/:pid",(req, res, next) => {
   const { diet, intolerance, type } = req.body
   const preferencesId = req.params.pid;
 
@@ -60,12 +63,6 @@ const updatePreferences = (req, res, next) => {
   DUMMY_PREFERENCES[preferencesIndex] = updatedPreferences;
 
   res.status(200).json({ preferences: updatedPreferences })
-}
+});
 
-const _createPreferences = createPreferences;
-const _getPreferencesById = getPreferencesById;
-const _updatePreferences = updatePreferences;
-
-export { _createPreferences as createPreferences };
-export { _getPreferencesById as getPreferencesById };
-export { _updatePreferences as updatePreferences };
+export default preferencesAPI;

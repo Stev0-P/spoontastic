@@ -1,4 +1,7 @@
 import { v4 as uuid4 } from "uuid";
+import { Router } from "express";
+
+const recipesAPI = Router();
 
 const DUMMY_RECIPES = [
   {
@@ -42,20 +45,20 @@ const DUMMY_FAVOURITE_RECIPES = [
   },
 ];
 
-const getRecipeById = (req, res, next) => {
+recipesAPI.get("/getRecipe/:rid", (req, res, next) => {
   const recipeID = req.params.rid; //{}
   const recipe = DUMMY_RECIPES.find((r) => {
     return r.id === recipeID;
   });
-  if (!recipe) {
+  /*if (!recipe) {
     const error = new Error("Could not find a recipe with the provided id.");
     error.code = 404;
     return next(error);
-  }
+  }*/
   res.json({ recipe: recipe });
-};
+});
 
-const addFavouriteRecipe = (req, res, next) => {
+recipesAPI.post("/addToFav", (req, res, next) => {
   const { description, img } = req.body;
 
   const addedRecipe = {
@@ -66,11 +69,6 @@ const addFavouriteRecipe = (req, res, next) => {
 
   DUMMY_FAVOURITE_RECIPES.push(addedRecipe);
   res.status(201).json({ recipe: addedRecipe });
-};
+});
 
-const _addFavouriteRecipe = addFavouriteRecipe;
-const _getRecipeById = getRecipeById;
-
-export { _addFavouriteRecipe as addFavouriteRecipe };
-
-export { _getRecipeById as getRecipeById };
+export default recipesAPI;
