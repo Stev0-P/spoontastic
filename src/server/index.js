@@ -66,7 +66,7 @@ server
     if (res.headerSent) {
       return next(error);
     }
-    res.status(error || 500);
+    res.status(error.code || 500);
     res.json({ message: error.message } || "An unknown error has occured!");
   })
   .get("/*", (req, res) => {

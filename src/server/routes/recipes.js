@@ -4,7 +4,7 @@ const recipeControllers = require("../controllers/recipes-controller");
 
 const router = Router();
 
-router.get("/:rid", recipeControllers.getRecipeById);
+router.get("/recipe/:rid", recipeControllers.getRecipeById);
 
 router.post("/", recipeControllers.addFavouriteRecipe);
 

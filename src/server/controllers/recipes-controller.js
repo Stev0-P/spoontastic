@@ -1,3 +1,5 @@
+import { v4 as uuid4 } from "uuid";
+
 const DUMMY_RECIPES = [
   {
     id: "1",
@@ -57,12 +59,12 @@ const addFavouriteRecipe = (req, res, next) => {
   const { description, img } = req.body;
 
   const addedRecipe = {
-    id: 4,
+    id: uuid4(),
     description,
     img,
   };
 
-  DUMMY_RECIPES.push(addedRecipe);
+  DUMMY_FAVOURITE_RECIPES.push(addedRecipe);
   res.status(201).json({ recipe: addedRecipe });
 };
 
