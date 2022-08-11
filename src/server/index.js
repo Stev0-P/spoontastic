@@ -3,8 +3,39 @@ import React from "react";
 import { StaticRouter } from "react-router-dom";
 import express from "express";
 import { renderToString } from "react-dom/server";
+import apiRoutes from "./api";
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+//add MongoSession
+const app = express();
+
+/* 
+.... Connect Mongo
+
+
+*/
+app
+  .disable("x-powered-by")
+  .use("/api", apiRoutes)
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  //.use(bodyParser.json())
+  //.use("/dashboard/api", recipesRoutes)
+  //.use("./preferences/api", preferencesRoutes)
+  .use((error, req, res, next) => {
+    if (res.headerSent) {
+      return next(error);
+    }
+    res.status(error.code || 500);
+    res.json({ message: error.message } || "An unknown error has occured!");
+  })
+  .get("/*", (req, res) => {
+    const { context, html } = renderApp(req, res);
+    if (context.url) {
+      res.redirect(context.url);
+    } else {
+      res.status(200).send(html);
+    }
+  });
 
 const cssLinksFromAssets = (assets, entrypoint) => {
   return assets[entrypoint]
@@ -53,31 +84,4 @@ export const renderApp = (req, res) => {
   return { context, html };
 };
 
-const server = express();
-const bodyParser = require("body-parser");
-const recipesRoutes = require("./routes/recipes").default;
-const preferencesRoutes = require("./routes/preferences").default
-
-server
-  .disable("x-powered-by")
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .use(bodyParser.json())
-  .use("/dashboard/api", recipesRoutes)
-  .use("./preferences/api", preferencesRoutes)
-  .use((error, req, res, next) => {
-    if (res.headerSent) {
-      return next(error);
-    }
-    res.status(error.code || 500);
-    res.json({ message: error.message } || "An unknown error has occured!");
-  })
-  .get("/*", (req, res) => {
-    const { context, html } = renderApp(req, res);
-    if (context.url) {
-      res.redirect(context.url);
-    } else {
-      res.status(200).send(html);
-    }
-  });
-
-export default server;
+export default app;
