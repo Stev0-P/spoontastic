@@ -20,7 +20,7 @@ const Demo = styled("div")(({ theme }) => ({
 
 const itemsList = [
   {
-    description: "Pizza",
+    description: "Lemon Herb Grilled Salmon",
     img: "https://images.unsplash.com/photo-1619734490039-a68d5c82cf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&q=80",
     route: "/recipe:id",
   },
@@ -50,11 +50,7 @@ const RecipeList = (props) => {
         margin: 2,
       }}
     >
-      <Typography
-        sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }}
-        variant="h6"
-        component="div"
-      >
+      <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
         {props.label} {`${props.label === "Recomended" ? time.text : ""}`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
