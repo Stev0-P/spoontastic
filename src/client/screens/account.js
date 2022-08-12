@@ -18,6 +18,7 @@ const Account = () => {
         
     <Box sx={{ display: "flex", flexDirection: 'column', marginLeft: 2, flexGrow: 1}}>
         <Typography variant="h1" component="div"> Account</Typography>
+      <Box>
       <Box sx={{marginTop: 3, marginBottom: 3}}>
         <Chip label="Name:" size="medium" sx={{fontSize: '1.5em', height: '2em',  boxShadow: 1, backgroundColor: "#f7a05e"}}/>
         <Chip label="Steven Pahyrya" variant="outlined" size="medium" sx={{fontSize: '1.5em', height: '2em', marginLeft: 2, boxShadow: 2}} />   
@@ -46,6 +47,7 @@ const Account = () => {
         <Chip label="Dairy" variant="outlined" size="medium"  sx={{fontSize: '1.5em', height: '2em', marginLeft: 2,  boxShadow: 2}}/>
         <Chip label="Change Preferences" variant="outlined" color="error" onClick={handleClickPreferences} sx={{fontSize:"1.5em", fontWeight: 'bold', height: '2em', borderWidth:'1.75px',  marginLeft: 4}}/>
         </Box>
+      </Box>
       </Box>
       <Box  sx={{display: 'flex',flexDirection: 'column', marginTop: 10, marginRight: '15%',  marginLeft: '15%'}} >
       

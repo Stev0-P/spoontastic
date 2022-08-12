@@ -1,8 +1,9 @@
 import { Router } from "express";
+import { v4 as uuid4 } from "uuid";
 
 const favouritesAPI = Router();
 
-const DUMMY_FAVOURITE_RECIPES = [
+let DUMMY_FAVOURITE_RECIPES = [
   {
     id: "1",
     description: "Pizza",
