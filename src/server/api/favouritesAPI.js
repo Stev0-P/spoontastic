@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { v4 as uuid4 } from "uuid";
+import mongoose from "mongoose";
 
 const favouritesAPI = Router();
 
@@ -54,9 +55,7 @@ favouritesAPI.post("/addToFav", (req, res, next) => {
 
 favouritesAPI.delete("/delete/:rid", (req, res, next) => {
   const recipeId = req.params.rid;
-  DUMMY_FAVOURITE_RECIPES = DUMMY_FAVOURITE_RECIPES.filter(
-    (r) => r.id !== recipeId
-  );
+  DUMMY_FAVOURITE_RECIPES = DUMMY_FAVOURITE_RECIPES.filter((r) => r.id !== recipeId);
   res.status(200).json({ message: "Deleted recipe" });
 });
 

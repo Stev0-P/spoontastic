@@ -4,6 +4,7 @@ import { StaticRouter } from "react-router-dom";
 import express from "express";
 import { renderToString } from "react-dom/server";
 import apiRoutes from "./api";
+import mongoose from "mongoose";
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 //add MongoSession
@@ -11,9 +12,19 @@ const app = express();
 
 /* 
 .... Connect Mongo
-
-
 */
+mongoose.connect(
+  "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256"
+);
+mongoose.set("returnOriginal", false);
+mongoose.set("toJSON", { virtuals: true });
+mongoose.set("toObject", { virtuals: true });
+mongoose.connection
+  .on("open", () => console.info("MongoDB Connection Open"))
+  .on("error", () => console.log("there has been an error"));
+const cast = mongoose.Schema.Types.Boolean.cast();
+mongoose.Schema.Types.Boolean.cast(() => cast(typeof value === "string" && !value ? null : value));
+
 app
   .disable("x-powered-by")
   .use("/api", apiRoutes)
@@ -40,9 +51,7 @@ app
 const cssLinksFromAssets = (assets, entrypoint) => {
   return assets[entrypoint]
     ? assets[entrypoint].css
-      ? assets[entrypoint].css
-          .map((asset) => `<link rel="stylesheet" href="${asset}">`)
-          .join("")
+      ? assets[entrypoint].css.map((asset) => `<link rel="stylesheet" href="${asset}">`).join("")
       : ""
     : "";
 };
@@ -50,9 +59,7 @@ const cssLinksFromAssets = (assets, entrypoint) => {
 const jsScriptTagsFromAssets = (assets, entrypoint, ...extra) => {
   return assets[entrypoint]
     ? assets[entrypoint].js
-      ? assets[entrypoint].js
-          .map((asset) => `<script src="${asset}" ${extra.join(" ")}></script>`)
-          .join("")
+      ? assets[entrypoint].js.map((asset) => `<script src="${asset}" ${extra.join(" ")}></script>`).join("")
       : ""
     : "";
 };
