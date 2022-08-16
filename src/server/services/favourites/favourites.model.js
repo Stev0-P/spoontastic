@@ -29,4 +29,4 @@ const recipeSchema = new Schema({
   ],
 });
 
-export default mongoose.model("Favourites", favouritesListItemSchema, recipeSchema);
+export default mongoose.model("Favourites", favouritesListItemSchema);
