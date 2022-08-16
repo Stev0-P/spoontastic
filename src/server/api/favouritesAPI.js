@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { v4 as uuid4 } from "uuid";
 import mongoose from "mongoose";
+import favouritesListItemSchema from "../services/favourites/favourites.model";
+import { PlaceSharp } from "@mui/icons-material";
 
 const favouritesAPI = Router();
 
@@ -22,34 +24,69 @@ let DUMMY_FAVOURITE_RECIPES = [
   },
 ];
 
-favouritesAPI.get("/", (req, res, next) => {
+/*favouritesAPI.get("/", (req, res, next) => {
   const recipe = DUMMY_FAVOURITE_RECIPES;
   res.json({ listofRecipes: recipe });
+});*/
+
+favouritesAPI.get("/:uid", async (req, res, next) => {
+  //get favourite by ID
+  console.log(req.params.uid);
+  const userID = req.params.uid; //{}
+  let recipe;
+  try {
+    recipe = await favouritesListItemSchema.find({ creator: userID });
+  } catch (err) {
+    const error = new Error("Something went worng!");
+    error.code = 500;
+    console.log(err);
+    return next(error);
+  }
+  if (!recipe || recipe.length === 0) {
+    const error = new Error("Could not find a recipe with the provided id.");
+    error.code = 404;
+    return next(error);
+  }
+  res.json({ recipe: recipe.map((recipe) => recipe.toObject({ getters: true })) });
 });
 
-favouritesAPI.get("/:rid", (req, res, next) => {
+favouritesAPI.get("/recipe/:rid", async (req, res, next) => {
+  //get favourite by userID
   const recipeID = req.params.rid; //{}
-  const recipe = DUMMY_FAVOURITE_RECIPES.find((r) => {
-    return r.id === recipeID;
-  });
+  let recipe;
+  try {
+    recipe = await favouritesListItemSchema.findById(recipeID);
+  } catch (err) {
+    const error = new Error("Something went worng!");
+    error.code = 500;
+    return next(error);
+  }
   if (!recipe) {
     const error = new Error("Could not find a recipe with the provided id.");
     error.code = 404;
     return next(error);
   }
-  res.json({ recipe: recipe });
+  res.json({ recipe: recipe.toObject({ getters: true }) });
 });
 
-favouritesAPI.post("/addToFav", (req, res, next) => {
-  const { description, img } = req.body;
+favouritesAPI.post("/addToFav", async (req, res, next) => {
+  const { title, image, creator } = req.body;
 
-  const addedRecipe = {
-    id: uuid4(),
-    description,
-    img,
-  };
+  const addedRecipe = new favouritesListItemSchema({
+    title,
+    image,
+    creator,
+  });
 
-  DUMMY_FAVOURITE_RECIPES.push(addedRecipe);
+  // DUMMY_FAVOURITE_RECIPES.push(addedRecipe);
+  try {
+    await addedRecipe.save();
+  } catch (err) {
+    const error = new Error("Adding to Favourites failed!");
+    error.code = 500;
+    return next(error);
+  }
+
   res.status(201).json({ recipe: addedRecipe });
 });
 

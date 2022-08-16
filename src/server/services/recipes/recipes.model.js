@@ -30,4 +30,4 @@ const recipeSchema = new Schema({
   id: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Recipes", recipesListItemSchema);
+export default mongoose.model("Recipes", recipesListItemSchema);
