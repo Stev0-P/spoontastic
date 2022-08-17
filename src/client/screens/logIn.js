@@ -25,69 +25,69 @@ export const LogIn = () => {
   }, []);
 
   return (
-    <Container className="signInDiv">
-      <Box
-        className="WelcomeBox1"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "30vh",
-          fontSize: "1.5em",
-          textAlign: "center",
-          padding: "em",
-          flexGrow: 1,
-          backgroundColor: "#f7a05e",
-          borderRadius: "1em",
-          margin: 2,
-        }}
-      >
+      <Container className="signInDiv">
         <Box
-          className="WelcomeBox2"
+          className="WelcomeBox1"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: "25vh",
+            height: "30vh",
+            fontSize: "1.5em",
+            textAlign: "center",
             padding: "em",
             flexGrow: 1,
-            backgroundColor: "#81c784",
+            backgroundColor: "#f7a05e",
             borderRadius: "1em",
-            margin: "3vh",
+            margin: 2,
           }}
         >
           <Box
-            className="WelcomeBox3"
+            className="WelcomeBox2"
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "2em",
-              height: "20vh",
-              textAlign: "center",
+              height: "25vh",
               padding: "em",
               flexGrow: 1,
-              backgroundColor: "#fff",
+              backgroundColor: "#81c784",
               borderRadius: "1em",
               margin: "3vh",
             }}
           >
-            Welcome to Spoontastic
+            <Box
+              className="WelcomeBox3"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "2em",
+                height: "20vh",
+                textAlign: "center",
+                padding: "em",
+                flexGrow: 1,
+                backgroundColor: "#fff",
+                borderRadius: "1em",
+                margin: "3vh",
+              }}
+            >
+              Welcome to Spoontastic
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box
-        style={{
-          display: "flex",
-          alignItems: "center",
-          textAlign: "center",
-          justifyContent: "center",
-          padding: "6em",
-          fontSize: "1.5em",
-        }}
-      >
-        Login with Google to access a world of spoontastic recipes!
-      </Box>
-    </Container>
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            textAlign: "center",
+            justifyContent: "center",
+            padding: "6em",
+            fontSize: "1.5em",
+          }}
+        >
+          Login with Google to access a world of spoontastic recipes!
+        </Box>
+      </Container>
   );
 };
