@@ -1,43 +1,71 @@
 import { v4 as uuid4 } from "uuid";
 import { Router } from "express";
+import userSchema from "../services/users/user.model";
+import { UserRefreshClient } from "googleapis-common";
 
 const accountAPI = Router();
 
-const DUMMY_USERS = [
-  {
-    id: "1",
-    name: "Oran Doherty",
-    email: "oran.doherty@wearenova.co.uk",
-  },
-];
+// const DUMMY_USERS = [
+//   {
+//     id: "1",
+//     name: "Oran Doherty",
+//     email: "oran.doherty@wearenova.co.uk",
+//   },
+// ];
 
 accountAPI.get("/getUsers", (req, res, next) => {
   res.json({ users: DUMMY_USERS });
 });
 
-accountAPI.post("/createUser", (req, res, next) => {
-  const { name, email } = req.body;
+accountAPI.post("/createUser", async (req, res, next) => {
+  const { name, email, preferences, JWT} = req.body;
 
-  const createdUser = {
-    id: uuid4(),
-    name: name,
-    email: email,
-  };
+  let existingUser
+  try {
+    existingUser = await userSchema.findOne({ email: email })
+  } catch {
+    const error = "Signing up failed, please try again later"
+    error.code = 500;
+    return next(error);
+  }
 
-  DUMMY_USERS.push(createdUser);
+  const createdUser = new userSchema({
+    name,
+    email,
+    preferences,
+    JWT,
+  });
+
+  try {
+    await createdUser.save();
+  } catch (err) {
+    const error = new Error("Creating user failed, please try again");
+    error.code = 500;
+    return next(error);
+  }
 
   res.status(201).json({ user: createdUser });
 });
 
 accountAPI.post("/login", (req, res, next) => {
-  const { email } = req.body;
+  const { email, JWT } = req.body;
 
-  const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
-  if (!identifiedUser) {
+  // const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
+  let existingUser
+  try {
+    existingUser = await userSchema.findOne({ email: email })
+  } catch {
+    const error = "Signing up failed, please try again later"
+    error.code = 500;
+    return next(error);
+  }
+
+  if (!existingUser  ) {
     const error = new Error("Could not identify user, credentials seem to be wrong.");
     error.code = 401;
     return next(error);
   }
+
   res.json({ message: "Logged in!" })
 });
 
