@@ -47,7 +47,7 @@ accountAPI.post("/createUser", async (req, res, next) => {
   res.status(201).json({ user: createdUser });
 });
 
-accountAPI.post("/login", (req, res, next) => {
+accountAPI.post("/login", async (req, res, next) => {
   const { email, JWT } = req.body;
 
   // const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
@@ -60,7 +60,7 @@ accountAPI.post("/login", (req, res, next) => {
     return next(error);
   }
 
-  if (!existingUser  ) {
+  if (!existingUser || existingUser.JWT !== JWT) {
     const error = new Error("Could not identify user, credentials seem to be wrong.");
     error.code = 401;
     return next(error);
