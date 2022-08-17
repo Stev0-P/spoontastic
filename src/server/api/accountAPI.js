@@ -13,18 +13,26 @@ const accountAPI = Router();
 //   },
 // ];
 
-accountAPI.get("/getUsers", (req, res, next) => {
-  res.json({ users: DUMMY_USERS });
+accountAPI.get("/getUsers", async (req, res, next) => {
+  let users;
+  try {
+   users = await userSchema.find();
+  } catch (err) {
+    const error = new Error("Fetching users failed, please try again later.");
+    error.code = 500;
+    return next(error);
+  }
+  res.json({users: users.map(user => user.toObject({ getters: true }))})
 });
 
 accountAPI.post("/createUser", async (req, res, next) => {
   const { name, email, preferences, JWT} = req.body;
 
-  let existingUser
+  let existingUser;
   try {
     existingUser = await userSchema.findOne({ email: email })
-  } catch {
-    const error = "Signing up failed, please try again later"
+  } catch (err) {
+    const error = new Error("Signing up failed, please try again later.");
     error.code = 500;
     return next(error);
   }
@@ -34,6 +42,7 @@ accountAPI.post("/createUser", async (req, res, next) => {
     email,
     preferences,
     JWT,
+    favourites: []
   });
 
   try {
@@ -50,12 +59,11 @@ accountAPI.post("/createUser", async (req, res, next) => {
 accountAPI.post("/login", async (req, res, next) => {
   const { email, JWT } = req.body;
 
-  // const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
   let existingUser
   try {
     existingUser = await userSchema.findOne({ email: email })
-  } catch {
-    const error = "Signing up failed, please try again later"
+  } catch (err) {
+    const error = new Error("Signing up failed, please try again later");
     error.code = 500;
     return next(error);
   }
