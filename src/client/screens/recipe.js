@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { Typography, List, ListItem, ListItemText, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const macrosList = [
   {
@@ -55,15 +55,15 @@ const Demo = styled("div")(({ theme }) => ({
 }));
 
 const Recipe = () => {
-    const history = useHistory();
+  const history = useHistory();
   return (
     <Box sx={{ display: " flex", flexDirection: "column" }}>
       <Box sx={{ marginLeft: 3, marginTop: 4 }}>
         <Typography variant="h3">Lemon Herb Grilled Salmon</Typography>
       </Box>
       <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
-      <Box >
-        <Rating name="read-only" size="large" value={4} readOnly />
+        <Box>
+          <Rating name="read-only" size="large" value={4} readOnly />
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <img
@@ -172,17 +172,29 @@ const Recipe = () => {
           }}
         >
           <Typography variant="body1">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
           </Typography>
         </Box>
       </Box>
-      <Chip label="Return" variant="outlined" color="success" onClick={()=> history.goBack()} sx={{fontSize:"1.5em", fontWeight: 'bold', height: '2em', borderWidth:'1.75px', marginLeft: '35%', marginRight: '35%', marginTop: "2%"}}/>
+      <Chip
+        label="Return"
+        variant="outlined"
+        color="success"
+        onClick={() => history.goBack()}
+        sx={{
+          fontSize: "1.5em",
+          fontWeight: "bold",
+          height: "2em",
+          borderWidth: "1.75px",
+          marginLeft: "35%",
+          marginRight: "35%",
+          marginTop: "2%",
+        }}
+      />
     </Box>
   );
 };

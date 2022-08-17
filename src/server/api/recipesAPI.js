@@ -1,5 +1,6 @@
 import { v4 as uuid4 } from "uuid";
-import { Router } from "express";
+import { response, Router } from "express";
+import axios from "axios";
 
 const recipesAPI = Router();
 
@@ -25,13 +26,30 @@ const DUMMY_RECIPES = [
 ];
 
 recipesAPI.get("/", (req, res, next) => {
+  let recipes;
+  const USER_DIET = "vegeterian";
+  const USER_INTOLERANCES = "gluten";
+  axios
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=effebab5dcc94c2eb7ab2114954311b2", {
+      params: {
+        diet: USER_DIET,
+        intolerances: USER_INTOLERANCES,
+      },
+    })
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   const recipe = DUMMY_RECIPES;
+
   res.json({ listofRecipes: recipe });
 });
 
 recipesAPI.get("/:rid", (req, res, next) => {
-  const recipeID = req.params.rid; //{}
-  const recipe = DUMMY_RECIPES.find((r) => {
+  const RECIPE_ID = req.params.rid; //{}
+  /*const recipe = DUMMY_RECIPES.find((r) => {
     return r.id === recipeID;
   });
   if (!recipe) {
@@ -39,7 +57,19 @@ recipesAPI.get("/:rid", (req, res, next) => {
     error.code = 404;
     return next(error);
   }
-  res.json({ recipe: recipe });
+  res.json({ recipe: recipe }); */
+  axios
+    .get(`https://api.spoonacular.com/recipes/${RECIPE_ID}/information?apiKey=effebab5dcc94c2eb7ab2114954311b2`, {
+      params: {
+        id: RECIPE_ID,
+      },
+    })
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 export default recipesAPI;
