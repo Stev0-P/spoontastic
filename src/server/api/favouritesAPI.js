@@ -90,9 +90,26 @@ favouritesAPI.post("/addToFav", async (req, res, next) => {
   res.status(201).json({ recipe: addedRecipe });
 });
 
-favouritesAPI.delete("/delete/:rid", (req, res, next) => {
-  const recipeId = req.params.rid;
-  DUMMY_FAVOURITE_RECIPES = DUMMY_FAVOURITE_RECIPES.filter((r) => r.id !== recipeId);
+favouritesAPI.delete("/delete/:rid", async (req, res, next) => {
+  const recipeID = req.params.rid;
+  let recipe;
+  try {
+    recipe = await favouritesListItemSchema.findById(recipeID);
+  } catch (err) {
+    console.log(err);
+    const error = new Error("Something went wrong! Could not delete recipe!");
+    error.code = 500;
+    return next(error);
+  }
+
+  try {
+    await recipe.delete();
+  } catch (err) {
+    const error = new Error("Something went wrong! Could not delete recipe2!");
+    error.code = 500;
+    return next(error);
+  }
+
   res.status(200).json({ message: "Deleted recipe" });
 });
 
