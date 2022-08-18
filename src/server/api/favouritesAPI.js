@@ -11,6 +11,7 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
   console.log(req.params.uid);
   const userID = req.params.uid;
   let recipes;
+
   try {
     recipes = await favouritesListItemSchema.find({ creator: userID });
   } catch (err) {
@@ -19,7 +20,7 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
     console.log(err);
     return next(error);
   }
-  if (!recipes || recipes.length === 0) {
+  if (!recipes || recipe.length === 0) {
     const error = new Error("Could not find a recipe with the provided id.");
     error.code = 404;
     return next(error);

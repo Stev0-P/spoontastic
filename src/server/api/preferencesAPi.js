@@ -19,18 +19,18 @@ const DUMMY_PREFERENCES = [
     diet: "Vegan",
     intolerance: ["egg", "soya", "dairy"],
     type: ["main course", "Snacks"],
-  }
+  },
 ];
 
-preferencesAPI.post("/",  async (req, res, next) => {
-  const { diet, intolerance, type, creator} = req.body;
+preferencesAPI.post("/", async (req, res, next) => {
+  const { diet, intolerances, type, creator } = req.body;
 
-  const createdPreferences = {
+  const createdPreferences = new userPreferencesSchema({
     diet,
-    intolerance,
+    intolerances,
     type,
-    creator
-  };
+    creator,
+  });
 
   let user;
 
@@ -60,37 +60,59 @@ preferencesAPI.post("/",  async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json({ preferances: createdPreferences });
+  res.status(201).json({ preferences: createdPreferences });
 });
 
-preferencesAPI.get("/getPreferences/:pid", (req, res, next) => {
-  const preferencesID = req.params.pid; //{}
-  const preferences = DUMMY_PREFERENCES.find((p) => {
-    return p.id === preferencesID;
-  });
-  if (!preferences) {
-    const error = new Error(
-      "Could not find a preference with the provided id."
-    );
+preferencesAPI.get("/:uid", async (req, res, next) => {
+  const userID = req.params.uid;
+
+  let uPreferences;
+
+  try {
+    uPreferences = await userPreferencesSchema.find({ creator: userID });
+  } catch (err) {
+    const error = new Error("Something went wrong!");
+    error.code = 500;
+    console.log(err);
+    return next(error);
+  }
+
+  if (!uPreferences || uPreferences.length === 0) {
+    const error = new Error("Could not find a preference with the provided id.");
     error.code = 404;
     return next(error);
   }
-  res.json({ preferences: preferences });
+
+  res.json({ preferences: uPreferences.map((preferences) => preferences.toObject({ getters: true })) });
 });
 
-preferencesAPI.patch("/patchPreferences/:pid",(req, res, next) => {
-  const { diet, intolerance, type } = req.body
+preferencesAPI.patch("/:pid", async (req, res, next) => {
+  const { diet, intolerances, type } = req.body;
   const preferencesId = req.params.pid;
 
-  const updatedPreferences = { ...DUMMY_PREFERENCES.find(p => p.id === preferencesId)};
-  const preferencesIndex = DUMMY_PREFERENCES.findIndex(p => p.id === preferencesId);
-  if (diet) updatedPreferences.diet = diet;
-  if (intolerance) updatedPreferences.intolerance = intolerance;
-  if (type) updatedPreferences.type = type;
+  let preferences;
 
-  DUMMY_PREFERENCES[preferencesIndex] = updatedPreferences;
+  try {
+    preferences = await userPreferencesSchema.findById(preferencesId);
+  } catch (err) {
+    const error = new Error("Something went wrong, could not update preference");
+    error.code = 500;
+    return next(error);
+  }
 
-  res.status(200).json({ preferences: updatedPreferences })
+  if (diet) preferences.diet = diet;
+  if (intolerances) preferences.intolerances = intolerances;
+  if (type) preferences.type = type;
+
+  try {
+    await preferences.save();
+  } catch (err) {
+    const error = new Error("Something went wrong, could not update place");
+    error.code = 500;
+    return next(error);
+  }
+
+  res.status(200).json({ preferences: preferences.toObject({ getters: true }) });
 });
 
 export default preferencesAPI;

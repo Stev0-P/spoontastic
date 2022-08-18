@@ -26,7 +26,7 @@ accountAPI.get("/getUsers", async (req, res, next) => {
 });
 
 accountAPI.post("/createUser", async (req, res, next) => {
-  const { name, email, preferences, JWT} = req.body;
+  const { name, email, JWT} = req.body;
 
   let existingUser;
   try {
@@ -40,7 +40,7 @@ accountAPI.post("/createUser", async (req, res, next) => {
   const createdUser = new userSchema({
     name,
     email,
-    preferences,
+    preferences: [],
     JWT,
     favourites: []
   });
@@ -57,7 +57,7 @@ accountAPI.post("/createUser", async (req, res, next) => {
 });
 
 accountAPI.post("/login", async (req, res, next) => {
-  const { email, JWT } = req.body;
+  const { email } = req.body;
 
   let existingUser
   try {
@@ -68,7 +68,7 @@ accountAPI.post("/login", async (req, res, next) => {
     return next(error);
   }
 
-  if (!existingUser || existingUser.JWT !== JWT) {
+  if (!existingUser) {
     const error = new Error("Could not identify user, credentials seem to be wrong.");
     error.code = 401;
     return next(error);
