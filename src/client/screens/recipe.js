@@ -3,7 +3,9 @@ import { Box } from "@mui/system";
 import { Typography, List, ListItem, ListItemText, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
-import {useHistory} from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 const macrosList = [
   {
@@ -55,15 +57,43 @@ const Demo = styled("div")(({ theme }) => ({
 }));
 
 const Recipe = () => {
-    const history = useHistory();
+  const history = useHistory();
+  const location = useLocation();
+  const recipeID = location.pathname.split("/").pop();
+  //console.log(recipeID);
+  const [recipe, setRecipe] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.get(`/api/recipes/item/${recipeID}`);
+        setRecipe(response);
+      } catch (err) {
+        console.log(err);
+      }
+      setLoading(false);
+    };
+    fetchApi();
+  }, []);
+  console.log(recipe);
+
+  const filteredNutrients =
+    !loading &&
+    recipe.nutrition.nutrients.filter((nutrient) => {
+      return nutrient.name === "Protein" && nutrient.name === "Calories";
+    });
+
+  console.log(filteredNutrients);
+
   return (
     <Box sx={{ display: " flex", flexDirection: "column" }}>
       <Box sx={{ marginLeft: 3, marginTop: 4 }}>
-        <Typography variant="h3">Lemon Herb Grilled Salmon</Typography>
+        <Typography variant="h3">{recipe.title}</Typography>
       </Box>
       <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
-      <Box >
-        <Rating name="read-only" size="large" value={4} readOnly />
+        <Box>
+          <Rating name="read-only" size="large" value={4} readOnly />
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <img
@@ -72,74 +102,76 @@ const Recipe = () => {
               width: "450px",
               borderRadius: "1em",
             }}
-            src="https://images.unsplash.com/photo-1619734490039-a68d5c82cf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&q=80"
+            src={recipe.image}
           ></img>
           <Box>
             <Demo sx={{ borderRadius: "1em" }}>
               <List>
-                {macrosList.map((item) => (
-                  <ListItem
-                    key={item.name}
-                    sx={{
-                      backgroundColor: "#f5efe9",
-                      borderRadius: "1em",
-                      marginTop: "0.5em",
-                      boxShadow: 2,
-                      marginLeft: 3,
-                    }}
-                    disablePadding
-                  >
-                    <ListItemText
-                      primary={item.name}
-                      secondary={item.amount}
+                {!loading &&
+                  recipe.nutrition.nutrients.map((item) => (
+                    <ListItem
+                      key={item.name}
                       sx={{
-                        margin: 0.5,
-                        height: "3em",
-                        backgroundColor: "#FAFAF9",
+                        backgroundColor: "#f5efe9",
                         borderRadius: "1em",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        paddingLeft: "1em",
-                        paddingRight: "1em",
+                        marginTop: "0.5em",
+                        boxShadow: 2,
+                        marginLeft: 3,
                       }}
-                    />
-                  </ListItem>
-                ))}
+                      disablePadding
+                    >
+                      <ListItemText
+                        primary={item.name}
+                        secondary={item.amount}
+                        sx={{
+                          margin: 0.5,
+                          height: "3em",
+                          backgroundColor: "#FAFAF9",
+                          borderRadius: "1em",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          paddingLeft: "1em",
+                          paddingRight: "1em",
+                        }}
+                      />
+                    </ListItem>
+                  ))}
               </List>
             </Demo>
           </Box>
           <Box sx={{ marginLeft: "5%" }}>
             <Demo sx={{ borderRadius: "1em" }}>
               <List>
-                {ingredientsList.map((item) => (
-                  <ListItem
-                    key={item.id}
-                    sx={{
-                      backgroundColor: "#f5efe9",
-                      borderRadius: "1em",
-                      marginTop: "0.5em",
-                      boxShadow: 2,
-                      marginLeft: 3,
-                    }}
-                    disablePadding
-                  >
-                    <ListItemText
-                      primary={item.name}
+                {!loading &&
+                  recipe.nutrition.properties.map((item) => (
+                    <ListItem
+                      key={item.id}
                       sx={{
-                        margin: 0.5,
-                        height: "3em",
-                        backgroundColor: "#FAFAF9",
+                        backgroundColor: "#f5efe9",
                         borderRadius: "1em",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        paddingLeft: "1em",
-                        paddingRight: "1em",
+                        marginTop: "0.5em",
+                        boxShadow: 2,
+                        marginLeft: 3,
                       }}
-                    />
-                  </ListItem>
-                ))}
+                      disablePadding
+                    >
+                      <ListItemText
+                        primary={item.name}
+                        sx={{
+                          margin: 0.5,
+                          height: "3em",
+                          backgroundColor: "#FAFAF9",
+                          borderRadius: "1em",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          paddingLeft: "1em",
+                          paddingRight: "1em",
+                        }}
+                      />
+                    </ListItem>
+                  ))}
               </List>
             </Demo>
           </Box>
@@ -171,18 +203,24 @@ const Recipe = () => {
             paddingBottom: "1.5em",
           }}
         >
-          <Typography variant="body1">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </Typography>
+          <Typography variant="body1">{recipe.instructions}</Typography>
         </Box>
       </Box>
-      <Chip label="Return" variant="outlined" color="success" onClick={()=> history.goBack()} sx={{fontSize:"1.5em", fontWeight: 'bold', height: '2em', borderWidth:'1.75px', marginLeft: '35%', marginRight: '35%', marginTop: "2%"}}/>
+      <Chip
+        label="Return"
+        variant="outlined"
+        color="success"
+        onClick={() => history.goBack()}
+        sx={{
+          fontSize: "1.5em",
+          fontWeight: "bold",
+          height: "2em",
+          borderWidth: "1.75px",
+          marginLeft: "35%",
+          marginRight: "35%",
+          marginTop: "2%",
+        }}
+      />
     </Box>
   );
 };
