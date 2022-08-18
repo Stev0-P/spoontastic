@@ -10,7 +10,9 @@ const favouritesAPI = Router();
 favouritesAPI.get("/:uid", async (req, res, next) => {
   console.log(req.params.uid);
   const userID = req.params.uid; 
+  
   let recipes;
+  
   try {
     recipes = await favouritesListItemSchema.find({ creator: userID });
   } catch (err) {
@@ -19,12 +21,13 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
     console.log(err);
     return next(error);
   }
-  if (!recipes || recipe.length === 0) {
+
+  if (!recipes || recipes.length === 0) {
     const error = new Error("Could not find a recipe with the provided id.");
     error.code = 404;
     return next(error);
   }
-  res.json({ recipe: recipe.map((recipe) => recipe.toObject({ getters: true })) });
+  res.json({ recipe: recipes.map((recipe) => recipe.toObject({ getters: true })) });
 });
 
 favouritesAPI.get("/recipe/:rid", async (req, res, next) => {
