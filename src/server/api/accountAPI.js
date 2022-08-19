@@ -1,6 +1,7 @@
 import { v4 as uuid4 } from "uuid";
 import { Router } from "express";
 import userSchema from "../services/users/user.model";
+import jwt_decode from "jwt-decode";
 import { UserRefreshClient } from "googleapis-common";
 
 const accountAPI = Router();
@@ -26,11 +27,13 @@ accountAPI.get("/getUsers", async (req, res, next) => {
 });
 
 accountAPI.post("/createUser", async (req, res, next) => {
-  const { name, email, JWT} = req.body;
-
+  const { JWT } = req.body;
+  var decoded = jwt_decode(JWT);
+  console.log(decoded);
+  
   let existingUser;
   try {
-    existingUser = await userSchema.findOne({ email: email })
+    existingUser = await userSchema.findOne({ email: decoded.email })
   } catch (err) {
     const error = new Error("Signing up failed, please try again later.");
     error.code = 500;
@@ -38,11 +41,11 @@ accountAPI.post("/createUser", async (req, res, next) => {
   }
 
   const createdUser = new userSchema({
-    name,
-    email,
+    name: decoded.name,
+    email: decoded.email,
     preferences: [],
-    JWT,
-    favourites: []
+    favourites: [],
+    picture: decoded.picture
   });
 
   try {
@@ -57,18 +60,19 @@ accountAPI.post("/createUser", async (req, res, next) => {
 });
 
 accountAPI.post("/login", async (req, res, next) => {
-  const { email } = req.body;
+  const { JWT } = req.body;
+  var decoded = jwt_decode(JWT);
 
   let existingUser
   try {
-    existingUser = await userSchema.findOne({ email: email })
+    existingUser = await userSchema.findOne({ email: decoded.email })
   } catch (err) {
-    const error = new Error("Signing up failed, please try again later");
+    const error = new Error("Loging in failed, please try again later");
     error.code = 500;
     return next(error);
   }
-
-  if (!existingUser) {
+  
+  if (!existingUser || decoded.email_verified !== true) {
     const error = new Error("Could not identify user, credentials seem to be wrong.");
     error.code = 401;
     return next(error);
