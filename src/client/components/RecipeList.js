@@ -13,33 +13,33 @@ import ListItemButton from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useHistory, useLocation } from "react-router-dom";
 import useTime from "../hooks/useTime";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
 }));
 
-const itemsList = [
-  {
-    description: "Lemon Herb Grilled Salmon",
-    img: "https://images.unsplash.com/photo-1619734490039-a68d5c82cf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&q=80",
-    route: "/recipe:id",
-  },
-  {
-    description: "Buffalo Wings",
-    img: "https://img.freepik.com/free-photo/delicious-fried-chicken-plate_144627-27379.jpg?t=st=1659444439~exp=1659445039~hmac=c5ed5f3cda87a715afd6430bd6132bf1c0a85569b58728b5d39229e69dcd0318",
-    route: "/recipe:id",
-  },
-  {
-    description: "Rizzoto Pasta",
-    img: "https://img.freepik.com/free-photo/penne-pasta-tomato-sauce-with-chicken-tomatoes-wooden-table_2829-19739.jpg?&t=st=1659444485~exp=1659445085~hmac=aa7de2e42b79825cc04bf17eec6c034db604757b465907c0c0a5ebc5df72d11a",
-    route: "/recipe:id",
-  },
-];
 const RecipeList = (props) => {
   const [dense, setDense] = React.useState(false);
   const time = useTime();
   const history = useHistory();
   const location = useLocation();
+  const [recipes, setRecipes] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.get("/api/recipes/");
+        setRecipes(response);
+      } catch (err) {
+        console.log(err);
+      }
+      setLoading(false);
+    };
+    fetchApi();
+  }, []);
 
   return (
     <Box
@@ -55,56 +55,57 @@ const RecipeList = (props) => {
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>
-          {itemsList.map((item) => (
-            <ListItem
-              key={item.description}
-              sx={{
-                backgroundColor: "#f5efe9",
-                borderRadius: "1em",
-                marginTop: 1,
-                boxShadow: 2,
-              }}
-              disablePadding
-            >
-              <img
-                style={{
-                  height: "125px",
-                  width: "150px",
-                  borderBottomLeftRadius: "1em",
-                  borderTopLeftRadius: "1em",
-                }}
-                src={`${item.img}`}
-              ></img>
-
-              <ListItemText
-                onClick={() => history.push("/recipe/:id")}
-                primary={item.description}
+          {!loading &&
+            recipes.map((item) => (
+              <ListItem
+                key={item.id}
                 sx={{
-                  margin: 4,
-                  height: "3em",
-                  backgroundColor: "#FAFAF9",
+                  backgroundColor: "#f5efe9",
                   borderRadius: "1em",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  paddingLeft: "2em",
+                  marginTop: 1,
+                  boxShadow: 2,
                 }}
-              />
+                disablePadding
+              >
+                <img
+                  style={{
+                    height: "125px",
+                    width: "150px",
+                    borderBottomLeftRadius: "1em",
+                    borderTopLeftRadius: "1em",
+                  }}
+                  src={`${item.image}`}
+                ></img>
 
-              {location.pathname === "/favourites" ? (
-                <Box sx={{ marginRight: 3, fontSize: "3em" }}>
-                  <Button color="warning" variant="outlined">
-                    Delete
-                  </Button>{" "}
-                </Box>
-              ) : (
-                <IconButton size="large" sx={{ marginRight: 3 }}>
-                  {" "}
-                  <StarIcon fontSize="large" />{" "}
-                </IconButton>
-              )}
-            </ListItem>
-          ))}
+                <ListItemText
+                  onClick={() => history.push(`/recipe/${item.id}`)}
+                  primary={item.title}
+                  sx={{
+                    margin: 4,
+                    height: "3em",
+                    backgroundColor: "#FAFAF9",
+                    borderRadius: "1em",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    paddingLeft: "2em",
+                  }}
+                />
+
+                {location.pathname === "/favourites" ? (
+                  <Box sx={{ marginRight: 3, fontSize: "3em" }}>
+                    <Button color="warning" variant="outlined">
+                      Delete
+                    </Button>{" "}
+                  </Box>
+                ) : (
+                  <IconButton size="large" sx={{ marginRight: 3 }}>
+                    {" "}
+                    <StarIcon fontSize="large" />{" "}
+                  </IconButton>
+                )}
+              </ListItem>
+            ))}
         </List>
       </Demo>
     </Box>

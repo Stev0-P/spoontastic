@@ -9,10 +9,9 @@ const favouritesAPI = Router();
 
 favouritesAPI.get("/:uid", async (req, res, next) => {
   console.log(req.params.uid);
-  const userID = req.params.uid; 
-  
+  const userID = req.params.uid;
   let recipes;
-  
+
   try {
     recipes = await favouritesListItemSchema.find({ creator: userID });
   } catch (err) {
@@ -21,8 +20,7 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
     console.log(err);
     return next(error);
   }
-
-  if (!recipes || recipes.length === 0) {
+  if (!recipes || recipe.length === 0) {
     const error = new Error("Could not find a recipe with the provided id.");
     error.code = 404;
     return next(error);
@@ -92,7 +90,7 @@ favouritesAPI.delete("/delete/:rid", async (req, res, next) => {
   const recipeID = req.params.rid;
   let recipe;
   try {
-    recipe = await favouritesListItemSchema.findById(recipeID).populate('creator');
+    recipe = await favouritesListItemSchema.findById(recipeID).populate("creator");
   } catch (err) {
     console.log(err);
     const error = new Error("Something went wrong! Could not delete recipe!");
@@ -101,7 +99,7 @@ favouritesAPI.delete("/delete/:rid", async (req, res, next) => {
   }
 
   if (!recipe) {
-    const error = new Error("Could not find recipe for this id")
+    const error = new Error("Could not find recipe for this id");
     error.code = 404;
     return next(error);
   }
