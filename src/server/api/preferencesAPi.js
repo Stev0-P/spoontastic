@@ -5,23 +5,6 @@ import userPreferencesSchema from "../services/preferences/preferences.model";
 
 const preferencesAPI = Router();
 
-const DUMMY_PREFERENCES = [
-  {
-    id: "1",
-    userId: "1",
-    diet: "Gluten Free",
-    intolerance: ["egg", "grain"],
-    type: ["breakfast", "Snacks"],
-  },
-  {
-    id: "2",
-    userId: "1",
-    diet: "Vegan",
-    intolerance: ["egg", "soya", "dairy"],
-    type: ["main course", "Snacks"],
-  },
-];
-
 preferencesAPI.post("/", async (req, res, next) => {
   const { diet, intolerances, type, creator } = req.body;
 

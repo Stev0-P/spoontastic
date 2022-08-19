@@ -5,7 +5,8 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   preferences: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Preferences' }],
-  JWT: { type: String, required: true },
+  JWT: { type: String, required: false },
+  picture: { type: String, required: true },
   favourites: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Favourites' }]
 });
 
