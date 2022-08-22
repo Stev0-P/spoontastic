@@ -63,28 +63,37 @@ const Recipe = () => {
   //console.log(recipeID);
   const [recipe, setRecipe] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+  const [score, setScore] = React.useState(0);
+  const [rating, setRating] = React.useState(0);
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.get(`/api/recipes/item/${recipeID}`);
         setRecipe(response);
+        ratingScore(response.healthScore);
       } catch (err) {
         console.log(err);
       }
       setLoading(false);
     };
     fetchApi();
+    ratingScore();
   }, []);
-  console.log(recipe);
 
-  const filteredNutrients =
-    !loading &&
-    recipe.nutrition.nutrients.filter((nutrient) => {
-      return nutrient.name === "Protein" && nutrient.name === "Calories";
-    });
-
-  console.log(filteredNutrients);
+  const ratingScore = (sc) => {
+    if (sc >= 0 && sc <= 20) {
+      setRating(1);
+    } else if (sc >= 21 && sc <= 40) {
+      setRating(2);
+    } else if (sc >= 41 && sc <= 60) {
+      setRating(3);
+    } else if (sc >= 61 && sc <= 80) {
+      setRating(4);
+    } else if (sc >= 81 && sc <= 100) {
+      setRating(5);
+    }
+  };
 
   return (
     <Box sx={{ display: " flex", flexDirection: "column" }}>
@@ -93,7 +102,7 @@ const Recipe = () => {
       </Box>
       <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
         <Box>
-          <Rating name="read-only" size="large" value={4} readOnly />
+          <Rating name="read-only" size="large" value={rating} readOnly />
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <img
@@ -108,72 +117,74 @@ const Recipe = () => {
             <Demo sx={{ borderRadius: "1em" }}>
               <List>
                 {!loading &&
-                  recipe.nutrition.nutrients.map((item) => (
-                    <ListItem
-                      key={item.name}
-                      sx={{
-                        backgroundColor: "#f5efe9",
-                        borderRadius: "1em",
-                        marginTop: "0.5em",
-                        boxShadow: 2,
-                        marginLeft: 3,
-                      }}
-                      disablePadding
-                    >
-                      <ListItemText
-                        primary={item.name}
-                        secondary={item.amount}
+                  recipe.nutrition.nutrients
+                    .filter(
+                      (nutrient) =>
+                        nutrient.name === "Calories" ||
+                        nutrient.name === "Fat" ||
+                        nutrient.name === "Saturated Fat" ||
+                        nutrient.name === "Carbohydrates" ||
+                        nutrient.name === "Protein"
+                    )
+                    .map((item) => (
+                      <ListItem
+                        key={item.name}
                         sx={{
-                          margin: 0.5,
-                          height: "3em",
-                          backgroundColor: "#FAFAF9",
+                          backgroundColor: "#f5efe9",
                           borderRadius: "1em",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          paddingLeft: "1em",
-                          paddingRight: "1em",
+                          marginTop: "0.5em",
+                          boxShadow: 2,
+                          marginLeft: 3,
                         }}
-                      />
-                    </ListItem>
-                  ))}
+                        disablePadding
+                      >
+                        <ListItemText
+                          primary={item.name}
+                          secondary={item.amount}
+                          sx={{
+                            margin: 0.5,
+                            height: "3em",
+                            backgroundColor: "#FAFAF9",
+                            borderRadius: "1em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            paddingLeft: "1em",
+                            paddingRight: "1em",
+                          }}
+                        />
+                      </ListItem>
+                    ))}
               </List>
             </Demo>
           </Box>
-          <Box sx={{ marginLeft: "5%" }}>
-            <Demo sx={{ borderRadius: "1em" }}>
-              <List>
-                {!loading &&
-                  recipe.nutrition.properties.map((item) => (
-                    <ListItem
-                      key={item.id}
-                      sx={{
-                        backgroundColor: "#f5efe9",
-                        borderRadius: "1em",
-                        marginTop: "0.5em",
-                        boxShadow: 2,
-                        marginLeft: 3,
-                      }}
-                      disablePadding
-                    >
-                      <ListItemText
-                        primary={item.name}
-                        sx={{
-                          margin: 0.5,
-                          height: "3em",
-                          backgroundColor: "#FAFAF9",
-                          borderRadius: "1em",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          paddingLeft: "1em",
-                          paddingRight: "1em",
-                        }}
-                      />
-                    </ListItem>
-                  ))}
-              </List>
-            </Demo>
+          <Box
+            sx={{
+              display: "flex",
+              flexGrow: 1,
+              flexDirection: "column",
+              backgroundColor: "#f7a05e",
+              borderRadius: "1em",
+              marginRight: 4,
+              marginLeft: 5,
+              marginTop: 3,
+              paddingTop: "1em",
+            }}
+          >
+            <Typography sx={{ paddingLeft: "0.525em" }} variant="h4">
+              Instructions
+            </Typography>
+            <Box
+              sx={{
+                backgroundColor: "#f5efe9",
+                borderRadius: "1em",
+                paddingTop: "1em",
+                paddingLeft: "1.5em",
+                height: "100%",
+              }}
+            >
+              <Typography variant="body1">{recipe.instructions}</Typography>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -203,7 +214,7 @@ const Recipe = () => {
             paddingBottom: "1.5em",
           }}
         >
-          <Typography variant="body1">{recipe.instructions}</Typography>
+          <Typography variant="body1">{recipe.summary}</Typography>
         </Box>
       </Box>
       <Chip
