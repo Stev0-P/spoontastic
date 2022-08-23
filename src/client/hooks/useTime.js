@@ -16,19 +16,19 @@ const useTime = () => {
         if (time >= 3 && time < 11) {
           mealChange({
             text: "Breakfast Recipes",
-            type: "breakfast, beverage",
+            type: "breakfast",
           });
         } else if (time >= 11 && time < 15) {
           mealChange({
             text: "Lunch Recipes",
-            type: "salad, snack, bread, appetizer, drink, soup, beverage",
+            type: "snack",
           });
         } else {
           mealChange({
             text: "Dinner Recipes",
-            type: "main course, side dish, dessert, marinade, appetizer, soup, drink, beverage, sauce",
+            type: "main course",
           });
-        } 
+        }
       },
       (err) => console.log(err)
     );

@@ -1,29 +1,39 @@
 import React from "react";
 import { Box, Typography, Chip, Container } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
-import zIndex from "@mui/material/styles/zIndex";
+import UserContext from "../context/User";
+import { useContext, useEffect } from "react";
+import useTime from "../hooks/useTime";
+import axios from "axios";
 
 const Widget = () => {
-  const itemsList = [
-    {
-      description: "Lemon Herb Grilled Salmon",
-      img: "https://images.unsplash.com/photo-1619734490039-a68d5c82cf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&q=80",
-      route: "/recipe:id",
-    },
-    {
-      description: "Buffalo Wings",
-      img: "https://img.freepik.com/free-photo/delicious-fried-chicken-plate_144627-27379.jpg?t=st=1659444439~exp=1659445039~hmac=c5ed5f3cda87a715afd6430bd6132bf1c0a85569b58728b5d39229e69dcd0318",
-      route: "/recipe:id",
-    },
-    {
-      description: "Rizzoto Pasta",
-      img: "https://img.freepik.com/free-photo/penne-pasta-tomato-sauce-with-chicken-tomatoes-wooden-table_2829-19739.jpg?&t=st=1659444485~exp=1659445085~hmac=aa7de2e42b79825cc04bf17eec6c034db604757b465907c0c0a5ebc5df72d11a",
-      route: "/recipe:id",
-    },
-  ];
+  const user = useContext(UserContext);
+  const [recipeTitle, setRecipeTitle] = React.useState("");
+  const [recipeImage, setRecipeImage] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+  const time = useTime();
 
-  const rotd = "Recipe Of The Day";
-  const favMeal = "Favourite Recipe";
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.get("/api/recipes/random/", {
+          params: {
+            mealType: time.type,
+            userDiet: user.diet,
+            userIntolerances: user.intolerances,
+          },
+        });
+        console.log(response.title);
+        setRecipeTitle(response.title);
+        setRecipeImage(response.image);
+      } catch (err) {
+        console.log(err);
+      }
+      setLoading(false);
+    };
+
+    fetchApi();
+  }, [time.type]);
 
   const NumberOfRecipes = () => {
     return (
@@ -40,11 +50,7 @@ const Widget = () => {
           boxShadow: 3,
         }}
       >
-        <Typography
-          sx={{ paddingTop: "0.65em", textAlign: "center" }}
-          variant="h6"
-          component="div"
-        >
+        <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
           No. Of Recipes
         </Typography>
         <Box
@@ -67,12 +73,9 @@ const Widget = () => {
             }}
             variant="h1"
           >
-            {itemsList.length}
+            {5}
           </Typography>
-          <Typography
-            sx={{ textAlign: "center", justifyContent: "center" }}
-            variant="h6"
-          >
+          <Typography sx={{ textAlign: "center", justifyContent: "center" }} variant="h6">
             Current Recipes
           </Typography>
         </Box>
@@ -80,7 +83,7 @@ const Widget = () => {
     );
   };
 
-  const MealWidget = (number, text) => {
+  const MealWidget = () => {
     const history = useHistory();
 
     return (
@@ -100,12 +103,8 @@ const Widget = () => {
         }}
         onClick={() => history.push("/recipe/:id")}
       >
-        <Typography
-          sx={{ paddingTop: "0.65em", textAlign: "center" }}
-          variant="h6"
-          component="div"
-        >
-          {text}
+        <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
+          Recipe Of The Day
         </Typography>
         <Box
           sx={{
@@ -120,7 +119,7 @@ const Widget = () => {
               width: "200px",
               borderRadius: "2em 2em 0em 0em",
             }}
-            src={itemsList[number].img}
+            src={recipeImage}
           />
           <Typography
             sx={{
@@ -137,7 +136,7 @@ const Widget = () => {
             variant="h7"
             component="div"
           >
-            {itemsList[number].description}
+            {recipeTitle}
           </Typography>
         </Box>
       </Box>
@@ -146,8 +145,7 @@ const Widget = () => {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
-      {MealWidget(0, rotd)}
-      {MealWidget(1, favMeal)}
+      <MealWidget />
       {NumberOfRecipes()}
     </Box>
   );

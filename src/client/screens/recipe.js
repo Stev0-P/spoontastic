@@ -7,51 +7,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 
-const macrosList = [
-  {
-    name: "Calories",
-    amount: "438",
-  },
-  {
-    name: "Protein",
-    amount: "18g",
-  },
-  {
-    name: "Fat",
-    amount: "6g",
-  },
-  {
-    name: "Saturated Fat",
-    amount: "2g",
-  },
-  {
-    name: "Carbohydrates",
-    amount: "49g",
-  },
-];
-
-const ingredientsList = [
-  {
-    name: "1 tbsp butter",
-    id: 1,
-  },
-  {
-    name: "2 Lemons",
-    id: 2,
-  },
-  {
-    name: "Fish",
-    id: 3,
-  },
-  {
-    name: "Seasonings",
-    id: 4,
-  },
-  {
-    name: "Oven 30-min",
-    id: 5,
-  },
-];
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
 }));
@@ -94,6 +49,7 @@ const Recipe = () => {
       setRating(5);
     }
   };
+  console.log(recipe);
 
   return (
     <Box sx={{ display: " flex", flexDirection: "column" }}>

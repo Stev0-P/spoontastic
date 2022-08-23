@@ -12,11 +12,18 @@ import { Container } from "@mui/material";
 import Button from "@mui/material/Button";
 import "./CheckBox.css";
 import useTime from "../hooks/useTime";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const CheckBox = () => {
   const [diet, setDiet] = useState("");
   const [intolerance, setIntolerance] = useState("");
   const time = useTime();
+  const [open, setOpen] = React.useState(false);
 
   const dietChange = (event) => {
     setDiet(event.target.value);
@@ -30,7 +37,7 @@ const CheckBox = () => {
   };
 
   const submit = () => {
-    const parameters = {diet, intolerance, time};
+    const parameters = { diet, intolerance, time };
   };
 
   const styler = {
@@ -44,6 +51,17 @@ const CheckBox = () => {
   console.log(diet);
 
   console.log(intolerance);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   return (
     <Box>
@@ -73,26 +91,10 @@ const CheckBox = () => {
               Diet
             </FormLabel>
             <Box className="wrapper">
-              <FormControlLabel
-                value="regular"
-                control={<Radio style={{ color: "green" }} />}
-                label="Regular"
-              />
-              <FormControlLabel
-                value="glutenFree"
-                control={<Radio style={{ color: "green" }} />}
-                label="Gluten Free"
-              />
-              <FormControlLabel
-                value="ketogenic"
-                control={<Radio style={{ color: "green" }} />}
-                label="Ketogenic"
-              />
-              <FormControlLabel
-                value="vegetarian"
-                control={<Radio style={{ color: "green" }} />}
-                label="Vegetarian"
-              />
+              <FormControlLabel value="regular" control={<Radio style={{ color: "green" }} />} label="Regular" />
+              <FormControlLabel value="glutenFree" control={<Radio style={{ color: "green" }} />} label="Gluten Free" />
+              <FormControlLabel value="ketogenic" control={<Radio style={{ color: "green" }} />} label="Ketogenic" />
+              <FormControlLabel value="vegetarian" control={<Radio style={{ color: "green" }} />} label="Vegetarian" />
               <FormControlLabel
                 value="lactoVegetarian"
                 control={<Radio style={{ color: "green" }} />}
@@ -103,47 +105,22 @@ const CheckBox = () => {
                 control={<Radio style={{ color: "green" }} />}
                 label="Ovo-Vegetarian"
               />
-              <FormControlLabel
-                value="vegan"
-                control={<Radio style={{ color: "green" }} />}
-                label="Vegan"
-              />
+              <FormControlLabel value="vegan" control={<Radio style={{ color: "green" }} />} label="Vegan" />
               <FormControlLabel
                 value="pescetarian"
                 control={<Radio style={{ color: "green" }} />}
                 label="Pescetarian"
               />
-              <FormControlLabel
-                value="paleo"
-                control={<Radio style={{ color: "green" }} />}
-                label="Paleo"
-              />
-              <FormControlLabel
-                value="primal"
-                control={<Radio style={{ color: "green" }} />}
-                label="Primal"
-              />
-              <FormControlLabel
-                value="lowFodmap"
-                control={<Radio style={{ color: "green" }} />}
-                label="Low FODMAP"
-              />
-              <FormControlLabel
-                value="whole30"
-                control={<Radio style={{ color: "green" }} />}
-                label="Whole30"
-              />
+              <FormControlLabel value="paleo" control={<Radio style={{ color: "green" }} />} label="Paleo" />
+              <FormControlLabel value="primal" control={<Radio style={{ color: "green" }} />} label="Primal" />
+              <FormControlLabel value="lowFodmap" control={<Radio style={{ color: "green" }} />} label="Low FODMAP" />
+              <FormControlLabel value="whole30" control={<Radio style={{ color: "green" }} />} label="Whole30" />
             </Box>
           </RadioGroup>
         </FormControl>
 
         <FormControl>
-          <FormGroup
-            defaultValue="regular"
-            value={intolerance}
-            onChange={intoleranceChange}
-            style={styler}
-          >
+          <FormGroup defaultValue="regular" value={intolerance} onChange={intoleranceChange} style={styler}>
             <FormLabel
               style={{
                 display: "flex",
@@ -155,70 +132,33 @@ const CheckBox = () => {
               Intolerences
             </FormLabel>
             <Box className="wrapper">
-              <FormControlLabel
-                control={<Checkbox value="dairy" style={{ color: "green" }} />}
-                label="Dairy"
-              />
-              <FormControlLabel
-                control={<Checkbox value="egg" style={{ color: "green" }} />}
-                label="Egg"
-              />
-              <FormControlLabel
-                control={<Checkbox value="gluten" style={{ color: "green" }} />}
-                label="Gluten"
-              />
-              <FormControlLabel
-                control={<Checkbox value="grain" style={{ color: "green" }} />}
-                label="Grain"
-              />
-              <FormControlLabel
-                control={<Checkbox value="peanut" style={{ color: "green" }} />}
-                label="Peanut"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox value="seafood" style={{ color: "green" }} />
-                }
-                label="Seafood"
-              />
-              <FormControlLabel
-                control={<Checkbox value="sesame" style={{ color: "green" }} />}
-                label="Sesame"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox value="shellfish" style={{ color: "green" }} />
-                }
-                label="Shellfish"
-              />
-              <FormControlLabel
-                control={<Checkbox value="soy" style={{ color: "green" }} />}
-                label="Soy"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox value="sulfite" style={{ color: "green" }} />
-                }
-                label="Sulfite"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox value="tree-nut" style={{ color: "green" }} />
-                }
-                label="Tree Nut"
-              />
-              <FormControlLabel
-                control={<Checkbox value="wheat" style={{ color: "green" }} />}
-                label="Wheat"
-              />
+              <FormControlLabel control={<Checkbox value="dairy" style={{ color: "green" }} />} label="Dairy" />
+              <FormControlLabel control={<Checkbox value="egg" style={{ color: "green" }} />} label="Egg" />
+              <FormControlLabel control={<Checkbox value="gluten" style={{ color: "green" }} />} label="Gluten" />
+              <FormControlLabel control={<Checkbox value="grain" style={{ color: "green" }} />} label="Grain" />
+              <FormControlLabel control={<Checkbox value="peanut" style={{ color: "green" }} />} label="Peanut" />
+              <FormControlLabel control={<Checkbox value="seafood" style={{ color: "green" }} />} label="Seafood" />
+              <FormControlLabel control={<Checkbox value="sesame" style={{ color: "green" }} />} label="Sesame" />
+              <FormControlLabel control={<Checkbox value="shellfish" style={{ color: "green" }} />} label="Shellfish" />
+              <FormControlLabel control={<Checkbox value="soy" style={{ color: "green" }} />} label="Soy" />
+              <FormControlLabel control={<Checkbox value="sulfite" style={{ color: "green" }} />} label="Sulfite" />
+              <FormControlLabel control={<Checkbox value="tree-nut" style={{ color: "green" }} />} label="Tree Nut" />
+              <FormControlLabel control={<Checkbox value="wheat" style={{ color: "green" }} />} label="Wheat" />
             </Box>
           </FormGroup>
         </FormControl>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            Please Select Your Preferences!
+          </Alert>
+        </Snackbar>
       </Box>
       <Button
         variant="contained"
         onClick={() => {
-          (window.location.href = "/dashboard");
+          diet === "" || intolerance === ""
+            ? handleClick()
+            : console.log("sucsess")((window.location.href = "/dashboard"));
           submit();
         }}
       >
