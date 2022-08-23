@@ -13,8 +13,9 @@ import ListItemButton from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useHistory, useLocation } from "react-router-dom";
 import useTime from "../hooks/useTime";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import axios from "axios";
+import UserContext from "../context/User";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
@@ -27,19 +28,28 @@ const RecipeList = (props) => {
   const location = useLocation();
   const [recipes, setRecipes] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const user = useContext(UserContext);
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const { data: response } = await axios.get("/api/recipes/");
+        const { data: response } = await axios.get("/api/recipes/", {
+          params: {
+            mealType: time.type,
+            userDiet: user.diet,
+            userIntolerances: user.intolerances,
+          },
+        });
         setRecipes(response);
       } catch (err) {
         console.log(err);
       }
       setLoading(false);
     };
+
     fetchApi();
-  }, []);
+    console.log(time.type);
+  }, [time.type]);
 
   return (
     <Box
