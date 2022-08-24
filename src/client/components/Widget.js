@@ -13,6 +13,8 @@ const Widget = () => {
   const [loading, setLoading] = React.useState(true);
   const time = useTime();
 
+  const [response, setResponse] = React.useState({});
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -25,6 +27,7 @@ const Widget = () => {
         });
         setRecipeTitle(response.recipes[0].title);
         setRecipeImage(response.recipes[0].image);
+        setResponse(response);
       } catch (err) {
         console.log(err);
       }
@@ -33,7 +36,7 @@ const Widget = () => {
 
     fetchApi();
   }, [time.type]);
-
+  console.log(response);
   const NumberOfRecipes = () => {
     return (
       <Box
@@ -103,7 +106,7 @@ const Widget = () => {
         onClick={() => history.push("/recipe/:id")}
       >
         <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
-          Recipe Of The Day
+          Random Recipe
         </Typography>
         <Box
           sx={{
