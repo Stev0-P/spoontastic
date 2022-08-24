@@ -3,7 +3,20 @@ import { Box, Container } from "@mui/material";
 
 export const LogIn = () => {
   function handleCallbackResponse(response) {
-    console.log("Encoded JWT ID Token: " + response.credential);
+    console.log("Encoded JWT ID Token: " + response);
+    console.table(response);
+
+    /* const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.post("/api/");
+        setRecipe(response);
+        ratingScore(response.healthScore);
+      } catch (err) {
+        console.log(err);
+      }
+      setLoading(false);
+    };
+    fetchApi();*/
   }
   useEffect(() => {
     const script = document.createElement("script");

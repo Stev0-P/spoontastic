@@ -23,9 +23,8 @@ const Widget = () => {
             userIntolerances: user.intolerances,
           },
         });
-        console.log(response.title);
-        setRecipeTitle(response.title);
-        setRecipeImage(response.image);
+        setRecipeTitle(response.recipes[0].title);
+        setRecipeImage(response.recipes[0].image);
       } catch (err) {
         console.log(err);
       }
