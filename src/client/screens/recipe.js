@@ -4,8 +4,9 @@ import { Typography, List, ListItem, ListItemText, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
 import { useHistory, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import axios from "axios";
+import UserContext from "../context/User";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
@@ -20,6 +21,7 @@ const Recipe = () => {
   const [loading, setLoading] = React.useState(true);
   const [score, setScore] = React.useState(0);
   const [rating, setRating] = React.useState(0);
+  const user = useContext(UserContext);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -49,7 +51,6 @@ const Recipe = () => {
       setRating(5);
     }
   };
-  console.log(recipe);
 
   return (
     <Box sx={{ display: " flex", flexDirection: "column" }}>
