@@ -28,7 +28,7 @@ const RecipeList = (props) => {
   const location = useLocation();
   const [recipes, setRecipes] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const user = useContext(UserContext);
+  const activeUser = useContext(UserContext);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -36,8 +36,8 @@ const RecipeList = (props) => {
         const { data: response } = await axios.get("/api/recipes/", {
           params: {
             mealType: time.type,
-            userDiet: user.diet,
-            userIntolerances: user.intolerances,
+            userDiet: activeUser.diet,
+            userIntolerances: activeUser.intolerances,
           },
         });
         setRecipes(response);

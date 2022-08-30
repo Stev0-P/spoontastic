@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Avatar, Box, Button, ListItemAvatar } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -35,7 +35,13 @@ const DrawerNav = () => {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
-  const userInfo = useContext(UserContext)
+  const userId = useContext(UserContext)['c1'];
+  const activeUser = useContext(UserContext)['c2'];
+  const [loggedInUser, setLoggedInUser] = useState({});
+
+  useEffect(() => {
+    setLoggedInUser(activeUser);
+  }, [userId]);
 
   const itemsList = [
     {
@@ -86,8 +92,7 @@ const DrawerNav = () => {
                     color: "black",
                   }}
                 >
-                  <img src={`${userInfo.image}`}></img>
-                  {userInfo.name}
+                  <img src={`${loggedInUser.picture}`}></img>
                 </Avatar>
                 <ListItem>
                   <Button

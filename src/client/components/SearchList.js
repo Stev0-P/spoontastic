@@ -28,7 +28,7 @@ const SearchList = (props) => {
   const location = useLocation();
   const [recipes, setRecipes] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const user = useContext(UserContext);
+  const activeUser = useContext(UserContext);
 
   useEffect(() => {
     const fetchApi = async () => {
