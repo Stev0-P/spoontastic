@@ -37,10 +37,6 @@ const DrawerNav = () => {
   const classes = useStyles();
   const userInfo = useContext(UserContext)
 
-  // useEffect({
-  //   userInfo
-  // }, [])
-
   const itemsList = [
     {
       text: "Dashboard",
@@ -55,7 +51,6 @@ const DrawerNav = () => {
       route: "/favourites",
     },
   ];
-  console.log(userInfo.name)
 
   return (
     <Box sx={{ display: "flex" }}>
