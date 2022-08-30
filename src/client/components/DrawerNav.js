@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Avatar, Box, Button, ListItemAvatar } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,6 +12,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
+import UserContext from "..//context/User";
 
 const drawerWidth = 125;
 
@@ -34,6 +35,11 @@ const DrawerNav = () => {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
+  const userInfo = useContext(UserContext)
+
+  // useEffect({
+  //   userInfo
+  // }, [])
 
   const itemsList = [
     {
@@ -49,6 +55,7 @@ const DrawerNav = () => {
       route: "/favourites",
     },
   ];
+  console.log(userInfo.name)
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -84,7 +91,8 @@ const DrawerNav = () => {
                     color: "black",
                   }}
                 >
-                  SP
+                  <img src={`${userInfo.image}`}></img>
+                  {userInfo.name}
                 </Avatar>
                 <ListItem>
                   <Button

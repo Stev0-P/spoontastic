@@ -1,23 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Box, Container } from "@mui/material";
+import UserContext from "..//context/User";
 
 export const LogIn = () => {
-  function handleCallbackResponse(response) {
-    console.log("Encoded JWT ID Token: " + response);
-    console.table(response);
+  const [auth, setAuth] = useState(false);
+  const [userId, setUserId] = useContext(UserContext); 
 
-    /* const fetchApi = async () => {
-      try {
-        const { data: response } = await axios.post("/api/");
-        setRecipe(response);
-        ratingScore(response.healthScore);
-      } catch (err) {
-        console.log(err);
-      }
-      setLoading(false);
-    };
-    fetchApi();*/
-  }
+  const handleCallbackResponse = async (response) => {
+    const res = await fetch('http://localhost:3000/api/account/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        JWT: response.credential
+      })
+    })
+    console.log("Encoded JWT ID Token: " + response.credential);
+    console.log(response.clientId);
+    const responseData = await res.json();
+    console.log(responseData.user.id);
+    setUserId(responseData.user.id);
+    setAuth(true)
+  };
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
@@ -35,6 +40,7 @@ export const LogIn = () => {
       google.accounts.id.prompt();
     };
     document.body.append(script);
+    console.log(userId)
   }, []);
 
   return (
