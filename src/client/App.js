@@ -12,6 +12,7 @@ import Preferences from "./screens/preferences";
 import DrawerNav from "./components/DrawerNav";
 import { Box } from "@mui/system";
 import UserContext from "./context/User";
+import axios from "axios";
 
 // const [userInfo, setUserInfo] = useState();
 
@@ -30,26 +31,43 @@ import UserContext from "./context/User";
 
 const App = () => {
   const [userId, setUserId] = useState("default");
-
-  const [userInfo, setUserInfo] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [picture, setPicture] = useState("");
+  const [diet, setDiet] = useState("");
+  const [intolerance, setIntolerance] = useState("");
 
   useEffect(() => {
     const fetchApi = async () => {
-      try {
-        const userResponse = await axios.get(`/api/account/getUser/${userId}`);
-        setUserInfo(userResponse);
-      } catch (err) {
-        console.log(err);
+      if (userId !== "default") {
+        try {
+          const userResponse = await axios.get(`/api/account/getUser/${userId}`);
+          setName(userResponse.data.user.name);
+          setEmail(userResponse.data.user.email);
+          setPicture(userResponse.data.user.picture);
+          setDiet(userResponse.data.user.diet);
+          setIntolerance(userResponse.data.user.intolerance);
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
     fetchApi();
-    console.log(userInfo);
-  }, []);
+  }, [userId]);
+
+  const activeUser = {
+    name: name,
+    email: email,
+    picture: picture,
+    diet: "vegan",
+    intolerance: "gluten",
+  };
+
+  console.log(activeUser);
 
   return (
     <Box sx={{ display: "flex" }}>
-      <UserContext.Provider value={[userId, setUserId]}>
-        <UserContext.Provider value={[userInfo, setUserInfo]}>
+      <UserContext.Provider value={{'c1': [userId, setUserId], 'c2': activeUser}}>
           <DrawerNav />
           <Switch>
             <Route exact={true} path="/" component={Home} />
@@ -62,7 +80,6 @@ const App = () => {
             <Route exact={true} path="/account" component={Account} />
           </Switch>
         </UserContext.Provider>
-      </UserContext.Provider>
     </Box>
   );
 };

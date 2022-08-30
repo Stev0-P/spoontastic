@@ -1,28 +1,32 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Button } from "@mui/material";
 import UserContext from "..//context/User";
+import { useHistory } from "react-router-dom";
 
 export const LogIn = () => {
-  const [auth, setAuth] = useState(false);
-  const [userId, setUserId] = useContext(UserContext); 
+  const history = useHistory();
+  const [userId, setUserId] = useContext(UserContext)["c1"];
+  const activeUser = useContext(UserContext)["c2"];
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleCallbackResponse = async (response) => {
-    const res = await fetch('http://localhost:3000/api/account/', {
-      method: 'POST',
+    const res = await fetch("http://localhost:3000/api/account/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        JWT: response.credential
-      })
-    })
+        JWT: response.credential,
+      }),
+    });
     console.log("Encoded JWT ID Token: " + response.credential);
     console.log(response.clientId);
     const responseData = await res.json();
     console.log(responseData.user.id);
     setUserId(responseData.user.id);
-    setAuth(true)
+    setIsLoggedIn(true);
   };
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
@@ -40,8 +44,12 @@ export const LogIn = () => {
       google.accounts.id.prompt();
     };
     document.body.append(script);
-    console.log(userId)
+    console.log(userId);
   }, []);
+
+  // const redirect = () => {
+  //   history.push(`/preferences`)
+  // }
 
   return (
     <Container className="signInDiv">
@@ -105,7 +113,18 @@ export const LogIn = () => {
           fontSize: "1.5em",
         }}
       >
-        Login with Google to access a world of spoontastic recipes!
+        {`${
+          isLoggedIn === true
+            ? history.push("/preferences")
+            : "Login with Google to access a world of spoontastic recipes!"
+        }`}
+        {/* 
+        <Button 
+        disabled = {`${isLoggedIn === true ? false : true}`}
+        onClick={() => history.push(`/preferences`)}
+        >
+          Continue
+        </Button> */}
       </Box>
     </Container>
   );
