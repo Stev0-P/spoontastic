@@ -5,8 +5,7 @@ import { useHistory } from "react-router-dom";
 
 export const LogIn = () => {
   const history = useHistory();
-  const [userId, setUserId] = useContext(UserContext)["c1"];
-  const activeUser = useContext(UserContext)["c2"];
+  const {userId, setUserId} = useContext(UserContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleCallbackResponse = async (response) => {
@@ -118,13 +117,6 @@ export const LogIn = () => {
             ? history.push("/preferences")
             : "Login with Google to access a world of spoontastic recipes!"
         }`}
-        {/* 
-        <Button 
-        disabled = {`${isLoggedIn === true ? false : true}`}
-        onClick={() => history.push(`/preferences`)}
-        >
-          Continue
-        </Button> */}
       </Box>
     </Container>
   );

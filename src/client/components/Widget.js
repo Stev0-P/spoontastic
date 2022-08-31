@@ -7,7 +7,7 @@ import useTime from "../hooks/useTime";
 import axios from "axios";
 
 const Widget = () => {
-  const user = useContext(UserContext);
+  const activeUser = useContext(UserContext);
   const [recipeTitle, setRecipeTitle] = React.useState("");
   const [recipeImage, setRecipeImage] = React.useState("");
   const [loading, setLoading] = React.useState(true);
@@ -21,8 +21,8 @@ const Widget = () => {
         const { data: response } = await axios.get("/api/recipes/random/", {
           params: {
             mealType: time.type,
-            userDiet: user.diet,
-            userIntolerances: user.intolerances,
+            userDiet: activeUser.diet,
+            userIntolerances: activeUser.intolerances,
           },
         });
         setRecipeTitle(response.recipes[0].title);

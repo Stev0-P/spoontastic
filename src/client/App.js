@@ -36,6 +36,7 @@ const App = () => {
   const [picture, setPicture] = useState("");
   const [diet, setDiet] = useState("");
   const [intolerance, setIntolerance] = useState("");
+  const [type, setType] = useState("");
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -47,6 +48,7 @@ const App = () => {
           setPicture(userResponse.data.user.picture);
           setDiet(userResponse.data.user.diet);
           setIntolerance(userResponse.data.user.intolerance);
+          setType(userResponse.data.user.type);
         } catch (err) {
           console.log(err);
         }
@@ -56,18 +58,21 @@ const App = () => {
   }, [userId]);
 
   const activeUser = {
-    name: name,
-    email: email,
-    picture: picture,
-    diet: "vegan",
-    intolerance: "gluten",
+    name,
+    email,
+    picture,
+    diet,
+    intolerance,
+    type,
+    userId,
+    setUserId,
   };
 
   console.log(activeUser);
 
   return (
     <Box sx={{ display: "flex" }}>
-      <UserContext.Provider value={{'c1': [userId, setUserId], 'c2': activeUser}}>
+      <UserContext.Provider value={activeUser}>
           <DrawerNav />
           <Switch>
             <Route exact={true} path="/" component={Home} />
