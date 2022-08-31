@@ -35,7 +35,7 @@ const RecipeList = (props) => {
       try {
         const { data: response } = await axios.get("/api/recipes/", {
           params: {
-            mealType: time.type,
+            mealType: activeUser.type,
             userDiet: activeUser.diet,
             userIntolerances: activeUser.intolerances,
           },
@@ -49,6 +49,7 @@ const RecipeList = (props) => {
 
     fetchApi();
     console.log(time.type);
+    console.log(activeUser);
   }, [time.type]);
 
   return (

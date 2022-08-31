@@ -175,7 +175,7 @@ const CheckBox = () => {
       <Button
         variant="contained"
         onClick={() => {
-          diet === "" || intolerance === "" ? handleClick() : (submit())((window.location.href = "/dashboard"));
+          diet === "" || intolerance === "" ? handleClick() : submit()((window.location.href = "/dashboard"));
         }}
       >
         Submit
