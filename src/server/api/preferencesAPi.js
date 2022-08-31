@@ -15,6 +15,7 @@ preferencesAPI.post("/", async (req, res, next) => {
     creator,
   });
 
+  console.log(createdPreferences);
   let user;
 
   try {

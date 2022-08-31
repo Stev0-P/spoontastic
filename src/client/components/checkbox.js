@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -8,12 +8,14 @@ import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Radio from "@mui/material/Radio";
 import { fontSize, textAlign } from "@mui/system";
-import { Container } from "@mui/material";
+import { accordionSummaryClasses, Container } from "@mui/material";
 import Button from "@mui/material/Button";
 import "./CheckBox.css";
 import useTime from "../hooks/useTime";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import axios from "axios";
+import UserContext from "..//context/User";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -23,21 +25,42 @@ const CheckBox = () => {
   const [diet, setDiet] = useState("");
   const [intolerance, setIntolerance] = useState("");
   const time = useTime();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const activeUser = useContext(UserContext);
 
   const dietChange = (event) => {
     setDiet(event.target.value);
   };
 
+  // const intoleranceChange = (event) => {
+  //   setIntolerance((prevState) => ({
+  //     ...prevState,
+  //     [event.target.value]: !prevState[event.target.value],
+  //   }));
+  // };
+
   const intoleranceChange = (event) => {
-    setIntolerance((prevState) => ({
-      ...prevState,
-      [event.target.value]: !prevState[event.target.value],
-    }));
+    if (intolerance === "") {
+      setIntolerance(event.target.value);
+    } else {
+      setIntolerance(intolerance + "," + event.target.value);
+    }
   };
 
   const submit = () => {
-    const parameters = { diet, intolerance, time };
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.post("/api/preferences/", {
+          diet: diet,
+          intolerances: intolerance,
+          type: time.type,
+          creator: activeUser.userId,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
   };
 
   const styler = {
@@ -47,10 +70,6 @@ const CheckBox = () => {
     borderRadius: "1em",
     margin: 2,
   };
-
-  console.log(diet);
-
-  console.log(intolerance);
 
   const handleClick = () => {
     setOpen(true);
@@ -156,10 +175,7 @@ const CheckBox = () => {
       <Button
         variant="contained"
         onClick={() => {
-          diet === "" || intolerance === ""
-            ? handleClick()
-            : console.log("sucsess")((window.location.href = "/dashboard"));
-          submit();
+          diet === "" || intolerance === "" ? handleClick() : (submit())((window.location.href = "/dashboard"));
         }}
       >
         Submit
@@ -168,4 +184,5 @@ const CheckBox = () => {
   );
 };
 
+//((window.location.href = "/dashboard"))
 export default CheckBox;

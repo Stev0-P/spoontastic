@@ -21,7 +21,6 @@ const Recipe = () => {
   const [loading, setLoading] = React.useState(true);
   const [score, setScore] = React.useState(0);
   const [rating, setRating] = React.useState(0);
-  const user = useContext(UserContext);
 
   useEffect(() => {
     const fetchApi = async () => {

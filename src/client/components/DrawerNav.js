@@ -35,13 +35,12 @@ const DrawerNav = () => {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
-  const userId = useContext(UserContext)['c1'];
-  const activeUser = useContext(UserContext)['c2'];
+  const activeUser = useContext(UserContext);
   const [loggedInUser, setLoggedInUser] = useState({});
 
   useEffect(() => {
     setLoggedInUser(activeUser);
-  }, [userId]);
+  }, [activeUser.userId]);
 
   const itemsList = [
     {
