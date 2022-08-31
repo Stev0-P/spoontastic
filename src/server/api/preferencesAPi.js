@@ -53,7 +53,7 @@ preferencesAPI.get("/:uid", async (req, res, next) => {
   let uPreferences;
 
   try {
-    uPreferences = await userPreferencesSchema.find({ creator: userID });
+    uPreferences = await userPreferencesSchema.findOne({ creator: userID });
   } catch (err) {
     const error = new Error("Something went wrong!");
     error.code = 500;
@@ -67,7 +67,7 @@ preferencesAPI.get("/:uid", async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ preferences: uPreferences.map((preferences) => preferences.toObject({ getters: true })) });
+  res.json(uPreferences);
 });
 
 preferencesAPI.patch("/:pid", async (req, res, next) => {

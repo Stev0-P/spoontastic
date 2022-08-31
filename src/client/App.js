@@ -43,6 +43,7 @@ const App = () => {
       if (userId !== "default") {
         try {
           const userResponse = await axios.get(`/api/account/getUser/${userId}`);
+          console.log(userResponse.data.user.name);
           setName(userResponse.data.user.name);
           setEmail(userResponse.data.user.email);
           setPicture(userResponse.data.user.picture);
@@ -55,6 +56,23 @@ const App = () => {
       }
     };
     fetchApi();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchApiTWo = async () => {
+      if (userId !== "default") {
+        try {
+          const prefResponse = await axios.get(`/api/preferences/${userId}`);
+          console.log(prefResponse.data.diet);
+          setDiet(prefResponse.data.diet);
+          setIntolerance(prefResponse.data.intolerances);
+          setType(prefResponse.data.type);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    fetchApiTWo();
   }, [userId]);
 
   const activeUser = {
@@ -73,18 +91,18 @@ const App = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <UserContext.Provider value={activeUser}>
-          <DrawerNav />
-          <Switch>
-            <Route exact={true} path="/" component={Home} />
-            <Route exact={true} path="/login" component={LogIn} />
-            <Route exact={true} path="/preferences" component={Preferences} />
-            <Route exact={true} path="/dashboard" component={Dashboard} />
-            <Route exact={true} path="/search" component={Search} />
-            <Route exact={true} path="/favourites" component={Favourites} />
-            <Route exact={true} path="/recipe/:id" component={Recipe} />
-            <Route exact={true} path="/account" component={Account} />
-          </Switch>
-        </UserContext.Provider>
+        <DrawerNav />
+        <Switch>
+          <Route exact={true} path="/" component={Home} />
+          <Route exact={true} path="/login" component={LogIn} />
+          <Route exact={true} path="/preferences" component={Preferences} />
+          <Route exact={true} path="/dashboard" component={Dashboard} />
+          <Route exact={true} path="/search" component={Search} />
+          <Route exact={true} path="/favourites" component={Favourites} />
+          <Route exact={true} path="/recipe/:id" component={Recipe} />
+          <Route exact={true} path="/account" component={Account} />
+        </Switch>
+      </UserContext.Provider>
     </Box>
   );
 };

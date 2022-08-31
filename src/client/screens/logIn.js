@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 export const LogIn = () => {
   const history = useHistory();
-  const {userId, setUserId} = useContext(UserContext);
+  const { userId, setUserId } = useContext(UserContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleCallbackResponse = async (response) => {

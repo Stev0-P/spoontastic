@@ -5,9 +5,12 @@ import express from "express";
 import { renderToString } from "react-dom/server";
 import apiRoutes from "./api";
 import mongoose from "mongoose";
+import session from "express-session";
+import MongoDBSession from "connect-mongodb-session";
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 //add MongoSession
+const MongoDBStore = MongoDBSession(session);
 const app = express();
 
 /* 
@@ -24,6 +27,18 @@ mongoose.connection
   .on("error", () => console.log("there has been an error"));
 const cast = mongoose.Schema.Types.Boolean.cast();
 mongoose.Schema.Types.Boolean.cast(() => cast(typeof value === "string" && !value ? null : value));
+
+app.use(
+  session({
+    secret: "thisismysecret101",
+    resave: true,
+    saveUninitialized: true,
+    store: new MongoDBStore({
+      uri: "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256",
+      collection: "sessions",
+    }),
+  })
+);
 
 app
   .disable("x-powered-by")
