@@ -49,6 +49,7 @@ const RecipeList = (props) => {
 
     fetchApi();
     console.log(time.type);
+    console.log(activeUser);
   }, [time.type]);
 
   const onFavourite = (item) => {

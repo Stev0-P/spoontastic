@@ -18,49 +18,45 @@ accountAPI.get("/getUser/:uid", async (req, res, next) => {
     error.code = 500;
     return next(error);
   }
-  res.json({ user: user.toObject({ getters: true })});
+  res.json({ user: user.toObject({ getters: true }) });
 });
 
 accountAPI.post("/", async (req, res, next) => {
-  const { JWT } = req.body;
-  var decoded = jwt_decode(JWT);
-  console.log(decoded);
-
-  let existingUser;
   try {
-    existingUser = await userSchema.findOne({ email: decoded.email });
+    const { JWT } = req.body;
+    var decoded = jwt_decode(JWT);
+    //console.log(decoded);
+
+    if (!decoded.email_verified) {
+      const error = new Error("Could not identify user, credentials seem to be wrong.");
+      error.code = 401;
+      return next(error);
+    }
+
+    let user = await userSchema.findOne({ email: decoded.email });
+
+    if (!user) {
+      const createdUser = new userSchema({
+        name: decoded.name,
+        email: decoded.email,
+        preferences: [],
+        favourites: [],
+        picture: decoded.picture,
+        JWT,
+      });
+
+      await createdUser.save();
+      user = createdUser;
+    }
+
+    //console.log("Logged in!");
+    req.session.isAuth = true;
+    res.status(201).json({ user });
   } catch (err) {
     const error = new Error("Signing up failed, please try again later.");
     error.code = 500;
     return next(error);
   }
-
-  if (!existingUser && decoded.email_verified === true) {
-    const createdUser = new userSchema({
-      name: decoded.name,
-      email: decoded.email,
-      preferences: [],
-      favourites: [],
-      picture: decoded.picture,
-      JWT,
-    });
-
-    try {
-      await createdUser.save();
-    } catch (err) {
-      const error = new Error("Creating user failed, please try again");
-      error.code = 500;
-      return next(error);
-    }
-
-    res.status(201).json({ user: createdUser });
-  } else if (existingUser && decoded.email_verified === true) {
-    console.log("Logged in!");
-    res.status(201).json({ user: existingUser });
-  }
-  const error = new Error("Could not identify user, credentials seem to be wrong.");
-  error.code = 401;
-  return next(error);
 });
 
 // accountAPI.post("/login", async (req, res, next) => {
