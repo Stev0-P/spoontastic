@@ -20,7 +20,7 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
     console.log(err);
     return next(error);
   }
-  if (!recipes || recipe.length === 0) {
+  if (!recipes || recipes.length === 0) {
     const error = new Error("Could not find a recipe with the provided id.");
     error.code = 404;
     return next(error);
@@ -47,12 +47,13 @@ favouritesAPI.get("/recipe/:rid", async (req, res, next) => {
 });
 
 favouritesAPI.post("/", async (req, res, next) => {
-  const { title, image, creator } = req.body;
+  const { title, image, creator, recipeID } = req.body;
 
   const addedRecipe = new favouritesListItemSchema({
     title,
     image,
     creator,
+    recipeID,
   });
 
   let user;
