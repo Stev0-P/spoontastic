@@ -35,9 +35,9 @@ const RecipeList = (props) => {
       try {
         const { data: response } = await axios.get("/api/recipes/", {
           params: {
-            mealType: activeUser.type,
-            userDiet: activeUser.diet,
-            userIntolerances: activeUser.intolerances,
+            mealType: time.type,
+            userDiet: "vegan", //temp - activeUser.diet
+            userIntolerances: "egg,shellfish", //temp - activeUser.intolerances
           },
         });
         setRecipes(response);
@@ -51,6 +51,24 @@ const RecipeList = (props) => {
     console.log(time.type);
     console.log(activeUser);
   }, [time.type]);
+
+  const onFavourite = (item) => {
+    const fetchApi = async () => {
+      try {
+        console.log(item.title)
+        const { data: response } = await axios.post("/api/favourites/", {
+          title: item.title,
+          image: item.image,
+          creator: "630f35abeb054f60b83812e9", //temp - activeUser.userId
+          recipeID: item.id,
+        });
+        console.log(response)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  }
 
   return (
     <Box
@@ -110,9 +128,9 @@ const RecipeList = (props) => {
                     </Button>{" "}
                   </Box>
                 ) : (
-                  <IconButton size="large" sx={{ marginRight: 3 }}>
+                  <IconButton size="large" sx={{ marginRight: 3 }} onClick={() => {onFavourite(item)}}>
                     {" "}
-                    <StarIcon fontSize="large" />{" "}
+                    <StarIcon fontSize="large"/>{" "}
                   </IconButton>
                 )}
               </ListItem>
