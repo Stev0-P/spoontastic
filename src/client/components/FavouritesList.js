@@ -21,7 +21,7 @@ const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
 }));
 
-const RecipeList = (props) => {
+const FavouritesList = (props) => {
   const [dense, setDense] = useState(false);
   const time = useTime();
   const history = useHistory();
@@ -29,21 +29,24 @@ const RecipeList = (props) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favourited, setFavourited] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+  const [recNo, setRecNo] = useState(false);
   const activeUser = useContext(UserContext);
+  const userId = "6310a2f0e5bf1368fe59bd35";
 
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
-        const { data: response } = await axios.get("/api/recipes/", {
-          params: {
-            mealType: "breakfast", //temp - activeUser.type
-            userDiet: "vegan", //temp - activeUser.diet
-            userIntolerances: "egg,shellfish", //temp - activeUser.intolerances
-          },
-        });
-        console.log(response)
-        setRecipes(response);
+        // When hooks update if(activeUser.favourites === null) {
+        const { data: response } = await axios.get(`/api/favourites/${userId}`);
+        console.log(response);
+        if (response.recipe.length === 0) {
+          setRecNo(false);
+        } else {
+          setRecNo(true);
+          setRecipes(response.recipe);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -51,30 +54,14 @@ const RecipeList = (props) => {
     })();
 
     return () => controller.abort();
-  }, [time.type]);
-
-  const onFavourite = (item) => {
-    const fetchApi = async () => {
-      try {
-        console.log(item.id)
-        const { data: response } = await axios.post("/api/favourites/", {
-          title: item.title,
-          image: item.image,
-          creator: "6310a2f0e5bf1368fe59bd35", //temp - activeUser.userId
-          recipeID: item.id,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
-  }
+  }, [time.type, deleted]);
 
   const onDelete = (item) => {
     const fetchApi = async () => {
       try {
         console.log(item.title);
         const { data: response } = await axios.delete(`/api/favourites/delete/${item.id}`);
+        setDeleted(true);
         console.log(response);
       } catch (err) {
         console.log(err);
@@ -96,6 +83,18 @@ const RecipeList = (props) => {
         {props.label} {`${props.label === "Recomended" ? time.text : ""}`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
+        <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
+          {recNo === false && 
+          <Box  sx={{
+            flexGrow: 1,
+            borderRadius: "1em",
+            paddingTop: 5,
+            textAlign: "center"
+          }}>
+          You currently have no favourite recipes. Add the ones you love to keep them
+          </Box>
+          }
+        </Typography>
         <List dense={dense}>
           {!loading &&
             recipes.map((item) => (
@@ -133,19 +132,17 @@ const RecipeList = (props) => {
                     paddingLeft: "2em",
                   }}
                 />
-
-                {location.pathname === "/favourites" ? (
-                  <Box sx={{ marginRight: 3, fontSize: "3em" }}>
-                    <Button color="warning" variant="outlined" onClick={() => {onDelete(item)}}>
-                      Delete
-                    </Button>{" "}
-                  </Box>
-                ) : (
-                  <IconButton size="large" sx={{ marginRight: 3 }} selected={favourited} onClick={() => {onFavourite(item)}}>
-                    {" "}
-                    <StarIcon fontSize="large"/>{" "}
-                  </IconButton>
-                )}
+                <Box sx={{ marginRight: 3, fontSize: "3em" }}>
+                  <Button
+                    color="warning"
+                    variant="outlined"
+                    onClick={() => {
+                      onDelete(item);
+                    }}
+                  >
+                    Delete
+                  </Button>{" "}
+                </Box>
               </ListItem>
             ))}
         </List>
@@ -154,4 +151,4 @@ const RecipeList = (props) => {
   );
 };
 
-export default RecipeList;
+export default FavouritesList;

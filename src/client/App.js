@@ -86,8 +86,6 @@ const App = () => {
     setUserId,
   };
 
-  console.log(activeUser);
-
   return (
     <Box sx={{ display: "flex" }}>
       <UserContext.Provider value={activeUser}>
