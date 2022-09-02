@@ -7,6 +7,8 @@ import apiRoutes from "./api";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoDBSession from "connect-mongodb-session";
+import userSchema from "./services/users/user.model";
+import { renderApp } from "./utils";
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 //add MongoSession
@@ -32,6 +34,7 @@ app.use(
   session({
     secret: "thisismysecret101",
     resave: true,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     saveUninitialized: true,
     store: new MongoDBStore({
       uri: "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256",
@@ -54,55 +57,13 @@ app
     res.status(error.code || 500);
     res.json({ message: error.message } || "An unknown error has occured!");
   })
-  .get("/*", (req, res) => {
-    const { context, html } = renderApp(req, res);
+  .get("/*", async (req, res) => {
+    const { context, html } = await renderApp(req, res);
     if (context.url) {
       res.redirect(context.url);
     } else {
       res.status(200).send(html);
     }
   });
-
-const cssLinksFromAssets = (assets, entrypoint) => {
-  return assets[entrypoint]
-    ? assets[entrypoint].css
-      ? assets[entrypoint].css.map((asset) => `<link rel="stylesheet" href="${asset}">`).join("")
-      : ""
-    : "";
-};
-
-const jsScriptTagsFromAssets = (assets, entrypoint, ...extra) => {
-  return assets[entrypoint]
-    ? assets[entrypoint].js
-      ? assets[entrypoint].js.map((asset) => `<script src="${asset}" ${extra.join(" ")}></script>`).join("")
-      : ""
-    : "";
-};
-
-export const renderApp = (req, res) => {
-  const context = {};
-  const markup = renderToString(
-    <StaticRouter context={context} location={req.url}>
-      <App />
-    </StaticRouter>
-  );
-  const html = `<!doctype html>
-  <html lang="">
-  <head>
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta charset="utf-8" />
-      <title>Welcome to Razzle</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      ${cssLinksFromAssets(assets, "client")}
-  </head>
-  <body>
-      <div id="root">${markup}</div>
-      ${jsScriptTagsFromAssets(assets, "client", "defer", "crossorigin")}
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-  </body>
-</html>`;
-  return { context, html };
-};
 
 export default app;

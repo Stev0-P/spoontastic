@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import UserContext from "..//context/User";
 
 const Account = () => {
+  const activeUser = useContext(UserContext);
 
   const handleClickLogOut = () => {
     console.info("You clicked the Chip.");
@@ -29,7 +30,7 @@ const Account = () => {
             sx={{ fontSize: "1.5em", height: "2em", boxShadow: 1, backgroundColor: "#f7a05e" }}
           />
           <Chip
-            label="Steven Pahyrya"
+            label={activeUser.name}
             variant="outlined"
             size="medium"
             sx={{ fontSize: "1.5em", height: "2em", marginLeft: 2, boxShadow: 2 }}
@@ -42,7 +43,7 @@ const Account = () => {
             sx={{ fontSize: "1.5em", height: "2em", boxShadow: 1, backgroundColor: "#f7a05e" }}
           />
           <Chip
-            label="steven.pahyrya@wearenova.co.uk"
+            label={activeUser.email}
             variant="outlined"
             size="medium"
             sx={{ fontSize: "1.5em", height: "2em", marginLeft: 2, boxShadow: 2 }}
@@ -69,7 +70,7 @@ const Account = () => {
             sx={{ fontSize: "1.5em", height: "2em", boxShadow: 1, backgroundColor: "#f7a05e" }}
           />
           <Chip
-            label="Primal"
+            label={activeUser.diet}
             variant="outlined"
             size="medium"
             sx={{ fontSize: "1.5em", height: "2em", marginLeft: 2, boxShadow: 2 }}
@@ -83,23 +84,12 @@ const Account = () => {
           />
           <Box>
             <Chip
-              label="Nuts"
+              label={activeUser.intolerance}
               variant="outlined"
               size="medium"
               sx={{ fontSize: "1.5em", height: "2em", marginLeft: 2, boxShadow: 2 }}
             />
-            <Chip
-              label="Shellfish"
-              variant="outlined"
-              size="medium"
-              sx={{ fontSize: "1.5em", height: "2em", marginLeft: 2, boxShadow: 2 }}
-            />
-            <Chip
-              label="Dairy"
-              variant="outlined"
-              size="medium"
-              sx={{ fontSize: "1.5em", height: "2em", marginLeft: 2, boxShadow: 2 }}
-            />
+
             <Chip
               label="Change Preferences"
               variant="outlined"
