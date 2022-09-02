@@ -37,6 +37,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "safe-stable-stringify": "^2.3.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

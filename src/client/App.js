@@ -14,66 +14,14 @@ import { Box } from "@mui/system";
 import UserContext from "./context/User";
 import axios from "axios";
 
-// const [userInfo, setUserInfo] = useState();
-
-// useEffect(() => {
-//   const fetchApi = async () => {
-//     try {
-//       const userResponse = await axios.get(`/api/account/getUser/${userId}`);
-//       setUserInfo(userResponse);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-//   fetchApi();
-//   console.log(userInfo);
-// }, []);
-
-const App = () => {
-  const [userId, setUserId] = useState("default");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [picture, setPicture] = useState("");
-  const [diet, setDiet] = useState("");
-  const [intolerance, setIntolerance] = useState("");
-  const [type, setType] = useState("");
-
-  useEffect(() => {
-    const fetchApi = async () => {
-      if (userId !== "default") {
-        try {
-          const userResponse = await axios.get(`/api/account/getUser/${userId}`);
-          console.log(userResponse.data.user.name);
-          setName(userResponse.data.user.name);
-          setEmail(userResponse.data.user.email);
-          setPicture(userResponse.data.user.picture);
-          setDiet(userResponse.data.user.diet);
-          setIntolerance(userResponse.data.user.intolerance);
-          setType(userResponse.data.user.type);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    };
-    fetchApi();
-  }, [userId]);
-
-  useEffect(() => {
-    const fetchApiTWo = async () => {
-      if (userId !== "default") {
-        try {
-          const prefResponse = await axios.get(`/api/preferences/${userId}`);
-          console.log(prefResponse.data.diet);
-          setDiet(prefResponse.data.diet);
-          setIntolerance(prefResponse.data.intolerances);
-          setType(prefResponse.data.type);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    };
-    fetchApiTWo();
-  }, [userId]);
+const App = ({ user }) => {
+  const [userId, setUserId] = useState(user?.userID ?? "");
+  const [name, setName] = useState(user?.name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
+  const [picture, setPicture] = useState(user?.picture ?? "");
+  const [diet, setDiet] = useState(user?.diet ?? "");
+  const [intolerance, setIntolerance] = useState(user?.intolerances ?? "");
+  const [type, setType] = useState(user?.type ?? "");
 
   const activeUser = {
     name,

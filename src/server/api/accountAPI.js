@@ -18,6 +18,10 @@ accountAPI.get("/getUser/:uid", async (req, res, next) => {
     error.code = 500;
     return next(error);
   }
+  const objectId = req.session.user;
+  const myObjectIdString = objectId.toString();
+  console.log("ObjectUserID: " + myObjectIdString);
+  console.log("UserID ffrom client:" + userID);
   res.json({ user: user.toObject({ getters: true }) });
 });
 
@@ -51,6 +55,7 @@ accountAPI.post("/", async (req, res, next) => {
 
     //console.log("Logged in!");
     req.session.isAuth = true;
+    req.session.user = user._id;
     res.status(201).json({ user });
   } catch (err) {
     const error = new Error("Signing up failed, please try again later.");
