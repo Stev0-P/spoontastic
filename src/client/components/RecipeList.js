@@ -29,7 +29,9 @@ const RecipeList = (props) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favourited, setFavourited] = useState(false);
+  const [favourites, setFavourites] = useState([]);
   const activeUser = useContext(UserContext);
+  const userId = "6311ec11144a00d89b6cf1c4";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -42,7 +44,7 @@ const RecipeList = (props) => {
             userIntolerances: "egg,shellfish", //temp - activeUser.intolerances
           },
         });
-        console.log(response)
+        console.log(response);
         setRecipes(response);
       } catch (err) {
         console.log(err);
@@ -54,21 +56,51 @@ const RecipeList = (props) => {
   }, [time.type]);
 
   const onFavourite = (item) => {
+    const fetchFavourites = async () => {
+        try {
+          // When hooks update if(activeUser.favourites === null) {
+          const { data: userFavourites } = await axios.get(`/api/favourites/${userId}`);
+          console.log(userFavourites);
+          console.log(userFavourites.recipe)
+          setFavourites(userFavourites.recipe);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
     const fetchApi = async () => {
+      // matching = await recipes.findById(item.id);
       try {
-        console.log(item.id)
+        console.log(item.id);
         const { data: response } = await axios.post("/api/favourites/", {
           title: item.title,
           image: item.image,
-          creator: "6310a2f0e5bf1368fe59bd35", //temp - activeUser.userId
+          creator: "6311ec11144a00d89b6cf1c4", //temp - activeUser.userId
           recipeID: item.id,
         });
+        console.log(response);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchApi();
-  }
+
+    fetchFavourites();
+
+    // for(var i; i<=favourites.length; i++) {
+    //   if (favourites[i].recipeID === item.recipeID) {
+    //     console.log("no")
+    //     setFavourited(false);
+    //   } else {
+    //     console.log("no")
+    //     setFavourited(true);
+    //   }
+    // }
+    // if(favourited === false) {
+      fetchApi();
+    // }
+    console.log(item.id)
+    console.log(favourites)
+  };
 
   const onDelete = (item) => {
     const fetchApi = async () => {
@@ -93,7 +125,7 @@ const RecipeList = (props) => {
       }}
     >
       <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
-        {props.label} {`${props.label === "Recomended" ? time.text : ""}`}
+        {props.label} {`${props.label === "Recomended" ? time.text : ""}`} {console.log(favourites)}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>
@@ -136,14 +168,27 @@ const RecipeList = (props) => {
 
                 {location.pathname === "/favourites" ? (
                   <Box sx={{ marginRight: 3, fontSize: "3em" }}>
-                    <Button color="warning" variant="outlined" onClick={() => {onDelete(item)}}>
+                    <Button
+                      color="warning"
+                      variant="outlined"
+                      onClick={() => {
+                        onDelete(item);
+                      }}
+                    >
                       Delete
                     </Button>{" "}
                   </Box>
                 ) : (
-                  <IconButton size="large" sx={{ marginRight: 3 }} selected={favourited} onClick={() => {onFavourite(item)}}>
+                  <IconButton
+                    size="large"
+                    sx={{ marginRight: 3 }}
+                    selected={favourited}
+                    onClick={() => {
+                      onFavourite(item);
+                    }}
+                  >
                     {" "}
-                    <StarIcon fontSize="large"/>{" "}
+                    <StarIcon fontSize="large" />{" "}
                   </IconButton>
                 )}
               </ListItem>

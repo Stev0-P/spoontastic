@@ -32,7 +32,7 @@ const FavouritesList = (props) => {
   const [deleted, setDeleted] = useState(false);
   const [recNo, setRecNo] = useState(false);
   const activeUser = useContext(UserContext);
-  const userId = "6310a2f0e5bf1368fe59bd35";
+  const userId = "6311ec11144a00d89b6cf1c4";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -119,7 +119,7 @@ const FavouritesList = (props) => {
                 ></img>
 
                 <ListItemText
-                  onClick={() => history.push(`/recipe/${item.id}`)}
+                  onClick={() => history.push(`/recipe/${item.recipeID}`)} 
                   primary={item.title}
                   sx={{
                     margin: 4,
