@@ -27,6 +27,7 @@ const Recipe = () => {
       try {
         const { data: response } = await axios.get(`/api/recipes/item/${recipeID}`);
         setRecipe(response);
+        console.log(response)
         ratingScore(response.healthScore);
       } catch (err) {
         console.log(err);

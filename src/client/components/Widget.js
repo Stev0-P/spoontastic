@@ -8,26 +8,22 @@ import axios from "axios";
 
 const Widget = () => {
   const activeUser = useContext(UserContext);
-  const [recipeTitle, setRecipeTitle] = React.useState("");
-  const [recipeImage, setRecipeImage] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const time = useTime();
 
-  const [response, setResponse] = React.useState({});
+  const [recipe, setRecipe] = React.useState({});
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const { data: response } = await axios.get("/api/recipes/random/", {
+        const { data: recipe } = await axios.get("/api/recipes/random/", {
           params: {
             mealType: time.type,
             userDiet: activeUser.diet,
             userIntolerances: activeUser.intolerances,
           },
         });
-        setRecipeTitle(response.recipes[0].title);
-        setRecipeImage(response.recipes[0].image);
-        setResponse(response);
+        setRecipe(recipe.recipes[0]);
       } catch (err) {
         console.log(err);
       }
@@ -36,7 +32,7 @@ const Widget = () => {
 
     fetchApi();
   }, [time.type]);
-  console.log(response);
+  console.log(recipe);
   const NumberOfRecipes = () => {
     return (
       <Box
@@ -103,7 +99,7 @@ const Widget = () => {
           marginTop: 3,
           boxShadow: 3,
         }}
-        onClick={() => history.push("/recipe/:id")}
+        onClick={() => history.push(`/recipe/${recipe.id}`)} //history.push("/recipe/:id")
       >
         <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
           Random Recipe
@@ -121,7 +117,7 @@ const Widget = () => {
               width: "200px",
               borderRadius: "2em 2em 0em 0em",
             }}
-            src={recipeImage}
+            src={recipe.image}
           />
           <Typography
             sx={{
@@ -138,7 +134,7 @@ const Widget = () => {
             variant="h7"
             component="div"
           >
-            {recipeTitle}
+            {recipe.title}
           </Typography>
         </Box>
       </Box>
