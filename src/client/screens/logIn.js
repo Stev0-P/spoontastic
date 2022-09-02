@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Box, Container, Button } from "@mui/material";
 import UserContext from "..//context/User";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export const LogIn = () => {
   const history = useHistory();
@@ -9,20 +10,14 @@ export const LogIn = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleCallbackResponse = async (response) => {
-    const res = await fetch("http://localhost:3000/api/account/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        JWT: response.credential,
-      }),
+    const { data: res } = await axios.post("/api/account/", {
+      JWT: response.credential,
     });
     console.log("Encoded JWT ID Token: " + response.credential);
     console.log(response.clientId);
-    const responseData = await res.json();
-    console.log(responseData.user.id);
-    setUserId(responseData.user.id);
+    console.log(res.user);
+    console.log(res.user.id);
+    setUserId(res.user.id);
     setIsLoggedIn(true);
   };
 
