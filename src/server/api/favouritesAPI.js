@@ -26,6 +26,7 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
     return next(error);
   }
   res.json({ recipe: recipes.map((recipe) => recipe.toObject({ getters: true })) });
+  console.log(res)
 });
 
 favouritesAPI.get("/recipe/:rid", async (req, res, next) => {
