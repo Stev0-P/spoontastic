@@ -39,7 +39,7 @@ const FavouritesList = (props) => {
     (async () => {
       try {
         // When hooks update if(activeUser.favourites === null) {
-        const { data: response } = await axios.get(`/api/favourites/${userId}`);
+        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
         console.log(response);
         if (response.recipe.length === 0) {
           setRecNo(false);
@@ -84,16 +84,18 @@ const FavouritesList = (props) => {
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
-          {recNo === false && 
-          <Box  sx={{
-            flexGrow: 1,
-            borderRadius: "1em",
-            paddingTop: 5,
-            textAlign: "center"
-          }}>
-          You currently have no favourite recipes. Add the ones you love to keep them
-          </Box>
-          }
+          {recNo === false && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                borderRadius: "1em",
+                paddingTop: 5,
+                textAlign: "center",
+              }}
+            >
+              You currently have no favourite recipes. Add the ones you love to keep them
+            </Box>
+          )}
         </Typography>
         <List dense={dense}>
           {!loading &&
@@ -119,7 +121,7 @@ const FavouritesList = (props) => {
                 ></img>
 
                 <ListItemText
-                  onClick={() => history.push(`/recipe/${item.recipeID}`)} 
+                  onClick={() => history.push(`/recipe/${item.recipeID}`)}
                   primary={item.title}
                   sx={{
                     margin: 4,

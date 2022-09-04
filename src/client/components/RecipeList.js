@@ -31,7 +31,7 @@ const RecipeList = (props) => {
   const [favourited, setFavourited] = useState(false);
   const [favourites, setFavourites] = useState([]);
   const activeUser = useContext(UserContext);
-  const userId = "6311ec11144a00d89b6cf1c4";
+  // const userId = "6311ec11144a00d89b6cf1c4";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -39,9 +39,9 @@ const RecipeList = (props) => {
       try {
         const { data: response } = await axios.get("/api/recipes/", {
           params: {
-            mealType: "breakfast", //temp - activeUser.type
-            userDiet: "vegan", //temp - activeUser.diet
-            userIntolerances: "egg,shellfish", //temp - activeUser.intolerances
+            mealType: activeUser.type,
+            userDiet: activeUser.diet,
+            userIntolerances: activeUser.intolerances,
           },
         });
         console.log(response);
@@ -57,16 +57,16 @@ const RecipeList = (props) => {
 
   const onFavourite = (item) => {
     const fetchFavourites = async () => {
-        try {
-          // When hooks update if(activeUser.favourites === null) {
-          const { data: userFavourites } = await axios.get(`/api/favourites/${userId}`);
-          console.log(userFavourites);
-          console.log(userFavourites.recipe)
-          setFavourites(userFavourites.recipe);
-        } catch (err) {
-          console.log(err);
-        }
+      try {
+        // When hooks update if(activeUser.favourites === null) {
+        const { data: userFavourites } = await axios.get(`/api/favourites/${userId}`);
+        console.log(userFavourites);
+        console.log(userFavourites.recipe);
+        setFavourites(userFavourites.recipe);
+      } catch (err) {
+        console.log(err);
       }
+    };
 
     const fetchApi = async () => {
       // matching = await recipes.findById(item.id);
@@ -75,7 +75,7 @@ const RecipeList = (props) => {
         const { data: response } = await axios.post("/api/favourites/", {
           title: item.title,
           image: item.image,
-          creator: "6311ec11144a00d89b6cf1c4", //temp - activeUser.userId
+          creator: activeUser.userId,
           recipeID: item.id,
         });
         console.log(response);
@@ -84,7 +84,7 @@ const RecipeList = (props) => {
       }
     };
 
-    fetchFavourites();
+    //fetchFavourites();
 
     // for(var i; i<=favourites.length; i++) {
     //   if (favourites[i].recipeID === item.recipeID) {
@@ -96,10 +96,10 @@ const RecipeList = (props) => {
     //   }
     // }
     // if(favourited === false) {
-      fetchApi();
+    fetchApi();
     // }
-    console.log(item.id)
-    console.log(favourites)
+    console.log(item.id);
+    console.log(favourites);
   };
 
   const onDelete = (item) => {
