@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -16,6 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
 import UserContext from "..//context/User";
+import { useHistory } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -24,9 +25,16 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const CheckBox = () => {
   const [diet, setDiet] = useState("");
   const [intolerance, setIntolerance] = useState("");
+  const history = useHistory();
   const time = useTime();
   const [open, setOpen] = useState(false);
   const activeUser = useContext(UserContext);
+
+  useEffect(() => {
+    if (activeUser.diet !== "" || activeUser.intolerance !== "") {
+      history.push("/dashboard");
+    }
+  }, []);
 
   const dietChange = (event) => {
     setDiet(event.target.value);

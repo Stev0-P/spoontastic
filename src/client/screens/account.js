@@ -5,6 +5,7 @@ import Divider from "@mui/material/Divider";
 import { Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import UserContext from "..//context/User";
+import axios from "axios";
 
 const Account = () => {
   const activeUser = useContext(UserContext);
@@ -16,6 +17,26 @@ const Account = () => {
     console.info("You clicked the Chip.");
   };
   const history = useHistory();
+
+  const userLogout = () => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.delete("/api/account/logout");
+        navLogin(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
+  const navLogin = (response) => {
+    if (response === true) {
+      history.push("/login");
+      console.log("navigate to login");
+    } else {
+      console.log("unable to logout");
+    }
+  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", marginLeft: 2, flexGrow: 1 }}>
       <Typography variant="h1" component="div">
@@ -53,7 +74,7 @@ const Account = () => {
               label="Log Out"
               variant="outlined"
               color="error"
-              onClick={handleClickLogOut}
+              onClick={userLogout}
               sx={{ fontSize: "1.5em", fontWeight: "bold", height: "2em", borderWidth: "1.75px", marginLeft: 4 }}
             />
           </Box>

@@ -39,12 +39,13 @@ const RecipeList = (props) => {
       try {
         const { data: response } = await axios.get("/api/recipes/", {
           params: {
-            mealType: activeUser.type,
+            mealType: time.type,
             userDiet: activeUser.diet,
-            userIntolerances: activeUser.intolerances,
+            userIntolerances: activeUser.intolerance,
           },
         });
         console.log(response);
+
         setRecipes(response);
       } catch (err) {
         console.log(err);
