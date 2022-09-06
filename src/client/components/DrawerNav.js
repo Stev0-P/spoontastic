@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
 import UserContext from "..//context/User";
+import axios from "axios";
 
 const drawerWidth = 125;
 
@@ -37,6 +38,7 @@ const DrawerNav = () => {
   const classes = useStyles();
   const activeUser = useContext(UserContext);
   const [loggedInUser, setLoggedInUser] = useState({});
+  const [logout, setLogout] = useState(false);
 
   useEffect(() => {
     setLoggedInUser(activeUser);
@@ -57,6 +59,25 @@ const DrawerNav = () => {
     },
   ];
 
+  const userLogout = () => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.delete("/api/account/logout");
+        navLogin(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
+  const navLogin = (response) => {
+    if (response === true) {
+      history.push("/login");
+      console.log("navigate to login");
+    } else {
+      console.log("unable to logout");
+    }
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
@@ -98,11 +119,7 @@ const DrawerNav = () => {
                     variant="outlined"
                     color="neutral"
                     onClick={() => history.push("/account")}
-                    sx={
-                      location.pathname === "/account"
-                        ? { backgroundColor: "#81c784" }
-                        : null
-                    }
+                    sx={location.pathname === "/account" ? { backgroundColor: "#81c784" } : null}
                   >
                     Account
                   </Button>
@@ -115,9 +132,7 @@ const DrawerNav = () => {
                 <ListItem key={index} disablePadding>
                   <ListItemButton
                     onClick={() => history.push(item.route)}
-                    className={
-                      location.pathname === item.route ? classes.active : null
-                    }
+                    className={location.pathname === item.route ? classes.active : null}
                   >
                     <ListItemText primary={item.text} />
                   </ListItemButton>
@@ -126,7 +141,7 @@ const DrawerNav = () => {
             </List>
           </Box>
 
-          <Button variant="outlined" color="error" sx={{ margin: 1 }}>
+          <Button variant="outlined" color="error" sx={{ margin: 1 }} onClick={userLogout}>
             Log Out
           </Button>
         </Box>

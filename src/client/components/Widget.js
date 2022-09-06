@@ -20,9 +20,10 @@ const Widget = () => {
           params: {
             mealType: time.type,
             userDiet: activeUser.diet,
-            userIntolerances: activeUser.intolerances,
+            userIntolerances: activeUser.intolerance,
           },
         });
+
         setRecipe(recipe.recipes[0]);
       } catch (err) {
         console.log(err);
@@ -32,7 +33,7 @@ const Widget = () => {
 
     fetchApi();
   }, [time.type]);
-  console.log(recipe);
+
   const NumberOfRecipes = () => {
     return (
       <Box

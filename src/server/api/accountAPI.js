@@ -3,6 +3,7 @@ import { Router } from "express";
 import userSchema from "../services/users/user.model";
 import jwt_decode from "jwt-decode";
 import { UserRefreshClient } from "googleapis-common";
+import { CoPresent } from "@mui/icons-material";
 
 const accountAPI = Router();
 
@@ -61,6 +62,23 @@ accountAPI.post("/", async (req, res, next) => {
     const error = new Error("Signing up failed, please try again later.");
     error.code = 500;
     return next(error);
+  }
+});
+
+accountAPI.delete("/logout", (req, res) => {
+  if (req.session.user) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(400).send(false);
+        console.log("cant log out");
+      } else {
+        res.send(true);
+        console.log("logged out");
+      }
+    });
+  } else {
+    res.end();
+    console.log("end");
   }
 });
 
