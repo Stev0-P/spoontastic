@@ -70,14 +70,15 @@ preferencesAPI.get("/:uid", async (req, res, next) => {
   res.json(uPreferences);
 });
 
-preferencesAPI.patch("/:pid", async (req, res, next) => {
-  const { diet, intolerances, type } = req.body;
-  const preferencesId = req.params.pid;
+preferencesAPI.patch("/change/", async (req, res, next) => {
+  const { diet, intolerance } = req.body;
+  const objectId = req.session.user ?? "";
+  const myObjectUserId = objectId.toString();
 
   let preferences;
 
   try {
-    preferences = await userPreferencesSchema.findById(preferencesId);
+    preferences = await userPreferencesSchema.findOne({ creator: myObjectUserId });
   } catch (err) {
     const error = new Error("Something went wrong, could not update preference");
     error.code = 500;
@@ -85,8 +86,7 @@ preferencesAPI.patch("/:pid", async (req, res, next) => {
   }
 
   if (diet) preferences.diet = diet;
-  if (intolerances) preferences.intolerances = intolerances;
-  if (type) preferences.type = type;
+  if (intolerance) preferences.intolerances = intolerance;
 
   try {
     await preferences.save();
