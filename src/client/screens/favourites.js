@@ -13,7 +13,6 @@ const Favourites = () => {
       <div style={{ marginLeft: "1em" }}>
         <h2>Your Favourite Recipes</h2>
       </div>
-      <SearchBar onFormSubmit={search} />
       <FavouritesList label="Favourites" />
     </Box>
   );

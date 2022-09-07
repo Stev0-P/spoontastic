@@ -50,7 +50,7 @@ const Widget = () => {
         }}
       >
         <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
-          No. Of Recipes
+          Current User:
         </Typography>
         <Box
           sx={{
@@ -68,14 +68,13 @@ const Widget = () => {
             sx={{
               textAlign: "center",
               justifyContent: "center",
-              paddingTop: "11px",
+              allignText: "wrap",
+              allignItems: "center",
+              paddingTop: "70px",
             }}
-            variant="h1"
+            variant="h5"
           >
-            {5}
-          </Typography>
-          <Typography sx={{ textAlign: "center", justifyContent: "center" }} variant="h6">
-            Current Recipes
+            {activeUser.name}
           </Typography>
         </Box>
       </Box>

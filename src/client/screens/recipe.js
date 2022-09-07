@@ -3,10 +3,13 @@ import { Box } from "@mui/system";
 import { Typography, List, ListItem, ListItemText, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
+import StarIcon from "@mui/icons-material/Star";
+import IconButton from "@mui/material/IconButton";
 import { useHistory, useLocation } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../context/User";
+import { orange } from '@mui/material/colors';
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
@@ -17,17 +20,19 @@ const Recipe = () => {
   const location = useLocation();
   const recipeID = location.pathname.split("/").pop();
   //console.log(recipeID);
-  const [recipe, setRecipe] = React.useState({});
-  const [loading, setLoading] = React.useState(true);
-  const [score, setScore] = React.useState(0);
-  const [rating, setRating] = React.useState(0);
+  const [recipe, setRecipe] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [score, setScore] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [favourited, setFavourited] = useState(false);
+  const activeUser = useContext(UserContext);
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.get(`/api/recipes/item/${recipeID}`);
         setRecipe(response);
-        console.log(response)
+        console.log(response);
         ratingScore(response.healthScore);
       } catch (err) {
         console.log(err);
@@ -37,6 +42,25 @@ const Recipe = () => {
     fetchApi();
     ratingScore();
   }, []);
+
+  const onFavourite = (item) => {
+    const fetchApi = async () => {
+      try {
+        console.log(item.id);
+        const { data: response } = await axios.post("/api/favourites/", {
+          title: item.title,
+          image: item.image,
+          creator: activeUser.userId,
+          recipeID: item.id,
+        });
+        console.log(response);
+        setFavourited(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
 
   const ratingScore = (sc) => {
     if (sc >= 0 && sc <= 20) {
@@ -61,6 +85,24 @@ const Recipe = () => {
         <Box>
           <Rating name="read-only" size="large" value={rating} readOnly />
         </Box>
+        {favourited === false ? (
+          <Box>
+            <IconButton
+              size="large"
+              sx={{ marginRight: 3 }}
+              selected={favourited}
+              onClick={() => {
+                onFavourite(recipe);
+              }}
+            >
+              {" "}
+              <StarIcon fontSize="large" />{" "}
+            </IconButton>
+          </Box>
+        ) : (
+          <Typography variant="h6" color="orange">Favourited</Typography>
+        )}
+
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <img
             style={{
