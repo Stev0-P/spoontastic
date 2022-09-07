@@ -20,11 +20,6 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
     console.log(err);
     return next(error);
   }
-  if (!recipes || recipes.length === 0) {
-    const error = new Error("Could not find a recipe with the provided id.");
-    error.code = 404;
-    return next(error);
-  }
   res.json({ recipe: recipes.map((recipe) => recipe.toObject({ getters: true })) });
   //console.log(res)
 });

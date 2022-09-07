@@ -13,7 +13,7 @@ import ListItemButton from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useHistory, useLocation } from "react-router-dom";
 import useTime from "../hooks/useTime";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../context/User";
 
@@ -22,12 +22,13 @@ const Demo = styled("div")(({ theme }) => ({
 }));
 
 const SearchList = (props) => {
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = useState(false);
   const time = useTime();
   const history = useHistory();
   const location = useLocation();
-  const [recipes, setRecipes] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [favourited, setFavourited] = useState(false);
   const activeUser = useContext(UserContext);
 
   useEffect(() => {
@@ -48,6 +49,25 @@ const SearchList = (props) => {
     fetchApi();
     console.log(time.type);
   }, [time.type, props.query]);
+  
+  const onFavourite = (item) => {
+    const fetchApi = async () => {
+      try {
+        console.log(item.id);
+        const { data: response } = await axios.post("/api/favourites/", {
+          title: item.title,
+          image: item.image,
+          creator: activeUser.userId,
+          recipeID: item.id,
+        });
+        console.log(response);
+        setFavourited(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
 
   return (
     <Box
@@ -99,19 +119,17 @@ const SearchList = (props) => {
                     paddingLeft: "2em",
                   }}
                 />
-
-                {location.pathname === "/favourites" ? (
-                  <Box sx={{ marginRight: 3, fontSize: "3em" }}>
-                    <Button color="warning" variant="outlined">
-                      Delete
-                    </Button>{" "}
-                  </Box>
-                ) : (
-                  <IconButton size="large" sx={{ marginRight: 3 }}>
-                    {" "}
-                    <StarIcon fontSize="large" />{" "}
-                  </IconButton>
-                )}
+                <IconButton
+                  size="large"
+                  sx={{ marginRight: 3 }}
+                  selected={favourited}
+                  onClick={() => {
+                    onFavourite(item);
+                  }}
+                >
+                  {" "}
+                  <StarIcon fontSize="large" />{" "}
+                </IconButton>
               </ListItem>
             ))}
         </List>

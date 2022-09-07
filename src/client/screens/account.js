@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Container } from "@mui/system";
 import { Chip, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
@@ -16,6 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Switch from "@mui/material/Switch";
 
 const Account = () => {
@@ -23,10 +24,28 @@ const Account = () => {
 
   //--------------------------------
   const [open, setOpen] = React.useState(false);
-
   const [diet, setDiet] = useState("");
-
   const [intolerance, setIntolerance] = useState("");
+  const [intolToString, setIntolToString] = useState([]);
+
+  const intoleranceList = [
+    "Dairy",
+    "Egg",
+    "Gluten",
+    "Grain",
+    "Peanut",
+    "Seafood",
+    "Sesame",
+    "Shellfish",
+    "Soy",
+    "Sulfite",
+    "Tree Nut",
+    "Wheat",
+  ];
+
+  useEffect(() => {
+    setIntolerance(intolToString.join(","));
+  }, [intolToString]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,19 +63,24 @@ const Account = () => {
   };
 
   const handleIntoleranceChange = (event) => {
-    setIntolerance(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value
+    console.log(event);
+    const {
+      target: { value },
+    } = event;
+    setIntolToString(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
   const handleSubmit = async () => {
-    // matching = await recipes.findById(item.id);
+    console.log(intolerance);
 
     const { data: response } = await axios.patch("/api/preferences/change", {
       diet: diet === "" ? activeUser.diet : diet,
       intolerance: intolerance === "" ? activeUser.intolerance : intolerance,
     });
+    console.log(response);
     handleClose();
     window.location.reload();
   };
@@ -199,6 +223,7 @@ const Account = () => {
                         <MenuItem value="vegeterian">Vegeterian</MenuItem>
                         <MenuItem value="lacto-vegeterian">Lacto-Vegeterian</MenuItem>
                         <MenuItem value="ovo-vegeterian">Ovo-Vegeterian</MenuItem>
+                        <MenuItem value="vegan">Vegan</MenuItem>
                         <MenuItem value="pesceterian">Pesceterian</MenuItem>
                         <MenuItem value="paleo">Paleo</MenuItem>
                         <MenuItem value="primal">Primal</MenuItem>
@@ -210,15 +235,22 @@ const Account = () => {
                       <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
                       <Select
                         autoFocus
-                        value={intolerance}
+                        value={intolToString}
+                        multiple
                         onChange={handleIntoleranceChange}
                         label="Your Intolerance"
                         inputProps={{
                           name: "your-intolerance",
                           id: "your-intolerance",
                         }}
+                        input={<OutlinedInput label="Name" />}
                       >
-                        <MenuItem value="egg">Egg</MenuItem>
+                        {intoleranceList.map((intolerance) => (
+                          <MenuItem key={intolerance} value={intolerance}>
+                            {intolerance}
+                          </MenuItem>
+                        ))}
+                        {/* <MenuItem value="egg">Egg</MenuItem>
                         <MenuItem value="gluten">Gluten</MenuItem>
                         <MenuItem value="grain">Grain</MenuItem>
                         <MenuItem value="peanut">Peanut</MenuItem>
@@ -228,7 +260,7 @@ const Account = () => {
                         <MenuItem value="soy">Soy</MenuItem>
                         <MenuItem value="sulfite">Sulfite</MenuItem>
                         <MenuItem value="tree-nut">Tree-Nut</MenuItem>
-                        <MenuItem value="">Wheat</MenuItem>
+                        <MenuItem value="">Wheat</MenuItem> */}
                       </Select>
                     </FormControl>
                   </Box>

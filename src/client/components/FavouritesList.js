@@ -29,7 +29,7 @@ const FavouritesList = (props) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favourited, setFavourited] = useState(false);
-  const [deleted, setDeleted] = useState(false);
+  const [deleted, setDeleted] = useState(0);
   const [recNo, setRecNo] = useState(false);
   const activeUser = useContext(UserContext);
   const userId = "6311ec11144a00d89b6cf1c4";
@@ -38,15 +38,16 @@ const FavouritesList = (props) => {
     const controller = new AbortController();
     (async () => {
       try {
-        // When hooks update if(activeUser.favourites === null) {
-        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
-        console.log(response);
-        if (response.recipe.length === 0) {
-          setRecNo(false);
-        } else {
-          setRecNo(true);
-          setRecipes(response.recipe);
-        }
+          // When hooks update if(activeUser.favourites === null) {
+          const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+          console.log(response);
+          if (response.recipe.length === 0) {
+            setRecNo(false);
+            setRecipes([])
+          } else {
+            setRecNo(true);
+            setRecipes(response.recipe);
+          }
       } catch (err) {
         console.log(err);
       }
@@ -61,7 +62,7 @@ const FavouritesList = (props) => {
       try {
         console.log(item.title);
         const { data: response } = await axios.delete(`/api/favourites/delete/${item.id}`);
-        setDeleted(true);
+        setDeleted((prevState) => prevState + 1);
         console.log(response);
       } catch (err) {
         console.log(err);

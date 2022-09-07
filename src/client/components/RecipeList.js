@@ -16,6 +16,7 @@ import useTime from "../hooks/useTime";
 import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../context/User";
+import { yellow } from '@mui/material/colors';
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
@@ -31,6 +32,7 @@ const RecipeList = (props) => {
   const [favourited, setFavourited] = useState(false);
   const [favourites, setFavourites] = useState([]);
   const activeUser = useContext(UserContext);
+  
   // const userId = "6311ec11144a00d89b6cf1c4";
 
   useEffect(() => {
@@ -57,20 +59,7 @@ const RecipeList = (props) => {
   }, [time.type]);
 
   const onFavourite = (item) => {
-    const fetchFavourites = async () => {
-      try {
-        // When hooks update if(activeUser.favourites === null) {
-        const { data: userFavourites } = await axios.get(`/api/favourites/${userId}`);
-        console.log(userFavourites);
-        console.log(userFavourites.recipe);
-        setFavourites(userFavourites.recipe);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     const fetchApi = async () => {
-      // matching = await recipes.findById(item.id);
       try {
         console.log(item.id);
         const { data: response } = await axios.post("/api/favourites/", {
@@ -81,36 +70,6 @@ const RecipeList = (props) => {
         });
         console.log(response);
         setFavourited(true);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    //fetchFavourites();
-
-    // for(var i; i<=favourites.length; i++) {
-    //   if (favourites[i].recipeID === item.recipeID) {
-    //     console.log("no")
-    //     setFavourited(false);
-    //   } else {
-    //     console.log("no")
-    //     setFavourited(true);
-    //   }
-    // }
-    // if(favourited === false) {
-    fetchApi();
-
-    // }
-    console.log(item.id);
-    console.log(favourites);
-  };
-
-  const onDelete = (item) => {
-    const fetchApi = async () => {
-      try {
-        console.log(item.title);
-        const { data: response } = await axios.delete(`/api/favourites/delete/${item.id}`);
-        console.log(response);
       } catch (err) {
         console.log(err);
       }
@@ -128,7 +87,7 @@ const RecipeList = (props) => {
       }}
     >
       <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
-        {props.label} {`${props.label === "Recomended" ? time.text : ""}`} {console.log(favourites)}
+        {props.label} {`${props.label === "Recomended" ? time.text : ""}`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>
@@ -168,32 +127,17 @@ const RecipeList = (props) => {
                     paddingLeft: "2em",
                   }}
                 />
-
-                {location.pathname === "/favourites" ? (
-                  <Box sx={{ marginRight: 3, fontSize: "3em" }}>
-                    <Button
-                      color="warning"
-                      variant="outlined"
-                      onClick={() => {
-                        onDelete(item);
-                      }}
-                    >
-                      Delete
-                    </Button>{" "}
-                  </Box>
-                ) : (
-                  <IconButton
-                    size="large"
-                    sx={{ marginRight: 3 }}
-                    selected={favourited}
-                    onClick={() => {
-                      onFavourite(item);
-                    }}
-                  >
-                    {" "}
-                    <StarIcon fontSize="large" />{" "}
-                  </IconButton>
-                )}
+                <IconButton
+                  size="large"
+                  sx={{ marginRight: 3, color: "gold"}}
+                  selected={favourited}
+                  onClick={() => {
+                    onFavourite(item);
+                  }}
+                >
+                  {" "}
+                  <StarIcon fontSize="large" />{" "}
+                </IconButton>
               </ListItem>
             ))}
         </List>
