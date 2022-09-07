@@ -58,9 +58,11 @@ favouritesAPI.post("/", async (req, res, next) => {
   });
 
   let user;
+  let fav;
 
   try {
     user = await userSchema.findById(creator);
+    fav = await favouritesListItemSchema.findOne({ recipeID: recipeID });
   } catch (err) {
     const error = new Error("Adding to Favourites failed!");
     console.log(err);
@@ -75,9 +77,11 @@ favouritesAPI.post("/", async (req, res, next) => {
   }
 
   try {
-    await addedRecipe.save();
-    user.favourites.push(addedRecipe);
-    await user.save();
+    if (fav === null) {
+      await addedRecipe.save();
+      user.favourites.push(addedRecipe);
+      await user.save();
+    }
   } catch (err) {
     const error = new Error("Adding to Favourites failed!");
     console.log(err);
