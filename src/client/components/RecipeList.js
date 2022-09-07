@@ -80,6 +80,7 @@ const RecipeList = (props) => {
           recipeID: item.id,
         });
         console.log(response);
+        setFavourited(true);
       } catch (err) {
         console.log(err);
       }
@@ -98,6 +99,7 @@ const RecipeList = (props) => {
     // }
     // if(favourited === false) {
     fetchApi();
+
     // }
     console.log(item.id);
     console.log(favourites);
