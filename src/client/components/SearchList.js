@@ -79,7 +79,7 @@ const SearchList = (props) => {
       }}
     >
       <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
-        {props.label} {`${props.label === "Recomended" ? "Searched" : "Recipes"}`}
+        {props.label} {`${props.label === "Recommended" ? "Search" : "Recipes"}`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>

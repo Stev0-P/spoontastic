@@ -65,7 +65,7 @@ const Search = () => {
           />
         </Box>
       </Box>
-      <SearchList label="Recomended" query={search} />
+      <SearchList label="Recommended" query={search} />
     </Box>
   );
 };

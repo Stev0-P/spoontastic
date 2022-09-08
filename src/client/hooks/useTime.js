@@ -21,7 +21,7 @@ const useTime = () => {
         } else if (time >= 11 && time < 15) {
           mealChange({
             text: "Lunch Recipes",
-            type: "snack",
+            type: "appetizer",
           });
         } else {
           mealChange({
