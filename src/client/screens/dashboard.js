@@ -9,7 +9,7 @@ const Dashboard = () => {
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
       <Widget />
-      <RecipeList label="Recomended" />
+      <RecipeList label="Recommended" />
     </Box>
   );
 };

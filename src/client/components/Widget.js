@@ -1,10 +1,14 @@
 import React from "react";
 import { Box, Typography, Chip, Container } from "@mui/material";
+import EggAltOutlinedIcon from "@mui/icons-material/EggAltOutlined";
+import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import { useHistory, useLocation } from "react-router-dom";
 import UserContext from "../context/User";
 import { useContext, useEffect } from "react";
 import useTime from "../hooks/useTime";
 import axios from "axios";
+import { Scale } from "@mui/icons-material";
 
 const Widget = () => {
   const activeUser = useContext(UserContext);
@@ -34,7 +38,78 @@ const Widget = () => {
     fetchApi();
   }, [time.type]);
 
-  const NumberOfRecipes = () => {
+  const TimeOfDay = () => {
+    return (
+      <Box
+        sx={{
+          borderRadius: "2em",
+          width: "200px",
+          height: "240px",
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          backgroundColor: "#f7a05e",
+          margin: 3,
+          boxShadow: 3,
+        }}
+      >
+        <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
+          Time of Day:
+        </Typography>
+        <Box
+          sx={{
+            textAlign: "center",
+            backgroundColor: "#f5efe9",
+            boxShadow: 4,
+            borderRadius: "2em",
+            padding: "0.5em",
+            zIndex: 1,
+            position: "relative",
+            height: "11em",
+          }}
+        >
+          {time.type === "breakfast" ? (
+            <Box sx={{paddingTop: "0.7em"}}>
+              <Box sx={{fontSize: "100px"}}>
+              <EggAltOutlinedIcon fontSize="inherit" />
+              </Box>
+              <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
+                Breakfast
+              </Typography>
+            </Box>
+          ) : (
+            ""
+          )}
+          {time.type === "appetizer" ? (
+            <Box sx={{paddingTop: "0.7em"}}>
+              <Box sx={{fontSize: "100px"}}>
+              <LunchDiningIcon fontSize="inherit" />
+              </Box>
+              <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
+                Lunch
+              </Typography>
+            </Box>
+          ) : (
+            ""
+          )}
+          {time.type === "main course" ? (
+            <Box sx={{paddingTop: "0.7em"}}>
+              <Box sx={{fontSize: "100px"}}>
+              <DinnerDiningIcon fontSize="inherit" />
+              </Box>
+              <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
+                Lunch
+              </Typography>
+            </Box>
+          ) : (
+            ""
+          )}
+        </Box>
+      </Box>
+    );
+  };
+
+  const UserName = () => {
     return (
       <Box
         sx={{
@@ -70,11 +145,23 @@ const Widget = () => {
               justifyContent: "center",
               allignText: "wrap",
               allignItems: "center",
-              paddingTop: "70px",
+              paddingTop: "60px",
             }}
             variant="h5"
           >
             {activeUser.name}
+          </Typography>
+          <Typography
+            sx={{
+              textAlign: "center",
+              justifyContent: "center",
+              allignText: "wrap",
+              allignItems: "center",
+              paddingTop: "20px",
+            }}
+            variant="h7"
+          >
+            Diet: {activeUser.diet}
           </Typography>
         </Box>
       </Box>
@@ -144,7 +231,8 @@ const Widget = () => {
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <MealWidget />
-      {NumberOfRecipes()}
+      {UserName()}
+      {TimeOfDay()}
     </Box>
   );
 };
