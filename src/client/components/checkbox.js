@@ -31,6 +31,8 @@ const CheckBox = () => {
   const activeUser = useContext(UserContext);
 
   useEffect(() => {
+    console.log(activeUser.diet);
+    console.log(activeUser.intolerance);
     if (activeUser.diet !== "" || activeUser.intolerance !== "") {
       history.push("/dashboard");
     }
