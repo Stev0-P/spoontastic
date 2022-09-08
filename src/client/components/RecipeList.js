@@ -87,7 +87,7 @@ const RecipeList = (props) => {
       }}
     >
       <Typography sx={{ mt: 4, mb: 2, marginLeft: 1, marginTop: 1 }} variant="h6" component="div">
-        {props.label} {`${props.label === "Recomended" ? time.text : ""}`}
+        {props.label} {`${props.label === "Recommended" ? time.text : ""}`}
       </Typography>
       <Demo sx={{ borderRadius: "1em" }}>
         <List dense={dense}>
