@@ -136,14 +136,13 @@ const CheckBox = () => {
               />
               <FormControlLabel value="vegan" control={<Radio style={{ color: "green" }} />} label="Vegan" />
               <FormControlLabel
-                value="pescetarian"
+                value="pescatarian"
                 control={<Radio style={{ color: "green" }} />}
-                label="Pescetarian"
+                label="Pescatarian"
               />
               <FormControlLabel value="paleo" control={<Radio style={{ color: "green" }} />} label="Paleo" />
               <FormControlLabel value="primal" control={<Radio style={{ color: "green" }} />} label="Primal" />
-              <FormControlLabel value="lowFodmap" control={<Radio style={{ color: "green" }} />} label="Low FODMAP" />
-              <FormControlLabel value="whole30" control={<Radio style={{ color: "green" }} />} label="Whole30" />
+              <FormControlLabel value="whole30" control={<Radio style={{ color: "green" }} />} label="Whole 30" />
             </Box>
           </RadioGroup>
         </FormControl>

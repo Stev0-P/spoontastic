@@ -220,15 +220,14 @@ const Account = () => {
                         <MenuItem value="regular">Regular</MenuItem>
                         <MenuItem value="gluten free">Gluten Free</MenuItem>
                         <MenuItem value="ketogenic">Ketogenic</MenuItem>
-                        <MenuItem value="vegeterian">Vegeterian</MenuItem>
-                        <MenuItem value="lacto-vegeterian">Lacto-Vegeterian</MenuItem>
-                        <MenuItem value="ovo-vegeterian">Ovo-Vegeterian</MenuItem>
+                        <MenuItem value="vegetarian">Vegetarian</MenuItem>
+                        <MenuItem value="lacto-vegetarian">Lacto-Vegetarian</MenuItem>
+                        <MenuItem value="ovo-vegetarian">Ovo-Vegetarian</MenuItem>
                         <MenuItem value="vegan">Vegan</MenuItem>
-                        <MenuItem value="pesceterian">Pesceterian</MenuItem>
+                        <MenuItem value="pescaterian">Pescaterian</MenuItem>
                         <MenuItem value="paleo">Paleo</MenuItem>
                         <MenuItem value="primal">Primal</MenuItem>
-                        <MenuItem value="lowFoodmap">lowFoodmap</MenuItem>
-                        <MenuItem value="whole30">whole30</MenuItem>
+                        <MenuItem value="whole30">Whole 30</MenuItem>
                       </Select>
                     </FormControl>
                     <FormControl sx={{ mt: 2, minWidth: 180, marginLeft: "5%" }}>
