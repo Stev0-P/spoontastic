@@ -42,13 +42,6 @@ const CheckBox = () => {
     setDiet(event.target.value);
   };
 
-  // const intoleranceChange = (event) => {
-  //   setIntolerance((prevState) => ({
-  //     ...prevState,
-  //     [event.target.value]: !prevState[event.target.value],
-  //   }));
-  // };
-
   const intoleranceChange = (event) => {
     if (intolerance === "") {
       setIntolerance(event.target.value);

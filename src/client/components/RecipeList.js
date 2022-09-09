@@ -71,7 +71,7 @@ const RecipeList = (props) => {
       }
     };
     fetchApi2();
-  }, []);
+  }, [clickID]);
 
   const onFavourite = (item) => {
     const fetchApi = async () => {

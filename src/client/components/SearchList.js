@@ -49,7 +49,7 @@ const SearchList = (props) => {
     fetchApi();
     console.log(time.type);
   }, [time.type, props.query]);
-  
+
   const onFavourite = (item) => {
     const fetchApi = async () => {
       try {
@@ -60,7 +60,6 @@ const SearchList = (props) => {
           creator: activeUser.userId,
           recipeID: item.id,
         });
-        console.log(response);
         setFavourited(true);
       } catch (err) {
         console.log(err);
