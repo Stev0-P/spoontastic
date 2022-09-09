@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Typography, Chip, Container } from "@mui/material";
 import EggAltOutlinedIcon from "@mui/icons-material/EggAltOutlined";
-import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
-import LunchDiningIcon from '@mui/icons-material/LunchDining';
+import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
+import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import { useHistory, useLocation } from "react-router-dom";
 import UserContext from "../context/User";
 import { useContext, useEffect } from "react";
@@ -18,25 +18,25 @@ const Widget = () => {
   const [recipe, setRecipe] = React.useState({});
 
   useEffect(() => {
-    const fetchApi = async () => {
+    const controller = new AbortController();
+    (async () => {
       try {
         const { data: recipe } = await axios.get("/api/recipes/random/", {
           params: {
-            mealType: time.type,
-            userDiet: activeUser.diet,
-            userIntolerances: activeUser.intolerance,
+            diet: activeUser.diet,
+            intolerance: activeUser.intolerance,
           },
         });
-
+        setLoading(false);
         setRecipe(recipe.recipes[0]);
+        console.log(recipe)
       } catch (err) {
         console.log(err);
       }
-      setLoading(false);
-    };
+    })();
 
-    fetchApi();
-  }, [time.type]);
+    return () => controller.abort();
+  }, []);
 
   const TimeOfDay = () => {
     return (
@@ -69,9 +69,9 @@ const Widget = () => {
           }}
         >
           {time.type === "breakfast" ? (
-            <Box sx={{paddingTop: "0.7em"}}>
-              <Box sx={{fontSize: "100px"}}>
-              <EggAltOutlinedIcon fontSize="inherit" />
+            <Box sx={{ paddingTop: "0.7em" }}>
+              <Box sx={{ fontSize: "100px" }}>
+                <EggAltOutlinedIcon fontSize="inherit" />
               </Box>
               <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
                 Breakfast
@@ -81,9 +81,9 @@ const Widget = () => {
             ""
           )}
           {time.type === "appetizer" ? (
-            <Box sx={{paddingTop: "0.7em"}}>
-              <Box sx={{fontSize: "100px"}}>
-              <LunchDiningIcon fontSize="inherit" />
+            <Box sx={{ paddingTop: "0.7em" }}>
+              <Box sx={{ fontSize: "100px" }}>
+                <LunchDiningIcon fontSize="inherit" />
               </Box>
               <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
                 Lunch
@@ -93,9 +93,9 @@ const Widget = () => {
             ""
           )}
           {time.type === "main course" ? (
-            <Box sx={{paddingTop: "0.7em"}}>
-              <Box sx={{fontSize: "100px"}}>
-              <DinnerDiningIcon fontSize="inherit" />
+            <Box sx={{ paddingTop: "0.7em" }}>
+              <Box sx={{ fontSize: "100px" }}>
+                <DinnerDiningIcon fontSize="inherit" />
               </Box>
               <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
                 Lunch
@@ -191,39 +191,44 @@ const Widget = () => {
         <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
           Random Recipe
         </Typography>
-        <Box
-          sx={{
-            boxShadow: 4,
-            borderRadius: "2em",
-            backgroundColor: "#f5efe9",
-          }}
-        >
-          <img
-            style={{
-              height: "160px",
-              width: "200px",
-              borderRadius: "2em 2em 0em 0em",
-            }}
-            src={recipe.image}
-          />
-          <Typography
+
+        {loading === false && recipe ? (
+          <Box
             sx={{
-              textAlign: "center",
-              backgroundColor: "#f5efe9",
-              marginTop: -3,
               boxShadow: 4,
               borderRadius: "2em",
-              padding: "0.5em",
-              zIndex: 1,
-              position: "relative",
-              height: "32px",
+              backgroundColor: "#f5efe9",
             }}
-            variant="h7"
-            component="div"
           >
-            {recipe.title}
-          </Typography>
-        </Box>
+            <img
+              style={{
+                height: "160px",
+                width: "200px",
+                borderRadius: "2em 2em 0em 0em",
+              }}
+              src={recipe.image}
+            />
+            <Typography
+              sx={{
+                textAlign: "center",
+                backgroundColor: "#f5efe9",
+                marginTop: -3,
+                boxShadow: 4,
+                borderRadius: "2em",
+                padding: "0.5em",
+                zIndex: 1,
+                position: "relative",
+                height: "32px",
+              }}
+              variant="h7"
+              component="div"
+            >
+              {recipe.title}
+            </Typography>
+          </Box>
+        ) : (
+          ""
+        )}
       </Box>
     );
   };
