@@ -21,8 +21,6 @@ accountAPI.get("/getUser/:uid", async (req, res, next) => {
   }
   const objectId = req.session.user;
   const myObjectIdString = objectId.toString();
-  console.log("ObjectUserID: " + myObjectIdString);
-  console.log("UserID ffrom client:" + userID);
   res.json({ user: user.toObject({ getters: true }) });
 });
 
@@ -81,28 +79,5 @@ accountAPI.delete("/logout", (req, res) => {
     console.log("end");
   }
 });
-
-// accountAPI.post("/login", async (req, res, next) => {
-//   // pull jwt req.body from login
-//   const { JWT } = req.body;
-//   var decoded = jwt_decode(JWT);
-
-//   let existingUser;
-//   try {
-//     existingUser = await userSchema.findOne({ email: decoded.email });
-//   } catch (err) {
-//     const error = new Error("Loging in failed, please try again later");
-//     error.code = 500;
-//     return next(error);
-//   }
-
-//   if (!existingUser || decoded.email_verified !== true) {
-//     const error = new Error("Could not identify user, credentials seem to be wrong.");
-//     error.code = 401;
-//     return next(error);
-//   }
-
-//   res.json({ message: "Logged in!" });
-// });
 
 export default accountAPI;

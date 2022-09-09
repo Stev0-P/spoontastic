@@ -31,6 +31,8 @@ const CheckBox = () => {
   const activeUser = useContext(UserContext);
 
   useEffect(() => {
+    console.log(activeUser.diet);
+    console.log(activeUser.intolerance);
     if (activeUser.diet !== "" || activeUser.intolerance !== "") {
       history.push("/dashboard");
     }
@@ -39,13 +41,6 @@ const CheckBox = () => {
   const dietChange = (event) => {
     setDiet(event.target.value);
   };
-
-  // const intoleranceChange = (event) => {
-  //   setIntolerance((prevState) => ({
-  //     ...prevState,
-  //     [event.target.value]: !prevState[event.target.value],
-  //   }));
-  // };
 
   const intoleranceChange = (event) => {
     if (intolerance === "") {

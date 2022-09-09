@@ -237,7 +237,7 @@ const Account = () => {
                         value={intolToString}
                         multiple
                         onChange={handleIntoleranceChange}
-                        label="Your Intolerance"
+                        label="Your-Intolerance"
                         inputProps={{
                           name: "your-intolerance",
                           id: "your-intolerance",

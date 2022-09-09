@@ -38,7 +38,6 @@ export const LogIn = () => {
       google.accounts.id.prompt();
     };
     document.body.append(script);
-    console.log(userId);
   }, []);
 
   // const redirect = () => {

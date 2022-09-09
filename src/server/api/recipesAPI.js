@@ -17,7 +17,7 @@ recipesAPI.get("/", async (req, res, next) => {
       },
     })
     .catch((err) => console.log(err));
-  //console.log(recipesList);
+
   res.json(recipesList.data.results);
 });
 
@@ -30,7 +30,7 @@ recipesAPI.get("/search/", async (req, res, next) => {
       },
     })
     .catch((err) => console.log(err));
-  //console.log(recipesList);
+
   res.json(searchList.data.results);
 });
 
@@ -41,7 +41,7 @@ recipesAPI.get("/item/:rid", async (req, res, next) => {
       `https://api.spoonacular.com/recipes/${RECIPE_ID}/information?apiKey=67aee83dd7d04d9cb56ca6af4700a7f7&includeNutrition=true`
     )
     .catch((err) => console.log(err));
-  console.log(recipeItem.data);
+
   res.json(recipeItem.data);
 });
 

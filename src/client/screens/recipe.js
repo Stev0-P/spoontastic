@@ -41,7 +41,6 @@ const Recipe = () => {
         const { data: response } = await axios.get(`/api/recipes/item/${recipeID}`);
         setRecipe(response);
         ratingScore(response.healthScore);
-        console.log(response);
       } catch (err) {
         console.log(err);
       }
@@ -96,8 +95,6 @@ const Recipe = () => {
     }
   }, [matched]);
 
-  console.log(alert);
-
   const dietParse = () => {
     if (activeUser.diet === "gluten free") {
       setCurrentDiet("gluten free");
@@ -134,7 +131,7 @@ const Recipe = () => {
           creator: activeUser.userId,
           recipeID: item.id,
         });
-        console.log(response);
+
         setFavourited(true);
       } catch (err) {
         console.log(err);
@@ -160,7 +157,7 @@ const Recipe = () => {
   return (
     <Box sx={{ display: " flex", flexDirection: "column" }}>
       {alert === true ? (
-        <Alert severity="warning" sx={{padding: "10px"}}>
+        <Alert severity="warning" sx={{ padding: "10px" }}>
           <AlertTitle>Warning</AlertTitle>
           This recipe does not match your dietary and intolerance preferences.
         </Alert>

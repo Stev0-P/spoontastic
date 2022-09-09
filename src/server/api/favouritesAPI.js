@@ -8,7 +8,6 @@ import { PlaceSharp } from "@mui/icons-material";
 const favouritesAPI = Router();
 
 favouritesAPI.get("/:uid", async (req, res, next) => {
-  console.log(req.params.uid);
   const userID = req.params.uid;
   let recipes;
 

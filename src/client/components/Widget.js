@@ -29,7 +29,6 @@ const Widget = () => {
         });
         setLoading(false);
         setRecipe(recipe.recipes[0]);
-        console.log(recipe)
       } catch (err) {
         console.log(err);
       }
@@ -98,7 +97,7 @@ const Widget = () => {
                 <DinnerDiningIcon fontSize="inherit" />
               </Box>
               <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
-                Lunch
+                Dinner
               </Typography>
             </Box>
           ) : (

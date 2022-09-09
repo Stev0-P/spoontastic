@@ -16,7 +16,8 @@ import useTime from "../hooks/useTime";
 import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../context/User";
-import { yellow } from '@mui/material/colors';
+import { yellow } from "@mui/material/colors";
+import { set } from "mongoose";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: "white",
@@ -31,8 +32,11 @@ const RecipeList = (props) => {
   const [loading, setLoading] = useState(true);
   const [favourited, setFavourited] = useState(false);
   const [favourites, setFavourites] = useState([]);
+  const [favouriteIDs, setFavId] = useState([]);
+  const [color, setColor] = useState("");
+  const [clickID, setID] = useState(0);
   const activeUser = useContext(UserContext);
-  
+
   // const userId = "6311ec11144a00d89b6cf1c4";
 
   useEffect(() => {
@@ -46,7 +50,6 @@ const RecipeList = (props) => {
             userIntolerances: activeUser.intolerance,
           },
         });
-        console.log(response);
 
         setRecipes(response);
       } catch (err) {
@@ -56,7 +59,19 @@ const RecipeList = (props) => {
     })();
 
     return () => controller.abort();
-  }, [time.type]);
+  }, []);
+
+  useEffect(() => {
+    const fetchApi2 = async () => {
+      try {
+        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+        setFavourites(response.recipe);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi2();
+  }, [clickID]);
 
   const onFavourite = (item) => {
     const fetchApi = async () => {
@@ -75,6 +90,12 @@ const RecipeList = (props) => {
       }
     };
     fetchApi();
+  };
+
+  const matchIDs = (item) => {
+    if (favourites.find((fav) => fav.recipeID === `${item.id}`)) {
+      return true;
+    }
   };
 
   return (
@@ -129,10 +150,12 @@ const RecipeList = (props) => {
                 />
                 <IconButton
                   size="large"
-                  sx={{ marginRight: 3, color: "gold"}}
+                  sx={{ marginRight: 3 }}
                   selected={favourited}
+                  color={item.id === clickID || matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
                     onFavourite(item);
+                    setID(item.id);
                   }}
                 >
                   {" "}

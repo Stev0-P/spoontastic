@@ -38,16 +38,15 @@ const FavouritesList = (props) => {
     const controller = new AbortController();
     (async () => {
       try {
-          // When hooks update if(activeUser.favourites === null) {
-          const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
-          console.log(response);
-          if (response.recipe.length === 0) {
-            setRecNo(false);
-            setRecipes([])
-          } else {
-            setRecNo(true);
-            setRecipes(response.recipe);
-          }
+        // When hooks update if(activeUser.favourites === null) {
+        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+        if (response.recipe.length === 0) {
+          setRecNo(false);
+          setRecipes([]);
+        } else {
+          setRecNo(true);
+          setRecipes(response.recipe);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -60,7 +59,6 @@ const FavouritesList = (props) => {
   const onDelete = (item) => {
     const fetchApi = async () => {
       try {
-        console.log(item.title);
         const { data: response } = await axios.delete(`/api/favourites/delete/${item.id}`);
         setDeleted((prevState) => prevState + 1);
         console.log(response);
