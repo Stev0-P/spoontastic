@@ -32,6 +32,7 @@ const RecipeList = (props) => {
   const [loading, setLoading] = useState(true);
   const [favourited, setFavourited] = useState(false);
   const [favourites, setFavourites] = useState([]);
+  const [favouriteIDs, setFavId] = useState([]);
   const [color, setColor] = useState("");
   const [clickID, setID] = useState(0);
   const activeUser = useContext(UserContext);
@@ -49,7 +50,6 @@ const RecipeList = (props) => {
             userIntolerances: activeUser.intolerance,
           },
         });
-        console.log(response);
 
         setRecipes(response);
       } catch (err) {
@@ -59,7 +59,19 @@ const RecipeList = (props) => {
     })();
 
     return () => controller.abort();
-  }, [time.type]);
+  }, []);
+
+  useEffect(() => {
+    const fetchApi2 = async () => {
+      try {
+        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+        setFavourites(response.recipe);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi2();
+  }, []);
 
   const onFavourite = (item) => {
     const fetchApi = async () => {
@@ -78,6 +90,12 @@ const RecipeList = (props) => {
       }
     };
     fetchApi();
+  };
+
+  const matchIDs = (item) => {
+    if (favourites.find((fav) => fav.recipeID === `${item.id}`)) {
+      return true;
+    }
   };
 
   return (
@@ -134,7 +152,7 @@ const RecipeList = (props) => {
                   size="large"
                   sx={{ marginRight: 3 }}
                   selected={favourited}
-                  color={item.id === clickID ? "succsess" : "default"}
+                  color={item.id === clickID || matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
                     onFavourite(item);
                     setID(item.id);
