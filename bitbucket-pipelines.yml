@@ -18,7 +18,7 @@ pipelines:
 
       - step:
           name: Build & Push Image
-          image: atlassian/pipelines-awscli:1.21.7
+          image: atlassian/pipelines-awscli:1.25.19
           caches:
             - docker
           services:
@@ -31,12 +31,14 @@ pipelines:
       # The following deployment steps will be executed for each pipeline run. To configure your steps and conditionally deploy see https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/
       - step:
           name: "Deployment to Staging"
+          image: atlassian/pipelines-awscli:1.25.19
           deployment: staging
           script:
             - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Staging --parameter-overrides AppImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER ScraperImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER Environment=staging ReleaseVersion=$BITBUCKET_BUILD_NUMBER EncryptionKey=$ENCRYPTION_KEY --capabilities "CAPABILITY_AUTO_EXPAND" "CAPABILITY_IAM"
 
       - step:
           name: "Deployment to Production"
+          image: atlassian/pipelines-awscli:1.25.19
           deployment: production
           trigger: "manual"
           script:
