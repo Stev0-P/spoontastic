@@ -14,9 +14,6 @@ Parameters:
       - "production"
       - "staging"
       - "development"
-  EncryptionKey:
-    Type: String
-    NoEcho: true
   ReleaseVersion:
     Type: String
   MongoConnectionString:

@@ -44,7 +44,7 @@ app.use(
 app
   .disable("x-powered-by")
   .use("/api", apiRoutes)
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(express.static("public"))
   .use((error, req, res, next) => {
     if (res.headerSent) {
       return next(error);

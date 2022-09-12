@@ -31,6 +31,10 @@ module.exports = {
       }
     }
 
+    if (target === "node") {
+      webpackConfig.optimization = Object.assign({}, webpackConfig.optimization, { minimize: false });
+    }
+
     return webpackConfig;
   },
 };
