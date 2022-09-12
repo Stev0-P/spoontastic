@@ -33,7 +33,9 @@ app.use(
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     saveUninitialized: true,
     store: new MongoDBStore({
-      uri: "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256",
+      uri:
+        process.env.MONGO_CONNECTION_STRING ||
+        "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256",
       collection: "sessions",
     }),
   })
