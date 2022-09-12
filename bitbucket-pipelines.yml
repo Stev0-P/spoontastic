@@ -34,7 +34,15 @@ pipelines:
           image: atlassian/pipelines-awscli:1.25.19
           deployment: staging
           script:
-            - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Staging --parameter-overrides AppImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER ScraperImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER Environment=staging ReleaseVersion=$BITBUCKET_BUILD_NUMBER EncryptionKey=$ENCRYPTION_KEY --capabilities "CAPABILITY_AUTO_EXPAND" "CAPABILITY_IAM"
+            - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Staging \
+              --parameter-overrides \
+              AppImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER \
+              ScraperImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER \
+              Environment=production \
+              ReleaseVersion=$BITBUCKET_BUILD_NUMBER \
+              EncryptionKey=$ENCRYPTION_KEY \
+              MongoConnectionString=$MONGO_CONNECTION_STRING \
+              --capabilities "CAPABILITY_AUTO_EXPAND" "CAPABILITY_IAM"
 
       - step:
           name: "Deployment to Production"
@@ -42,4 +50,12 @@ pipelines:
           deployment: production
           trigger: "manual"
           script:
-            - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Production --parameter-overrides AppImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER ScraperImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER Environment=production ReleaseVersion=$BITBUCKET_BUILD_NUMBER EncryptionKey=$ENCRYPTION_KEY --capabilities "CAPABILITY_AUTO_EXPAND" "CAPABILITY_IAM"
+            - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Production \
+              --parameter-overrides \
+              AppImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER \
+              ScraperImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER \
+              Environment=production \
+              ReleaseVersion=$BITBUCKET_BUILD_NUMBER \
+              EncryptionKey=$ENCRYPTION_KEY \
+              MongoConnectionString=$MONGO_CONNECTION_STRING \
+              --capabilities "CAPABILITY_AUTO_EXPAND" "CAPABILITY_IAM"

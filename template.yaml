@@ -19,6 +19,8 @@ Parameters:
     NoEcho: true
   ReleaseVersion:
     Type: String
+  MongoConnectionString:
+    Type: String
 Conditions:
   IsProduction: !Equals [!Ref Environment, "production"]
   IsStaging: !Equals [!Ref Environment, "staging"]
@@ -29,6 +31,7 @@ Resources:
       ImageUri: !Ref AppImageUri
       PackageType: Image
       MemorySize: 1024
+      Timeout: 30
       Events:
         RootTrigger:
           Type: "Api"
@@ -46,3 +49,4 @@ Resources:
           NODE_ENV: "production"
           NODE_CONFIG_ENV: !If [IsProduction, "production", "staging"]
           RELEASE_VERSION: !Ref ReleaseVersion
+          MONGO_CONNECTION_STRING: !Ref MongoConnectionString

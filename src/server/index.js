@@ -1,13 +1,8 @@
-import App from "../client/App";
-import React from "react";
-import { StaticRouter } from "react-router-dom";
-import express from "express";
-import { renderToString } from "react-dom/server";
-import apiRoutes from "./api";
-import mongoose from "mongoose";
-import session from "express-session";
 import MongoDBSession from "connect-mongodb-session";
-import userSchema from "./services/users/user.model";
+import express from "express";
+import session from "express-session";
+import mongoose from "mongoose";
+import apiRoutes from "./api";
 import { renderApp } from "./utils";
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
@@ -15,11 +10,12 @@ const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const MongoDBStore = MongoDBSession(session);
 const app = express();
 
-/* 
+/*
 .... Connect Mongo
 */
 mongoose.connect(
-  "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256"
+  process.env.MONGO_CONNECTION_STRING ||
+    "mongodb://admin:password@localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256"
 );
 mongoose.set("returnOriginal", false);
 mongoose.set("toJSON", { virtuals: true });
