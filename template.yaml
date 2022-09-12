@@ -42,7 +42,6 @@ Resources:
             Method: "ANY"
       Environment:
         Variables:
-          ENCRYPTION_KEY: !Ref EncryptionKey
           NODE_ENV: "production"
           NODE_CONFIG_ENV: !If [IsProduction, "production", "staging"]
           RELEASE_VERSION: !Ref ReleaseVersion
