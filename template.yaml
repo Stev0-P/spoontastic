@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: SpoonTastic
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  AppImageUri:
+    Type: String
+  Environment:
+    Type: String
+    AllowedValues:
+      - "production"
+      - "staging"
+      - "development"
+  EncryptionKey:
+    Type: String
+    NoEcho: true
+  ReleaseVersion:
+    Type: String
+Conditions:
+  IsProduction: !Equals [!Ref Environment, "production"]
+  IsStaging: !Equals [!Ref Environment, "staging"]
+Resources:
+  AppFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      ImageUri: !Ref AppImageUri
+      PackageType: Image
+      MemorySize: 1024
+      Environment:
+        Variables:
+          ENCRYPTION_KEY: !Ref EncryptionKey
+          NODE_ENV: "production"
+          NODE_CONFIG_ENV: !If [IsProduction, "production", "staging"]
+          RELEASE_VERSION: !Ref ReleaseVersion
