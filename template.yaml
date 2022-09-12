@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: SpoonTastic
 Transform: AWS::Serverless-2016-10-31
+Globals:
+  Api:
+    BinaryMediaTypes:
+      - "*~1*"
 Parameters:
   AppImageUri:
     Type: String
@@ -25,6 +29,17 @@ Resources:
       ImageUri: !Ref AppImageUri
       PackageType: Image
       MemorySize: 1024
+      Events:
+        RootTrigger:
+          Type: "Api"
+          Properties:
+            Path: "/"
+            Method: "ANY"
+        ProxyTrigger:
+          Type: "Api"
+          Properties:
+            Path: "/{proxy+}"
+            Method: "ANY"
       Environment:
         Variables:
           ENCRYPTION_KEY: !Ref EncryptionKey
