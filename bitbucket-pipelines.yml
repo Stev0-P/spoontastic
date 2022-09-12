@@ -34,7 +34,7 @@ pipelines:
           image: atlassian/pipelines-awscli:1.25.19
           deployment: staging
           script:
-            - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Staging \
+            - aws cloudformation deploy --template-file template.yaml --stack-name SpoonTastic-Staging
               --parameter-overrides
               AppImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER
               ScraperImageUri=$ECR_REPO:$BITBUCKET_BUILD_NUMBER
