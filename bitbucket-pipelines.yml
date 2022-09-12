@@ -11,7 +11,6 @@ pipelines:
           services:
             - docker
           script:
-            - cd app
             - npm ci
             - npm run build
           artifacts:
