@@ -50,13 +50,11 @@ const SearchList = (props) => {
     };
 
     fetchApi();
-    console.log(time.type);
   }, [time.type, props.query]);
 
   const onFavourite = (item) => {
     const fetchApi = async () => {
       try {
-        console.log(item.id);
         const { data: response } = await axios.post("/api/favourites/", {
           title: item.title,
           image: item.image,

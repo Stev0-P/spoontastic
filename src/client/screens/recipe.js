@@ -66,23 +66,18 @@ const Recipe = () => {
     if (recDiet !== undefined && recipe.diets) {
       if (recDiet?.length === 0 && currentDiet !== "regular") {
         setMatched(false);
-        console.log(recDiet?.length);
       }
       for (var i = 0; i <= recDiet?.length; i++) {
         if (currentDiet === "regular") {
-          console.log("regular");
           setMatched(true);
           break;
         } else if (currentDiet === "pescatarian" && (recipe.vegetarian === true || currentDiet === recDiet[i])) {
-          console.log("pesc");
           setMatched(true);
           break;
         } else if (currentDiet === recDiet[i]) {
-          console.log("Match with " + [i]);
           setMatched(true);
           break;
         } else if (recDiet?.length !== 0) {
-          console.log("Not in " + [i]);
           setMatched(false);
         }
       }
@@ -93,10 +88,7 @@ const Recipe = () => {
     if (matched !== undefined) {
       if (matched === false) {
         setAlert(true);
-        console.log("Not in pref");
-        console.log(matched);
       } else {
-        console.log("In Pref!");
       }
     }
   }, [matched]);
@@ -130,7 +122,6 @@ const Recipe = () => {
   const onFavourite = (item) => {
     const fetchApi = async () => {
       try {
-        console.log(item.id);
         const { data: response } = await axios.post("/api/favourites/", {
           title: item.title,
           image: item.image,

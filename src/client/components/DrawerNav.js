@@ -73,9 +73,7 @@ const DrawerNav = () => {
   const navLogin = (response) => {
     if (response === true) {
       history.push("/login");
-      console.log("navigate to login");
     } else {
-      console.log("unable to logout");
     }
   };
   return (

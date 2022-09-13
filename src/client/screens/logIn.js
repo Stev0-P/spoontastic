@@ -13,10 +13,7 @@ export const LogIn = () => {
     const { data: res } = await axios.post("/api/account/", {
       JWT: response.credential,
     });
-    console.log("Encoded JWT ID Token: " + response.credential);
-    console.log(response.clientId);
-    console.log(res.user);
-    console.log(res.user.id);
+
     setUserId(res.user.id);
     setIsLoggedIn(true);
   };

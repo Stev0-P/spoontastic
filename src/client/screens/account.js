@@ -63,7 +63,6 @@ const Account = () => {
   };
 
   const handleIntoleranceChange = (event) => {
-    console.log(event);
     const {
       target: { value },
     } = event;
@@ -74,22 +73,18 @@ const Account = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(intolerance);
-
     const { data: response } = await axios.patch("/api/preferences/change", {
       diet: diet === "" ? activeUser.diet : diet,
       intolerance: intolerance === "" ? activeUser.intolerance : intolerance,
     });
-    console.log(response);
+
     handleClose();
     window.location.reload();
   };
 
   //-----------------------------
 
-  const handleClickPreferences = () => {
-    console.info("You clicked the Chip.");
-  };
+  const handleClickPreferences = () => {};
   const history = useHistory();
 
   const userLogout = () => {
@@ -106,7 +101,6 @@ const Account = () => {
   const navLogin = (response) => {
     if (response === true) {
       history.push("/login");
-      console.log("navigate to login");
     } else {
       console.log("unable to logout");
     }

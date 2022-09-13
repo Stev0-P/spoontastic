@@ -40,7 +40,6 @@ const Search = () => {
     event.preventDefault();
     event.stopPropagation();
     setSearch(searchTerm);
-    console.log("form submitted ✅");
   };
 
   return (
