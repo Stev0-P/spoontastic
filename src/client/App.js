@@ -39,7 +39,7 @@ const App = ({ user }) => {
       <UserContext.Provider value={activeUser}>
         <DrawerNav />
         <Switch>
-          <Route exact={true} path="/" component={Home} />
+          <Route exact={true} path="/" component={LogIn} />
           <Route exact={true} path="/login" component={LogIn} />
           <Route exact={true} path="/preferences" component={Preferences} />
           <Route exact={true} path="/dashboard" component={Dashboard} />

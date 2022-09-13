@@ -30,6 +30,8 @@ const SearchList = (props) => {
   const [loading, setLoading] = useState(true);
   const [favourited, setFavourited] = useState(false);
   const activeUser = useContext(UserContext);
+  const [clickID, setID] = useState(0);
+  const [favourites, setFavourites] = useState([]);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -66,6 +68,23 @@ const SearchList = (props) => {
       }
     };
     fetchApi();
+  };
+
+  useEffect(() => {
+    const fetchApi2 = async () => {
+      try {
+        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+        setFavourites(response.recipe);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi2();
+  }, [clickID]);
+  const matchIDs = (item) => {
+    if (favourites.find((fav) => fav.recipeID === `${item.id}`)) {
+      return true;
+    }
   };
 
   return (
@@ -122,8 +141,10 @@ const SearchList = (props) => {
                   size="large"
                   sx={{ marginRight: 3 }}
                   selected={favourited}
+                  color={item.id === clickID || matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
                     onFavourite(item);
+                    setID(item.id);
                   }}
                 >
                   {" "}

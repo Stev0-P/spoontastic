@@ -89,7 +89,11 @@ const DrawerNav = () => {
             boxSizing: "border-box",
           },
         }}
-        variant={location.pathname === "/login" || location.pathname === "/preferences" ? "persistent" : "permanent"}
+        variant={
+          location.pathname === "/" || location.pathname === "/login" || location.pathname === "/preferences"
+            ? "persistent"
+            : "permanent"
+        }
         anchor="left"
       >
         <Box
