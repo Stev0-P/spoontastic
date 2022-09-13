@@ -71,7 +71,6 @@ accountAPI.delete("/logout", (req, res) => {
         console.log("cant log out");
       } else {
         res.send(true);
-        console.log("logged out");
       }
     });
   } else {

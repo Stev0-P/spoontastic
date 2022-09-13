@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchBar from "../components/SearchBar";
 import useRecipes from "../hooks/useRecipes";
 import Box from "@mui/material/Box";
@@ -9,10 +9,16 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchList from "../components/SearchList";
+import { useHistory, useLocation } from "react-router-dom";
+import UserContext from "../context/User";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [search, setSearch] = useState("");
+  const history = useHistory();
+  const location = useLocation();
+  const activeUser = useContext(UserContext);
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       //console.log(searchTerm)
@@ -22,6 +28,12 @@ const Search = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
+
+  useEffect(() => {
+    if (activeUser.name === "") {
+      history.push("/");
+    }
+  }, []);
 
   const handleSubmit = (event) => {
     // 👇️ prevent page refresh

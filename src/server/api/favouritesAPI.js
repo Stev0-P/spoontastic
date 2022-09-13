@@ -88,9 +88,11 @@ favouritesAPI.post("/", async (req, res, next) => {
 
 favouritesAPI.delete("/delete/:rid", async (req, res, next) => {
   const recipeID = req.params.rid;
-  let recipe;
+
+  let delRec;
   try {
-    recipe = await favouritesListItemSchema.findById(recipeID).populate("creator");
+    //recipe = await favouritesListItemSchema.findById(recipeID).populate("creator");
+    delRec = await favouritesListItemSchema.findOne({ recipeID: recipeID }).populate("creator");
   } catch (err) {
     console.log(err);
     const error = new Error("Something went wrong! Could not delete recipe!");
@@ -98,16 +100,16 @@ favouritesAPI.delete("/delete/:rid", async (req, res, next) => {
     return next(error);
   }
 
-  if (!recipe) {
+  if (!delRec) {
     const error = new Error("Could not find recipe for this id");
     error.code = 404;
     return next(error);
   }
 
   try {
-    await recipe.delete();
-    recipe.creator.favourites.pull(recipe);
-    await recipe.creator.save();
+    await delRec.delete();
+    delRec.creator.favourites.pull(delRec);
+    await delRec.creator.save();
   } catch (err) {
     const error = new Error("Something went wrong! Could not delete recipe2!");
     error.code = 500;

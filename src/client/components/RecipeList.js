@@ -35,7 +35,9 @@ const RecipeList = (props) => {
   const [favouriteIDs, setFavId] = useState([]);
   const [color, setColor] = useState("");
   const [clickID, setID] = useState(0);
+  const [noMatch, setNotMatched] = useState(false);
   const activeUser = useContext(UserContext);
+  const [deleted, setDeleted] = useState(0);
 
   // const userId = "6311ec11144a00d89b6cf1c4";
 
@@ -66,25 +68,38 @@ const RecipeList = (props) => {
       try {
         const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
         setFavourites(response.recipe);
+        setNotMatched(false);
       } catch (err) {
         console.log(err);
       }
     };
     fetchApi2();
-  }, [clickID]);
+  }, [clickID, noMatch]);
 
   const onFavourite = (item) => {
     const fetchApi = async () => {
       try {
-        console.log(item.id);
         const { data: response } = await axios.post("/api/favourites/", {
           title: item.title,
           image: item.image,
           creator: activeUser.userId,
           recipeID: item.id,
         });
-        console.log(response);
         setFavourited(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
+
+  const onDelete = (item) => {
+    const itemID = item.id;
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.delete(`/api/favourites/delete/${itemID}`);
+        setDeleted((prevState) => prevState + 1);
+        setNotMatched(true);
       } catch (err) {
         console.log(err);
       }
@@ -96,6 +111,7 @@ const RecipeList = (props) => {
     if (favourites.find((fav) => fav.recipeID === `${item.id}`)) {
       return true;
     }
+    // console.log("matches if fav exists" + item.id);
   };
 
   return (
@@ -152,10 +168,10 @@ const RecipeList = (props) => {
                   size="large"
                   sx={{ marginRight: 3 }}
                   selected={favourited}
-                  color={item.id === clickID || matchIDs(item) ? "warning" : "default"}
+                  color={matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
-                    onFavourite(item);
                     setID(item.id);
+                    !matchIDs(item) ? onFavourite(item) : onDelete(item);
                   }}
                 >
                   {" "}

@@ -36,6 +36,12 @@ const Recipe = () => {
   const activeUser = useContext(UserContext);
 
   useEffect(() => {
+    if (activeUser.name === "") {
+      history.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.get(`/api/recipes/item/${recipeID}`);

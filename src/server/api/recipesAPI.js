@@ -8,7 +8,7 @@ recipesAPI.get("/", async (req, res, next) => {
   const USER_INTOLERANCES = req.query.userIntolerances;
   const MEAL_TYPE = req.query.mealType;
   let recipesList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=effebab5dcc94c2eb7ab2114954311b2", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=1391bf8184c14fb8ab85695eaaf42cf8", {
       params: {
         diet: USER_DIET,
         intolerances: USER_INTOLERANCES,
@@ -23,7 +23,7 @@ recipesAPI.get("/", async (req, res, next) => {
 recipesAPI.get("/search/", async (req, res, next) => {
   const USER_QUERY = req.query.userQuery;
   let searchList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=effebab5dcc94c2eb7ab2114954311b2", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=1391bf8184c14fb8ab85695eaaf42cf8", {
       params: {
         query: USER_QUERY,
       },
@@ -37,7 +37,7 @@ recipesAPI.get("/item/:rid", async (req, res, next) => {
   const RECIPE_ID = req.params.rid;
   let recipeItem = await axios
     .get(
-      `https://api.spoonacular.com/recipes/${RECIPE_ID}/information?apiKey=effebab5dcc94c2eb7ab2114954311b2&includeNutrition=true`
+      `https://api.spoonacular.com/recipes/${RECIPE_ID}/information?apiKey=1391bf8184c14fb8ab85695eaaf42cf8&includeNutrition=true`
     )
     .catch((err) => console.log(err));
 
@@ -48,7 +48,7 @@ recipesAPI.get("/random/", async (req, res, next) => {
   const USER_DIET = req.query.diet;
   const USER_INTOLERANCES = req.query.intolerances;
   let randomItem = await axios
-    .get(`https://api.spoonacular.com/recipes/random?number=1&apiKey=effebab5dcc94c2eb7ab2114954311b2`)
+    .get(`https://api.spoonacular.com/recipes/random?number=1&apiKey=1391bf8184c14fb8ab85695eaaf42cf8`)
     .catch((err) => console.log(err));
   // console.log(randomItem.data);
   res.json(randomItem.data);

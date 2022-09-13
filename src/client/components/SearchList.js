@@ -32,6 +32,7 @@ const SearchList = (props) => {
   const activeUser = useContext(UserContext);
   const [clickID, setID] = useState(0);
   const [favourites, setFavourites] = useState([]);
+  const [noMatch, setNotMatched] = useState(false);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -75,12 +76,28 @@ const SearchList = (props) => {
       try {
         const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
         setFavourites(response.recipe);
+        setNotMatched(false);
       } catch (err) {
         console.log(err);
       }
     };
     fetchApi2();
-  }, [clickID]);
+  }, [clickID, noMatch]);
+
+  const onDelete = (item) => {
+    const itemID = item.id;
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.delete(`/api/favourites/delete/${itemID}`);
+        setDeleted((prevState) => prevState + 1);
+        setNotMatched(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
+
   const matchIDs = (item) => {
     if (favourites.find((fav) => fav.recipeID === `${item.id}`)) {
       return true;
@@ -141,10 +158,10 @@ const SearchList = (props) => {
                   size="large"
                   sx={{ marginRight: 3 }}
                   selected={favourited}
-                  color={item.id === clickID || matchIDs(item) ? "warning" : "default"}
+                  color={matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
-                    onFavourite(item);
                     setID(item.id);
+                    !matchIDs(item) ? onFavourite(item) : onDelete(item);
                   }}
                 >
                   {" "}
