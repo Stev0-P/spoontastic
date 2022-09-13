@@ -110,13 +110,16 @@ const DrawerNav = () => {
                 <Avatar
                   sx={{
                     margin: "auto",
-                    width: 55,
-                    height: 55,
+                    width: "3.4em",
+                    height: "3.4em",
                     bgcolor: "#f7a05e",
                     color: "black",
                   }}
                 >
-                  <img src={`${loggedInUser.picture}`}></img>
+                  <img
+                    style={{ height: "3.025em", width: "3.025em", borderRadius: "50%" }}
+                    src={`${loggedInUser.picture}`}
+                  ></img>
                 </Avatar>
                 <ListItem>
                   <Button
