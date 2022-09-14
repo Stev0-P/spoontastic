@@ -62,6 +62,7 @@ const SearchList = (props) => {
           recipeID: item.id,
         });
         setFavourited(true);
+        await getFavourites();
       } catch (err) {
         console.log(err);
       }
@@ -69,26 +70,27 @@ const SearchList = (props) => {
     fetchApi();
   };
 
+  const getFavourites = async () => {
+    try {
+      const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+      setFavourites(response.recipe);
+      setNotMatched(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchApi2 = async () => {
-      try {
-        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
-        setFavourites(response.recipe);
-        setNotMatched(false);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi2();
-  }, [clickID, noMatch]);
+    getFavourites();
+  }, []);
 
   const onDelete = (item) => {
     const itemID = item.id;
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.delete(`/api/favourites/delete/${itemID}`);
-        setDeleted((prevState) => prevState + 1);
-        setNotMatched(true);
+        setFavourited(false);
+        await getFavourites();
       } catch (err) {
         console.log(err);
       }
@@ -158,7 +160,6 @@ const SearchList = (props) => {
                   selected={favourited}
                   color={matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
-                    setID(item.id);
                     !matchIDs(item) ? onFavourite(item) : onDelete(item);
                   }}
                 >

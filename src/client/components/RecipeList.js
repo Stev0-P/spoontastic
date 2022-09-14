@@ -63,18 +63,19 @@ const RecipeList = (props) => {
     return () => controller.abort();
   }, []);
 
+  const fetchFavourites = async () => {
+    try {
+      const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
+      setFavourites(response.recipe);
+      setNotMatched(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchApi2 = async () => {
-      try {
-        const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
-        setFavourites(response.recipe);
-        setNotMatched(false);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi2();
-  }, [clickID, noMatch]);
+    fetchFavourites();
+  }, []);
 
   const onFavourite = (item) => {
     const fetchApi = async () => {
@@ -86,6 +87,7 @@ const RecipeList = (props) => {
           recipeID: item.id,
         });
         setFavourited(true);
+        await fetchFavourites();
       } catch (err) {
         console.log(err);
       }
@@ -99,7 +101,8 @@ const RecipeList = (props) => {
       try {
         const { data: response } = await axios.delete(`/api/favourites/delete/${itemID}`);
         setDeleted((prevState) => prevState + 1);
-        setNotMatched(true);
+        setFavourited(false);
+        await fetchFavourites();
       } catch (err) {
         console.log(err);
       }
@@ -170,7 +173,6 @@ const RecipeList = (props) => {
                   selected={favourited}
                   color={matchIDs(item) ? "warning" : "default"}
                   onClick={() => {
-                    setID(item.id);
                     !matchIDs(item) ? onFavourite(item) : onDelete(item);
                   }}
                 >
