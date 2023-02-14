@@ -4,6 +4,16 @@ Spoontastic is a Web-Application that gives users ability to easily search thous
 Also, Spoontastic gives reccomendations to User based on their selected Dietary needs, Intolerances and time of day. Furthremore, user is able to change their dietary needs and intolerances at any given moment, if user wishes to do so
 recipes that don't match their dietary needs will display a warning message to ensure their safety.
 
+## Update 
+This project was initial part of my summer internship training, currently it is being improved on exapanded into my final year Project.
+
+Planned key features:
+
+- Improve Security(JWT Authentication)
+- Re-design of the UI (Dynamic, More Intuitive)
+- Implement Machine Learning to improve Accuracy of Reccomended Recipes that are presented to the User
+- Improve search capability by implementing an accurate filtering system
+
 ## Component Overview
 
 ### Client
