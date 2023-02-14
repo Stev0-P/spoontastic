@@ -61,7 +61,7 @@ const RecipeList = (props) => {
     })();
 
     return () => controller.abort();
-  }, []);
+  }, [time.type]);
 
   const fetchFavourites = async () => {
     try {
