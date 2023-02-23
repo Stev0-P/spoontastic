@@ -88,7 +88,10 @@ const DrawerNav = () => {
           },
         }}
         variant={
-          location.pathname === "/" || location.pathname === "/login" || location.pathname === "/preferences"
+          location.pathname === "/" ||
+          location.pathname === "/login" ||
+          location.pathname === "/preferences" ||
+          location.pathname === "/register"
             ? "persistent"
             : "permanent"
         }

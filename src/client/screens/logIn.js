@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, Container, Button, TextField } from "@mui/material";
+import { Box, Container, Button, TextField, Typography, Link } from "@mui/material";
 import UserContext from "..//context/User";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -19,6 +19,7 @@ export const LogIn = () => {
   };
 
   useEffect(() => {
+    console.log("hello");
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
     script.onload = () => {
@@ -56,7 +57,7 @@ export const LogIn = () => {
           flexGrow: 1,
           backgroundColor: "#f7a05e",
           borderRadius: "35px",
-          margin: 2,
+          margin: 15,
         }}
       >
         <Box
@@ -77,7 +78,7 @@ export const LogIn = () => {
             backgroundColor: "snow",
           }}
         >
-          <Box sx={{ marginTop: 1 }}>Welcome</Box>
+          <Box sx={{ marginTop: 0.4 }}>Welcome</Box>
           <Box sx={{ flexDirection: "column", borderRadius: "1em", margin: 3 }}>
             <Box sx={{ margin: 1 }}>
               <TextField id="outlined-basic" label="Email" variant="outlined" />
@@ -87,6 +88,12 @@ export const LogIn = () => {
             </Box>
             <Box sx={{ margin: 1 }}>
               <Button variant="outlined">Log In</Button>
+            </Box>
+            <Box>
+              <Typography>If you do not have an account</Typography>
+              <Link href="/register" variant="body1">
+                Register
+              </Link>
             </Box>
           </Box>
         </Box>

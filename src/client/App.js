@@ -13,6 +13,7 @@ import DrawerNav from "./components/DrawerNav";
 import { Box } from "@mui/system";
 import UserContext from "./context/User";
 import axios from "axios";
+import Register from "./screens/register";
 
 const App = ({ user }) => {
   const [userId, setUserId] = useState(user?.userID ?? "");
@@ -47,6 +48,7 @@ const App = ({ user }) => {
           <Route exact={true} path="/favourites" component={Favourites} />
           <Route exact={true} path="/recipe/:id" component={Recipe} />
           <Route exact={true} path="/account" component={Account} />
+          <Route exact={true} path="/register" component={Register} />
         </Switch>
       </UserContext.Provider>
     </Box>
