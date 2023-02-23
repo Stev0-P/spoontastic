@@ -7,9 +7,9 @@ recipesAPI.get("/", async (req, res, next) => {
   const USER_DIET = req.query.userDiet;
   const USER_INTOLERANCES = req.query.userIntolerances;
   const MEAL_TYPE = req.query.mealType;
-  console.log("MEALTYPE" + req.query.mealType);
+  /* console.log("MEALTYPE" + req.query.mealType);
   console.log("INTOLERANCES " + req.query.userIntolerances);
-  console.log("DIET " + req.query.userDiet);
+  console.log("DIET " + req.query.userDiet); */
   let recipesList = await axios
     .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=1391bf8184c14fb8ab85695eaaf42cf8", {
       params: {

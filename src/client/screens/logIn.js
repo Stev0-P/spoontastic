@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, Container, Button } from "@mui/material";
+import { Box, Container, Button, TextField } from "@mui/material";
 import UserContext from "..//context/User";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -42,57 +42,56 @@ export const LogIn = () => {
   // }
 
   return (
-    <Container className="signInDiv">
+    <Container className="signInDiv" sx={{ width: "75%" }}>
       <Box
         className="WelcomeBox1"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "30vh",
+          height: "50%",
           fontSize: "1.5em",
           textAlign: "center",
           padding: "em",
           flexGrow: 1,
           backgroundColor: "#f7a05e",
-          borderRadius: "1em",
+          borderRadius: "35px",
           margin: 2,
         }}
       >
         <Box
-          className="WelcomeBox2"
+          className="WelcomeBox3"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: "25vh",
+            fontSize: "2em",
+            height: "75",
+            textAlign: "center",
             padding: "em",
             flexGrow: 1,
-            backgroundColor: "#81c784",
-            borderRadius: "1em",
+            backgroundColor: "#fff",
+            borderRadius: "35px",
             margin: "3vh",
+            flexDirection: "column",
+            backgroundColor: "snow",
           }}
         >
-          <Box
-            className="WelcomeBox3"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "2em",
-              height: "20vh",
-              textAlign: "center",
-              padding: "em",
-              flexGrow: 1,
-              backgroundColor: "#fff",
-              borderRadius: "1em",
-              margin: "3vh",
-            }}
-          >
-            Welcome to Spoontastic
+          <Box sx={{ marginTop: 1 }}>Welcome</Box>
+          <Box sx={{ flexDirection: "column", borderRadius: "1em", margin: 3 }}>
+            <Box sx={{ margin: 1 }}>
+              <TextField id="outlined-basic" label="Email" variant="outlined" />
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <TextField id="outlined-basic" label="Password" variant="outlined" />
+            </Box>
+            <Box sx={{ margin: 1 }}>
+              <Button variant="outlined">Log In</Button>
+            </Box>
           </Box>
         </Box>
       </Box>
+
       <Box
         style={{
           display: "flex",
@@ -103,11 +102,7 @@ export const LogIn = () => {
           fontSize: "1.5em",
         }}
       >
-        {`${
-          isLoggedIn === true
-            ? history.push("/preferences")
-            : "Login with Google to access a world of spoontastic recipes!"
-        }`}
+        {`${isLoggedIn === true ? history.push("/preferences") : "Login to access a world of spoontastic recipes!"}`}
       </Box>
     </Container>
   );
