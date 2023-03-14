@@ -9,7 +9,11 @@ export const LogIn = () => {
   const { userId, setUserId } = useContext(UserContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+
   const handleCallbackResponse = async (response) => {
+    console.log(response);
     const { data: res } = await axios.post("/api/account/", {
       JWT: response.credential,
     });
@@ -19,7 +23,6 @@ export const LogIn = () => {
   };
 
   useEffect(() => {
-    console.log("hello");
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
     script.onload = () => {
@@ -41,6 +44,30 @@ export const LogIn = () => {
   // const redirect = () => {
   //   history.push(`/preferences`)
   // }
+
+  const userLogIn = () => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.post("/api/account/", {
+          email: userEmail,
+          password: userPassword,
+        });
+        setUserId(response.user.id);
+        setIsLoggedIn(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
+
+  const handleEmail = (event) => {
+    setUserEmail(event.target.value);
+  };
+
+  const handlePassword = (event) => {
+    setUserPassword(event.target.value);
+  };
 
   return (
     <Container className="signInDiv" sx={{ width: "75%" }}>
@@ -81,13 +108,27 @@ export const LogIn = () => {
           <Box sx={{ marginTop: 0.4 }}>Welcome</Box>
           <Box sx={{ flexDirection: "column", borderRadius: "1em", margin: 3 }}>
             <Box sx={{ margin: 1 }}>
-              <TextField id="outlined-basic" label="Email" variant="outlined" />
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                value={userEmail}
+                onChange={handleEmail}
+              />
             </Box>
             <Box sx={{ margin: 1 }}>
-              <TextField id="outlined-basic" label="Password" variant="outlined" />
+              <TextField
+                id="outlined-basic"
+                label="Password"
+                variant="outlined"
+                value={userPassword}
+                onChange={handlePassword}
+              />
             </Box>
             <Box sx={{ margin: 1 }}>
-              <Button variant="outlined">Log In</Button>
+              <Button variant="outlined" onClick={() => userLogIn()}>
+                Log In
+              </Button>
             </Box>
             <Box>
               <Typography>If you do not have an account</Typography>
@@ -109,7 +150,7 @@ export const LogIn = () => {
           fontSize: "1.5em",
         }}
       >
-        {`${isLoggedIn === true ? history.push("/preferences") : "Login to access a world of spoontastic recipes!"}`}
+        {`${isLoggedIn === true ? history.push("/dashboard") : " "}`}
       </Box>
     </Container>
   );

@@ -4,10 +4,11 @@ import uniqueValidator from "mongoose-unique-validator";
 const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  preferences: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Preferences" }],
+  diet: { type: String, required: true },
+  intolerances: [{ type: String, required: true }],
   JWT: { type: String, required: false },
-  picture: { type: String, required: true },
   favourites: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Favourites" }],
+  password: { type: String, required: false },
 });
 
 userSchema.plugin(uniqueValidator);

@@ -15,6 +15,7 @@ import {
 import UserContext from "..//context/User";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { response } from "express";
 
 export const Register = () => {
   const history = useHistory();
@@ -23,6 +24,9 @@ export const Register = () => {
   const [diet, setDiet] = useState("");
   const [intolerance, setIntolerance] = useState("");
   const [intolToString, setIntolToString] = useState([]);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPass, setUserPass] = useState("");
 
   const handleCallbackResponse = async (response) => {
     const { data: res } = await axios.post("/api/account/", {
@@ -51,19 +55,8 @@ export const Register = () => {
     setIntolerance(intolToString.join(","));
   }, [intolToString]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleDietChange = (event) => {
-    setDiet(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value
-    );
+    setDiet(event.target.value);
   };
 
   const handleIntoleranceChange = (event) => {
@@ -75,9 +68,45 @@ export const Register = () => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-  // const redirect = () => {
-  //   history.push(`/preferences`)
-  // }
+
+  const handleNameChange = (event) => {
+    setUserName(event.target.value);
+    console.log(userName);
+  };
+
+  const handleEmailChange = (event) => {
+    setUserEmail(event.target.value);
+    console.log(userEmail);
+  };
+  const handlePasswordChange = (event) => {
+    setUserPass(event.target.value);
+    console.log(userPass);
+  };
+  const userExists = (response) => {
+    if (response === true) {
+      history.push("/login");
+    } else {
+      console.log("User Exists");
+    }
+  };
+
+  const handleSubmit = () => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.post("/api/account/register/", {
+          diet: diet,
+          intolerances: intolerance,
+          fullName: userName,
+          email: userEmail,
+          password: userPass,
+        });
+        userExists(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  };
 
   return (
     <Container className="signInDiv" sx={{ width: "75%", height: "100%" }}>
@@ -114,7 +143,13 @@ export const Register = () => {
         >
           <Box sx={{ display: "flex", flexDirection: "column", borderRadius: "1em" }}>
             <Box sx={{ margin: 1 }}>
-              <TextField id="outlined-basic" label="Full Name" variant="outlined" />
+              <TextField
+                id="outlined-basic"
+                label="Full Name"
+                variant="outlined"
+                value={userName}
+                onChange={handleNameChange}
+              />
             </Box>
             <Box>
               <FormControl sx={{ width: "93%" }}>
@@ -167,13 +202,27 @@ export const Register = () => {
               </FormControl>
             </Box>
             <Box sx={{ margin: 1 }}>
-              <TextField id="outlined-basic" label="Email" variant="outlined" />
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                value={userEmail}
+                onChange={handleEmailChange}
+              />
             </Box>
             <Box>
-              <TextField id="outlined-basic" label="Password" variant="outlined" />
+              <TextField
+                id="outlined-basic"
+                label="Password"
+                variant="outlined"
+                value={userPass}
+                onChange={handlePasswordChange}
+              />
             </Box>
             <Box sx={{ margin: 1 }}>
-              <Button variant="outlined">Register</Button>
+              <Button variant="outlined" onClick={() => handleSubmit()}>
+                Register
+              </Button>
             </Box>
           </Box>
         </Box>

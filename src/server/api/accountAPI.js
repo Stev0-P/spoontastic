@@ -26,30 +26,22 @@ accountAPI.get("/getUser/:uid", async (req, res, next) => {
 
 accountAPI.post("/", async (req, res, next) => {
   try {
-    const { JWT } = req.body;
-    var decoded = jwt_decode(JWT);
+    const { email, password } = req.body;
     //console.log(decoded);
-
+    /*
     if (!decoded.email_verified) {
       const error = new Error("Could not identify user, credentials seem to be wrong.");
       error.code = 401;
       return next(error);
     }
-
-    let user = await userSchema.findOne({ email: decoded.email });
+*/
+    let user = await userSchema.findOne({ email: email });
 
     if (!user) {
-      const createdUser = new userSchema({
-        name: decoded.name,
-        email: decoded.email,
-        preferences: [],
-        favourites: [],
-        picture: decoded.picture,
-        JWT,
-      });
-
-      await createdUser.save();
-      user = createdUser;
+      res.status(401).send(false);
+    }
+    if (password !== user.password) {
+      res.status(400).send(false);
     }
 
     //console.log("Logged in!");
@@ -58,6 +50,33 @@ accountAPI.post("/", async (req, res, next) => {
     res.status(201).json({ user });
   } catch (err) {
     const error = new Error("Signing up failed, please try again later.");
+    error.code = 500;
+    return next(error);
+  }
+});
+
+accountAPI.post("/register", async (req, res, next) => {
+  try {
+    const { diet, intolerances, fullName, email, password } = req.body;
+
+    let user = await userSchema.findOne({ email: email });
+
+    if (!user) {
+      const createdUser = new userSchema({
+        name: fullName,
+        email: email,
+        favourites: [],
+        diet: diet,
+        intolerances: intolerances,
+        password: password,
+      });
+      await createdUser.save();
+      res.status(200).send(true);
+    } else {
+      res.status(500).send(false);
+    }
+  } catch (err) {
+    const error = new Error("Registration up failed, please try again later.");
     error.code = 500;
     return next(error);
   }
