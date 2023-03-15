@@ -39,8 +39,8 @@ export const renderApp = async (req, res) => {
     name: user?.name ?? "",
     email: user?.email ?? "",
     picture: user?.picture ?? "",
-    diet: userPreferences?.diet ?? "",
-    intolerances: userPreferences?.intolerances ?? "",
+    diet: user?.diet ?? "",
+    intolerances: user?.intolerances ?? "",
     type: userPreferences?.type ?? "",
     userID: user?.id ?? " ",
   };

@@ -76,6 +76,7 @@ const Account = () => {
     const { data: response } = await axios.patch("/api/preferences/change", {
       diet: diet === "" ? activeUser.diet : diet,
       intolerance: intolerance === "" ? activeUser.intolerance : intolerance,
+      email: activeUser.email,
     });
 
     handleClose();

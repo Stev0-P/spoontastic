@@ -70,14 +70,14 @@ preferencesAPI.get("/:uid", async (req, res, next) => {
 });
 
 preferencesAPI.patch("/change/", async (req, res, next) => {
-  const { diet, intolerance } = req.body;
+  const { diet, intolerance, email } = req.body;
   const objectId = req.session.user ?? "";
   const myObjectUserId = objectId.toString();
 
   let preferences;
 
   try {
-    preferences = await userPreferencesSchema.findOne({ creator: myObjectUserId });
+    preferences = await userSchema.findOne({ email: email });
   } catch (err) {
     const error = new Error("Something went wrong, could not update preference");
     error.code = 500;
