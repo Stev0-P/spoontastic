@@ -6,5 +6,5 @@ body {
 
 div#root {
   height: 100vh; /* remove this line to see div.app is no more 100% height */
-  
+  background-color:lightgrey;
 }

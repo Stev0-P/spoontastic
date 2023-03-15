@@ -81,10 +81,12 @@ export const LogIn = () => {
           height: "100%",
         }}
       >
-        <Card variant="outlined">
+        <Card variant="outlined" raised={true} sx={{ boxShadow: 5 }}>
           <CardContent>
             <Container className="signInDiv" sx={{ width: "75%" }}>
-              <Box sx={{ marginTop: 0.4, textAlign: "center" }}>Sign In</Box>
+              <Box sx={{ marginTop: 0.4, textAlign: "center" }}>
+                <Typography variant="h5">Sign In</Typography>
+              </Box>
               <Box sx={{ flexDirection: "column", borderRadius: "1em", margin: 3, textAlign: "center" }}>
                 <Box sx={{ margin: 1 }}>
                   <TextField
