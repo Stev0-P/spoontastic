@@ -14,6 +14,10 @@ import { Box } from "@mui/system";
 import UserContext from "./context/User";
 import axios from "axios";
 import Register from "./screens/register";
+import CssBaseline from "@mui/material/CssBaseline";
+import darkScrollbar from "@mui/material/darkScrollbar";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Container } from "@mui/material";
 
 const App = ({ user }) => {
   const [userId, setUserId] = useState(user?.userID ?? "");
@@ -36,22 +40,35 @@ const App = ({ user }) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <UserContext.Provider value={activeUser}>
-        <DrawerNav />
-        <Switch>
-          <Route exact={true} path="/" component={LogIn} />
-          <Route exact={true} path="/login" component={LogIn} />
-          <Route exact={true} path="/preferences" component={Preferences} />
-          <Route exact={true} path="/dashboard" component={Dashboard} />
-          <Route exact={true} path="/search" component={Search} />
-          <Route exact={true} path="/favourites" component={Favourites} />
-          <Route exact={true} path="/recipe/:id" component={Recipe} />
-          <Route exact={true} path="/account" component={Account} />
-          <Route exact={true} path="/register" component={Register} />
-        </Switch>
-      </UserContext.Provider>
-    </Box>
+    <React.Fragment>
+      <CssBaseline>
+        <Container
+          disableGutters
+          maxWidth="false"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            height: "100%",
+          }}
+        >
+          <UserContext.Provider value={activeUser}>
+            <DrawerNav />
+            <Switch>
+              <Route exact={true} path="/" component={LogIn} />
+              <Route exact={true} path="/login" component={LogIn} />
+              <Route exact={true} path="/preferences" component={Preferences} />
+              <Route exact={true} path="/dashboard" component={Dashboard} />
+              <Route exact={true} path="/search" component={Search} />
+              <Route exact={true} path="/favourites" component={Favourites} />
+              <Route exact={true} path="/recipe/:id" component={Recipe} />
+              <Route exact={true} path="/account" component={Account} />
+              <Route exact={true} path="/register" component={Register} />
+            </Switch>
+          </UserContext.Provider>
+        </Container>
+      </CssBaseline>
+    </React.Fragment>
   );
 };
 

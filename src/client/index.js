@@ -7,6 +7,7 @@ hydrate(
   <BrowserRouter>
     <App user={window.__PRELOADED_STATE__} />
   </BrowserRouter>,
+
   document.getElementById("root")
 );
 
