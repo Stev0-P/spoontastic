@@ -43,7 +43,7 @@ const Search = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginLeft: "13%" }}>
       <div style={{ marginLeft: "1em" }}>
         <h2>Search</h2>
       </div>

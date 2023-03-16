@@ -152,7 +152,7 @@ const Recipe = () => {
   };
 
   return (
-    <Box sx={{ display: " flex", flexDirection: "column" }}>
+    <Box sx={{ display: " flex", flexDirection: "column", marginleft: "13%" }}>
       {alert === true ? (
         <Alert severity="warning" sx={{ padding: "10px" }}>
           <AlertTitle>Warning</AlertTitle>

@@ -18,7 +18,7 @@ const Dashboard = () => {
   const location = useLocation();
   const activeUser = useContext(UserContext);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "13%" }}>
       <Widget />
       <RecipeList label="Recommended" />
     </Box>

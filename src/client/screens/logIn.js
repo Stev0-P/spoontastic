@@ -79,6 +79,7 @@ export const LogIn = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          backgroundColor: "lightgray",
         }}
       >
         <Card variant="outlined" raised={true} sx={{ boxShadow: 5 }}>

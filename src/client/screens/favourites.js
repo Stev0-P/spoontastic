@@ -20,7 +20,7 @@ const Favourites = () => {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginLeft: "13%" }}>
       <div style={{ marginLeft: "1em" }}>
         <h2>Your Favourite Recipes</h2>
       </div>

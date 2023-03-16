@@ -15,7 +15,7 @@ import { ThemeProvider } from "@emotion/react";
 import UserContext from "..//context/User";
 import axios from "axios";
 
-const drawerWidth = 125;
+const drawerWidth = "13%";
 
 const useStyles = makeStyles({
   active: {
