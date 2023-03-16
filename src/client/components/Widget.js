@@ -1,5 +1,18 @@
 import React from "react";
-import { Box, Typography, Chip, Container } from "@mui/material";
+
+import {
+  Box,
+  Typography,
+  Chip,
+  Container,
+  Card,
+  CardActions,
+  CardMedia,
+  CardContent,
+  Button,
+  List,
+  ListItem,
+} from "@mui/material";
 import EggAltOutlinedIcon from "@mui/icons-material/EggAltOutlined";
 import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
@@ -9,6 +22,7 @@ import { useContext, useEffect } from "react";
 import useTime from "../hooks/useTime";
 import axios from "axios";
 import { Scale } from "@mui/icons-material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const Widget = () => {
   const activeUser = useContext(UserContext);
@@ -16,6 +30,7 @@ const Widget = () => {
   const time = useTime();
 
   const [recipe, setRecipe] = React.useState({});
+  const [diets, setDiets] = React.useState([]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -29,6 +44,7 @@ const Widget = () => {
         });
         setLoading(false);
         setRecipe(recipe.recipes[0]);
+        setDiets(recipe.recipes[0].diets);
       } catch (err) {
         console.log(err);
       }
@@ -36,6 +52,8 @@ const Widget = () => {
 
     return () => controller.abort();
   }, []);
+
+  /*
 
   const TimeOfDay = () => {
     return (
@@ -107,6 +125,8 @@ const Widget = () => {
       </Box>
     );
   };
+  */
+  /*
 
   const UserName = () => {
     return (
@@ -166,77 +186,94 @@ const Widget = () => {
       </Box>
     );
   };
-
+*/
   const MealWidget = () => {
     const history = useHistory();
 
     return (
       <Box
         sx={{
-          borderRadius: "2em",
-          width: "200px",
-          height: "240px",
+          borderRadius: "8px",
+          width: "350px",
+
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
-          backgroundColor: "#f7a05e",
-          marginRight: 3,
-          marginLeft: 3,
-          marginTop: 3,
+          backgroundColor: "#f6f5f4",
+          marginRight: "1.5%",
+          marginLeft: "1.5%",
+          marginTop: "1.5%",
           boxShadow: 3,
         }}
         onClick={() => history.push(`/recipe/${recipe.id}`)} //history.push("/recipe/:id")
       >
-        <Typography sx={{ paddingTop: "0.65em", textAlign: "center" }} variant="h6" component="div">
-          Random Recipe
-        </Typography>
-
         {loading === false && recipe ? (
-          <Box
-            sx={{
-              boxShadow: 4,
-              borderRadius: "2em",
-              backgroundColor: "#f5efe9",
-            }}
-          >
+          <Box>
             <img
               style={{
-                height: "160px",
-                width: "200px",
-                borderRadius: "2em 2em 0em 0em",
+                height: "250px",
+                width: "350px",
+                borderRadius: "8px 8px 0 0",
               }}
               src={recipe.image}
             />
-            <Typography
-              sx={{
-                textAlign: "center",
-                backgroundColor: "#f5efe9",
-                marginTop: -3,
-                boxShadow: 4,
-                borderRadius: "2em",
-                padding: "0.5em",
-                zIndex: 1,
-                position: "relative",
-                height: "32px",
-              }}
-              variant="h7"
-              component="div"
-            >
-              {recipe.title}
-            </Typography>
+            <Box sx={{ padding: "8px" }}>
+              <Typography sx={{}} variant="h6" component="div">
+                {recipe.title}
+              </Typography>
+              <Box sx={{ flexDirection: "column", display: "flex" }}>
+                <Box sx={{ flexDirection: "row", display: "flex", marginTop: "12px" }}>
+                  <AccessTimeIcon />
+                  <Typography variant="body2=" sx={{ paddingLeft: "5px" }}>
+                    {recipe.readyInMinutes} minutes
+                  </Typography>
+                </Box>
+                <Box sx={{ marginTop: "8px" }}>
+                  <Typography variant="body2=">Servings: {recipe.servings} </Typography>
+                </Box>
+
+                <Box sx={{ flexDirection: "row", display: "flex", marginTop: "8px", overflowY: "auto" }}>
+                  {loading === false &&
+                    diets.map((item) => <Chip sx={{ marginRight: "5px" }} variant="outlined" label={item}></Chip>)}
+                </Box>
+              </Box>
+            </Box>
           </Box>
         ) : (
           ""
         )}
       </Box>
     );
+
+    /*
+
+    return (
+      <Card sx={{ maxWidth: 345 }}>
+        <CardContent>
+          <CardMedia />
+          <Typography gutterBottom variant="h5" component="div">
+            Lizard
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents
+            except Antarctica
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Share</Button>
+          <Button size="small">Learn More</Button>
+        </CardActions>
+      </Card>
+    );
+    */
   };
 
+  // {UserName()}
+  //{TimeOfDay()}
+
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
       <MealWidget />
-      {UserName()}
-      {TimeOfDay()}
     </Box>
   );
 };
