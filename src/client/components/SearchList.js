@@ -33,7 +33,7 @@ const SearchList = (props) => {
   const [clickID, setID] = useState(0);
   const [favourites, setFavourites] = useState([]);
   const [noMatch, setNotMatched] = useState(false);
-
+  /*
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -51,7 +51,7 @@ const SearchList = (props) => {
 
     fetchApi();
   }, [time.type, props.query]);
-
+*/
   const onFavourite = (item) => {
     const fetchApi = async () => {
       try {

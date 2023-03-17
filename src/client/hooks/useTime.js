@@ -5,7 +5,6 @@ const useTime = () => {
 
   const mealChange = (event) => {
     setMeal(event);
-    console.log(meal);
   };
 
   useEffect(() => {

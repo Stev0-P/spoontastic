@@ -50,8 +50,11 @@ recipesAPI.get("/item/:rid", async (req, res, next) => {
 recipesAPI.get("/random/", async (req, res, next) => {
   const USER_DIET = req.query.diet;
   const USER_INTOLERANCES = req.query.intolerances;
+  const NUMBER = req.query.num;
   let randomItem = await axios
-    .get(`https://api.spoonacular.com/recipes/random?number=1&tags=primal&apiKey=00b1dcabc6c744a88ed5d4f09f3d2d60`)
+    .get(
+      `https://api.spoonacular.com/recipes/random?number=${NUMBER}&tags=${USER_DIET}&apiKey=55995d23319347f2b5cb64612e2b959a`
+    )
     .catch((err) => console.log(err));
   // console.log(randomItem.data);55995d23319347f2b5cb64612e2b959a
   //eb8c7f0fd49b4483886ec7688277716a
