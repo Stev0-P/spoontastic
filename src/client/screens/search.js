@@ -28,6 +28,85 @@ const Search = () => {
   const [favourites, setFavourites] = useState([]);
   const time = useTime();
 
+  const [dietFilter, setDietFilter] = React.useState("");
+  const [intolerancesFilter, setIntolerancesFilter] = React.useState([]);
+
+  const [maxReadyTime, setMaxReadyTime] = React.useState(0);
+
+  const [minCalories, setMinCalories] = React.useState(0);
+  const [maxCalories, setMaxCalories] = React.useState(0);
+
+  const [minProtein, setMinProtein] = React.useState(0);
+  const [maxProtein, setMaxProtein] = React.useState(0);
+
+  const [minCarbs, setMinCarbs] = React.useState(0);
+  const [maxCarbs, setMaxCarbs] = React.useState(0);
+
+  const [minFat, setMinFat] = React.useState(0);
+  const [maxFat, setMaxFat] = React.useState(0);
+
+  const sendDiet = (dietFilter) => {
+    // the callback. Use a better name
+    setDietFilter(dietFilter);
+    console.log(dietFilter);
+  };
+
+  const sendIntolerances = (intolerancesFilter) => {
+    // the callback. Use a better name
+    setIntolerancesFilter(intolerancesFilter);
+    console.log(intolerancesFilter);
+  };
+
+  const sendReadyTime = (maxReadyTime) => {
+    // the callback. Use a better name
+    setMaxReadyTime(maxReadyTime);
+    console.log(maxReadyTime);
+  };
+
+  const sendMinCalories = (minCalories) => {
+    // the callback. Use a better name
+    setMinCalories(minCalories);
+    console.log(minCalories);
+  };
+  const sendMaxCalories = (maxCalories) => {
+    // the callback. Use a better name
+    setMaxCalories(maxCalories);
+    console.log(maxCalories);
+  };
+  const sendMinProtein = (minProtein) => {
+    // the callback. Use a better name
+    setMinProtein(minProtein);
+    console.log(minProtein);
+  };
+  const sendMaxProtein = (maxProtein) => {
+    // the callback. Use a better name
+    setMaxProtein(maxProtein);
+    console.log(maxProtein);
+  };
+
+  const sendMinCarbs = (minCarbs) => {
+    // the callback. Use a better name
+    setMinCarbs(minCarbs);
+    console.log(minCarbs);
+  };
+  const sendMaxCarbs = (maxCarbs) => {
+    // the callback. Use a better name
+    setMaxCarbs(maxCarbs);
+    console.log(maxCarbs);
+  };
+
+  const sendMinFat = (minFat) => {
+    // the callback. Use a better name
+    setMinFat(minFat);
+    console.log(minFat);
+  };
+
+  const sendMaxFat = (maxFat) => {
+    // the callback. Use a better name
+    setMaxFat(maxFat);
+    console.log(maxFat);
+  };
+
   //const time = useTime();
 
   useEffect(() => {
@@ -46,7 +125,7 @@ const Search = () => {
     event.stopPropagation();
     setSearch(searchTerm);
   };
-
+  /*
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -64,6 +143,7 @@ const Search = () => {
 
     fetchApi();
   }, [time.type, search]);
+*/
   /* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           {!loading &&
             recipes.map((item) => (
@@ -108,7 +188,19 @@ const Search = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FilterDrawer />
+          <FilterDrawer
+            sendDiet={sendDiet}
+            sendIntolerances={sendIntolerances}
+            sendReadyTime={sendReadyTime}
+            sendMinCalories={sendMinCalories}
+            sendMaxCalories={sendMaxCalories}
+            sendMinProtein={sendMinProtein}
+            sendMaxProtein={sendMaxProtein}
+            sendMinCarbs={sendMinCarbs}
+            sendMaxCarbs={sendMaxCarbs}
+            sendMinFat={sendMinFat}
+            sendMaxFat={sendMaxFat}
+          />
         </Box>
       </Box>
 
