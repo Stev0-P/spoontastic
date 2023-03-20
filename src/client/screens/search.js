@@ -27,23 +27,26 @@ const Search = () => {
   const [favourited, setFavourited] = useState(false);
   const [favourites, setFavourites] = useState([]);
   const time = useTime();
+  const [submitted, setSubmitted] = useState(false);
 
-  const [dietFilter, setDietFilter] = React.useState("");
+  const [dietFilter, setDietFilter] = React.useState(activeUser.diet);
+
+  const [intolerances, setIntolerances] = React.useState("");
   const [intolerancesFilter, setIntolerancesFilter] = React.useState([]);
 
-  const [maxReadyTime, setMaxReadyTime] = React.useState(0);
+  const [maxReadyTime, setMaxReadyTime] = React.useState(180);
 
-  const [minCalories, setMinCalories] = React.useState(0);
-  const [maxCalories, setMaxCalories] = React.useState(0);
+  const [minCalories, setMinCalories] = React.useState(10);
+  const [maxCalories, setMaxCalories] = React.useState(2000);
 
-  const [minProtein, setMinProtein] = React.useState(0);
-  const [maxProtein, setMaxProtein] = React.useState(0);
+  const [minProtein, setMinProtein] = React.useState(10);
+  const [maxProtein, setMaxProtein] = React.useState(250);
 
-  const [minCarbs, setMinCarbs] = React.useState(0);
-  const [maxCarbs, setMaxCarbs] = React.useState(0);
+  const [minCarbs, setMinCarbs] = React.useState(10);
+  const [maxCarbs, setMaxCarbs] = React.useState(250);
 
-  const [minFat, setMinFat] = React.useState(0);
-  const [maxFat, setMaxFat] = React.useState(0);
+  const [minFat, setMinFat] = React.useState(10);
+  const [maxFat, setMaxFat] = React.useState(250);
 
   const sendDiet = (dietFilter) => {
     // the callback. Use a better name
@@ -54,7 +57,8 @@ const Search = () => {
   const sendIntolerances = (intolerancesFilter) => {
     // the callback. Use a better name
     setIntolerancesFilter(intolerancesFilter);
-    console.log(intolerancesFilter);
+    let stringIntol = intolerancesFilter.toString();
+    setIntolerances(stringIntol);
   };
 
   const sendReadyTime = (maxReadyTime) => {
@@ -107,6 +111,10 @@ const Search = () => {
     console.log(maxFat);
   };
 
+  const sendSubmitted = (submitted) => {
+    setSubmitted(submitted);
+    console.log(submitted);
+  };
   //const time = useTime();
 
   useEffect(() => {
@@ -125,13 +133,24 @@ const Search = () => {
     event.stopPropagation();
     setSearch(searchTerm);
   };
-  /*
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.get("/api/recipes/search/", {
           params: {
             userQuery: search,
+            diet: dietFilter,
+            intolerances: activeUser.intolerances || intolerances,
+            maxReadyTime: maxReadyTime,
+            minCalories: minCalories,
+            maxCalories: maxCalories,
+            minProtein: minProtein,
+            maxProtein: maxProtein,
+            minCarbs: minCarbs,
+            maxCarbs: maxCarbs,
+            minFat: minFat,
+            maxFat: maxFat,
           },
         });
         setRecipes(response);
@@ -142,8 +161,8 @@ const Search = () => {
     };
 
     fetchApi();
-  }, [time.type, search]);
-*/
+  }, [time.type, search, submitted]);
+
   /* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           {!loading &&
             recipes.map((item) => (
@@ -200,6 +219,7 @@ const Search = () => {
             sendMaxCarbs={sendMaxCarbs}
             sendMinFat={sendMinFat}
             sendMaxFat={sendMaxFat}
+            sendSubmitted={sendSubmitted}
           />
         </Box>
       </Box>

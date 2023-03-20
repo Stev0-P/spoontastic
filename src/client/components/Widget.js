@@ -28,7 +28,7 @@ const Widget = (props) => {
   const activeUser = useContext(UserContext);
   const [favourites, setFavourites] = React.useState([]);
   const [noMatch, setNotMatched] = useState(false);
-
+  /*
   const fetchFavourites = async () => {
     try {
       const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
@@ -82,7 +82,7 @@ const Widget = (props) => {
     }
     // console.log("matches if fav exists" + item.id);
   };
-
+*/
   const MealWidget = () => {
     const history = useHistory();
 

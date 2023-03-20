@@ -38,11 +38,13 @@ const FilterDrawer = ({
   sendMaxCarbs,
   sendMinFat,
   sendMaxFat,
+  sendSubmitted,
 }) => {
   const activeUser = useContext(UserContext);
   const [state, setState] = React.useState({
     right: false,
   });
+
   const [diet, setDiet] = React.useState("");
   const [maxReadyTime, setMaxReadyTime] = React.useState(0);
 
@@ -143,7 +145,7 @@ const FilterDrawer = ({
     setMaxFat(fat[1]);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (anchor) => {
     sendDiet(diet);
     sendIntolerances(intolToString);
     sendReadyTime(maxReadyTime);
@@ -152,9 +154,13 @@ const FilterDrawer = ({
     sendMinProtein(minProtein);
     sendMaxProtein(maxProtein);
     sendMinCarbs(minCarbs);
-    sendMaxCalories(maxCarbs);
+    sendMaxCarbs(maxCarbs);
     sendMinFat(minFat);
     sendMaxFat(maxFat);
+    sendSubmitted(true);
+    console.log(state);
+    toggleDrawer(anchor, false);
+    console.log(state);
   };
 
   const list = (anchor) => (
@@ -357,7 +363,10 @@ const FilterDrawer = ({
           </Box>
         </Box>
         <Divider />
-        <Box sx={{ padding: "1vh", display: "flex", justifyContent: "center", marginTop: "2vh" }}>
+        <Box
+          sx={{ padding: "1vh", display: "flex", justifyContent: "center", marginTop: "2vh" }}
+          onClick={toggleDrawer(anchor, false)}
+        >
           <Button variant="outlined" onClick={handleSubmit}>
             Submit
           </Button>

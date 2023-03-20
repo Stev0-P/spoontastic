@@ -25,13 +25,26 @@ recipesAPI.get("/", async (req, res, next) => {
 
 recipesAPI.get("/search/", async (req, res, next) => {
   const USER_QUERY = req.query.userQuery;
+  const QUERY_PARAMS = req.query;
   let searchList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=1391bf8184c14fb8ab85695eaaf42cf8", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=55995d23319347f2b5cb64612e2b959a", {
       params: {
         query: USER_QUERY,
+        diet: QUERY_PARAMS.diet,
+        maxReadyTime: QUERY_PARAMS.maxReadyTime,
+        minCalories: QUERY_PARAMS.minCalories,
+        maxCalories: QUERY_PARAMS.maxCalories,
+        minProtein: QUERY_PARAMS.minProtein,
+        maxProtein: QUERY_PARAMS.maxProtein,
+        minCarbs: QUERY_PARAMS.minCarbs,
+        maxCarbs: QUERY_PARAMS.maxCarbs,
+        minFat: QUERY_PARAMS.minFat,
+        maxFat: QUERY_PARAMS.maxFat,
       },
     })
     .catch((err) => console.log(err));
+
+  console.log(searchList.data.results);
 
   res.json(searchList.data.results);
 });
@@ -58,6 +71,7 @@ recipesAPI.get("/random/", async (req, res, next) => {
     .catch((err) => console.log(err));
   // console.log(randomItem.data);55995d23319347f2b5cb64612e2b959a
   //eb8c7f0fd49b4483886ec7688277716a
+  //1391bf8184c14fb8ab85695eaaf42cf8
   res.json(randomItem.data);
 });
 
