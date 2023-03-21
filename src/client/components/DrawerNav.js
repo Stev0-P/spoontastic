@@ -1,5 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Avatar, Box, Button, ListItemAvatar } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  ListItemAvatar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -13,9 +28,25 @@ import { makeStyles } from "@material-ui/styles";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
 import UserContext from "..//context/User";
+
 import axios from "axios";
 
 const drawerWidth = "13%";
+
+const intoleranceList = [
+  "Dairy",
+  "Egg",
+  "Gluten",
+  "Grain",
+  "Peanut",
+  "Seafood",
+  "Sesame",
+  "Shellfish",
+  "Soy",
+  "Sulfite",
+  "Tree Nut",
+  "Wheat",
+];
 
 const useStyles = makeStyles({
   active: {
@@ -39,9 +70,14 @@ const DrawerNav = () => {
   const activeUser = useContext(UserContext);
   const [loggedInUser, setLoggedInUser] = useState({});
   const [logout, setLogout] = useState(false);
+  const [diet, setDiet] = useState(activeUser.diet);
+  const [open, setOpen] = React.useState(false);
+  const [intolerance, setIntolerance] = useState("");
+  const [intolToString, setIntolToString] = useState([activeUser.intolerance]);
 
   useEffect(() => {
     setLoggedInUser(activeUser);
+    let stringIntol = activeUser.intolerance.toString();
   }, [activeUser.userId]);
 
   const itemsList = [
@@ -58,6 +94,45 @@ const DrawerNav = () => {
       route: "/favourites",
     },
   ];
+
+  const handleDietChange = (event) => {
+    setDiet(
+      // @ts-expect-error autofill of arbitrary value is not handled.
+      event.target.value
+    );
+  };
+
+  const handleIntoleranceChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setIntolToString(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+
+    let stringIntol = intolToString.toString();
+    setIntolerance(stringIntol);
+  };
+
+  const handleSubmit = async () => {
+    const { data: response } = await axios.patch("/api/preferences/change", {
+      diet: diet === "" ? activeUser.diet : diet,
+      intolerance: intolerance === "" ? activeUser.intolerance : intolerance,
+      email: activeUser.email,
+    });
+
+    handleClose();
+    window.location.reload();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const userLogout = () => {
     const fetchApi = async () => {
@@ -126,7 +201,7 @@ const DrawerNav = () => {
                   <Button
                     variant="outlined"
                     color="neutral"
-                    onClick={() => history.push("/account")}
+                    onClick={handleClickOpen}
                     sx={location.pathname === "/account" ? { backgroundColor: "#81c784" } : null}
                   >
                     Account
@@ -154,6 +229,109 @@ const DrawerNav = () => {
           </Button>
         </Box>
       </Drawer>
+      <Box>
+        <Dialog fullWidth={false} maxWidth="sm" open={open} onClose={handleClose}>
+          <DialogTitle>Account</DialogTitle>
+          <DialogContent>
+            <DialogContentText>You can view your details and change dietary preferences here.</DialogContentText>
+            <Box
+              noValidate
+              component="form"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Box sx={{ padding: "1vh" }}>
+                <TextField
+                  id="outlined-read-only-input"
+                  label="Name"
+                  defaultValue={activeUser.name}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  sx={{ width: "100%" }}
+                />
+              </Box>
+              <Box sx={{ padding: "1vh" }}>
+                <TextField
+                  id="outlined-read-only-input"
+                  label="E-Mail"
+                  defaultValue={activeUser.email}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  sx={{ width: "100%" }}
+                />
+              </Box>
+              <Box sx={{ padding: "1vh" }}>
+                <FormControl sx={{ width: "100%" }}>
+                  <InputLabel htmlFor="your-diet">Your Diet</InputLabel>
+                  <Select
+                    autoFocus
+                    value={diet}
+                    onChange={handleDietChange}
+                    label="Your Diet"
+                    inputProps={{
+                      name: "your-diet",
+                      id: "your-diet",
+                    }}
+                  >
+                    <MenuItem value="regular">Regular</MenuItem>
+                    <MenuItem value="gluten free">Gluten Free</MenuItem>
+                    <MenuItem value="ketogenic">Ketogenic</MenuItem>
+                    <MenuItem value="vegetarian">Vegetarian</MenuItem>
+                    <MenuItem value="lacto-vegetarian">Lacto-Vegetarian</MenuItem>
+                    <MenuItem value="ovo-vegetarian">Ovo-Vegetarian</MenuItem>
+                    <MenuItem value="vegan">Vegan</MenuItem>
+                    <MenuItem value="pescaterian">Pescaterian</MenuItem>
+                    <MenuItem value="paleo">Paleo</MenuItem>
+                    <MenuItem value="primal">Primal</MenuItem>
+                    <MenuItem value="whole30">Whole 30</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+              <Box sx={{ padding: "1vh" }}>
+                <FormControl sx={{ width: "100%" }}>
+                  <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
+                  <Select
+                    autoFocus
+                    value={intolToString}
+                    multiple
+                    onChange={handleIntoleranceChange}
+                    label="Your-Intolerance"
+                    inputProps={{
+                      name: "your-intolerance",
+                      id: "your-intolerance",
+                    }}
+                    input={<OutlinedInput label="Your Intolerance" />}
+                  >
+                    {intoleranceList.map((intolerance) => (
+                      <MenuItem key={intolerance} value={intolerance}>
+                        {intolerance}
+                      </MenuItem>
+                    ))}
+                    {/* <MenuItem value="egg">Egg</MenuItem>
+                        <MenuItem value="gluten">Gluten</MenuItem>
+                        <MenuItem value="grain">Grain</MenuItem>
+                        <MenuItem value="peanut">Peanut</MenuItem>
+                        <MenuItem value="seafood">Seafood</MenuItem>
+                        <MenuItem value="sesame">Sesame</MenuItem>
+                        <MenuItem value="shellfish">Shellfish</MenuItem>
+                        <MenuItem value="soy">Soy</MenuItem>
+                        <MenuItem value="sulfite">Sulfite</MenuItem>
+                        <MenuItem value="tree-nut">Tree-Nut</MenuItem>
+                        <MenuItem value="">Wheat</MenuItem> */}
+                  </Select>
+                </FormControl>
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "center", padding: "2vh" }}>
+                <Button variant="outlined">Submit</Button>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
+      </Box>
     </Box>
   );
 };
