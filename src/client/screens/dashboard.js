@@ -100,7 +100,7 @@ const Dashboard = () => {
       </List>*/
   console.log(recipesList);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "13%" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "15vh" }}>
       <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
         <Typography variant="h4">We Recommend:</Typography>
       </Box>

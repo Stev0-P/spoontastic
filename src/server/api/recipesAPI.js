@@ -27,7 +27,7 @@ recipesAPI.get("/search/", async (req, res, next) => {
   const USER_QUERY = req.query.userQuery;
   const QUERY_PARAMS = req.query;
   let searchList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=55995d23319347f2b5cb64612e2b959a", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=eb8c7f0fd49b4483886ec7688277716a", {
       params: {
         query: USER_QUERY,
         diet: QUERY_PARAMS.diet,
@@ -66,7 +66,7 @@ recipesAPI.get("/random/", async (req, res, next) => {
   const NUMBER = req.query.num;
   let randomItem = await axios
     .get(
-      `https://api.spoonacular.com/recipes/random?number=${NUMBER}&tags=${USER_DIET}&apiKey=55995d23319347f2b5cb64612e2b959a`
+      `https://api.spoonacular.com/recipes/random?number=${NUMBER}&tags=${USER_DIET}&apiKey=eb8c7f0fd49b4483886ec7688277716a`
     )
     .catch((err) => console.log(err));
   // console.log(randomItem.data);55995d23319347f2b5cb64612e2b959a

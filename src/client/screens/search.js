@@ -173,7 +173,7 @@ const Search = () => {
         </Grid>*/
 
   return (
-    <Box sx={{ flexGrow: 1, marginLeft: "13%" }}>
+    <Box sx={{ flexGrow: 1, marginLeft: "15vh" }}>
       <Typography sx={{ padding: 2 }} variant={"h4"}>
         Search
       </Typography>

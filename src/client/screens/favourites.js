@@ -24,12 +24,6 @@ const Favourites = () => {
   const [recNo, setRecNo] = useState(false);
 
   useEffect(() => {
-    if (activeUser.name === "") {
-      history.push("/");
-    }
-  }, []);
-
-  useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
@@ -65,7 +59,7 @@ const Favourites = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginLeft: "13%" }}>
+    <Box sx={{ flexGrow: 1, marginLeft: "15vh" }}>
       <div style={{ marginLeft: "1em" }}>
         <h2>Your Favourite Recipes</h2>
       </div>

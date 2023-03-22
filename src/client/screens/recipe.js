@@ -152,172 +152,174 @@ const Recipe = () => {
   };
 
   return (
-    <Box sx={{ display: " flex", flexDirection: "column", marginleft: "13%" }}>
-      {alert === true ? (
-        <Alert severity="warning" sx={{ padding: "10px" }}>
-          <AlertTitle>Warning</AlertTitle>
-          This recipe does not match your dietary and intolerance preferences.
-        </Alert>
-      ) : (
-        ""
-      )}
-      <Box sx={{ marginLeft: 3, marginTop: 4 }}>
-        <Typography variant="h3">{recipe.title}</Typography>
-      </Box>
-      <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
-        <Box sx={{ fontSize: "25px" }}>
-          <Typography variant="h5">
-            Health Score:
-            <Rating name="read-only" size="relative" value={rating} sx={{}} readOnly />
-            {favourited === false ? (
-              <IconButton
-                size="large"
-                sx={{ marginRight: 3, marginLeft: 6 }}
-                selected={favourited}
-                onClick={() => {
-                  onFavourite(recipe);
-                }}
-              >
-                <StarIcon fontSize="large" />
-              </IconButton>
-            ) : (
-              <Typography
-                variant="h5"
-                color="orange"
-                sx={{ marginLeft: 6, whiteSpace: "nowrap", display: "inline-block", marginBottom: 2 }}
-              >
-                Favourited
-              </Typography>
-            )}
-          </Typography>
+    <Box sx={{ marginLeft: "15vh" }}>
+      <Box sx={{ display: " flex", flexDirection: "column" }}>
+        {alert === true ? (
+          <Alert severity="warning" sx={{ padding: "10px" }}>
+            <AlertTitle>Warning</AlertTitle>
+            This recipe does not match your dietary and intolerance preferences.
+          </Alert>
+        ) : (
+          ""
+        )}
+        <Box sx={{ marginLeft: 3, marginTop: 4 }}>
+          <Typography variant="h3">{recipe.title}</Typography>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <img
-            style={{
-              height: "350px",
-              width: "450px",
-              borderRadius: "1em",
-            }}
-            src={recipe.image}
-          ></img>
-          <Box>
-            <Demo sx={{ borderRadius: "1em" }}>
-              <List>
-                {!loading &&
-                  recipe.nutrition.nutrients
-                    .filter(
-                      (nutrient) =>
-                        nutrient.name === "Calories" ||
-                        nutrient.name === "Fat" ||
-                        nutrient.name === "Saturated Fat" ||
-                        nutrient.name === "Carbohydrates" ||
-                        nutrient.name === "Protein"
-                    )
-                    .map((item) => (
-                      <ListItem
-                        key={item.name}
-                        sx={{
-                          backgroundColor: "#f5efe9",
-                          borderRadius: "1em",
-                          marginTop: "0.5em",
-                          boxShadow: 2,
-                          marginLeft: 3,
-                        }}
-                        disablePadding
-                      >
-                        <ListItemText
-                          primary={item.name}
-                          secondary={item.amount}
-                          sx={{
-                            margin: 0.5,
-                            height: "3em",
-                            backgroundColor: "#FAFAF9",
-                            borderRadius: "1em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            paddingLeft: "1em",
-                            paddingRight: "1em",
-                          }}
-                        />
-                      </ListItem>
-                    ))}
-              </List>
-            </Demo>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexGrow: 1,
-              flexDirection: "column",
-              backgroundColor: "#f7a05e",
-              borderRadius: "1em",
-              marginRight: 4,
-              marginLeft: 5,
-              marginTop: 3,
-              paddingTop: "1em",
-            }}
-          >
-            <Typography sx={{ paddingLeft: "0.525em" }} variant="h4">
-              Instructions
+        <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
+          <Box sx={{ fontSize: "25px" }}>
+            <Typography variant="h5">
+              Health Score:
+              <Rating name="read-only" size="relative" value={rating} sx={{}} readOnly />
+              {favourited === false ? (
+                <IconButton
+                  size="large"
+                  sx={{ marginRight: 3, marginLeft: 6 }}
+                  selected={favourited}
+                  onClick={() => {
+                    onFavourite(recipe);
+                  }}
+                >
+                  <StarIcon fontSize="large" />
+                </IconButton>
+              ) : (
+                <Typography
+                  variant="h5"
+                  color="orange"
+                  sx={{ marginLeft: 6, whiteSpace: "nowrap", display: "inline-block", marginBottom: 2 }}
+                >
+                  Favourited
+                </Typography>
+              )}
             </Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <img
+              style={{
+                height: "350px",
+                width: "450px",
+                borderRadius: "1em",
+              }}
+              src={recipe.image}
+            ></img>
+            <Box>
+              <Demo sx={{ borderRadius: "1em" }}>
+                <List>
+                  {!loading &&
+                    recipe.nutrition.nutrients
+                      .filter(
+                        (nutrient) =>
+                          nutrient.name === "Calories" ||
+                          nutrient.name === "Fat" ||
+                          nutrient.name === "Saturated Fat" ||
+                          nutrient.name === "Carbohydrates" ||
+                          nutrient.name === "Protein"
+                      )
+                      .map((item) => (
+                        <ListItem
+                          key={item.name}
+                          sx={{
+                            backgroundColor: "#f5efe9",
+                            borderRadius: "1em",
+                            marginTop: "0.5em",
+                            boxShadow: 2,
+                            marginLeft: 3,
+                          }}
+                          disablePadding
+                        >
+                          <ListItemText
+                            primary={item.name}
+                            secondary={item.amount}
+                            sx={{
+                              margin: 0.5,
+                              height: "3em",
+                              backgroundColor: "#FAFAF9",
+                              borderRadius: "1em",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              paddingLeft: "1em",
+                              paddingRight: "1em",
+                            }}
+                          />
+                        </ListItem>
+                      ))}
+                </List>
+              </Demo>
+            </Box>
             <Box
               sx={{
-                backgroundColor: "#f5efe9",
+                display: "flex",
+                flexGrow: 1,
+                flexDirection: "column",
+                backgroundColor: "#f7a05e",
                 borderRadius: "1em",
+                marginRight: 4,
+                marginLeft: 5,
+                marginTop: 3,
                 paddingTop: "1em",
-                paddingLeft: "1.5em",
-                height: "100%",
               }}
             >
-              <Typography variant="body1">{parse(`${recipe.instructions}`)}</Typography>
+              <Typography sx={{ paddingLeft: "0.525em" }} variant="h4">
+                Instructions
+              </Typography>
+              <Box
+                sx={{
+                  backgroundColor: "#f5efe9",
+                  borderRadius: "1em",
+                  paddingTop: "1em",
+                  paddingLeft: "1.5em",
+                  height: "100%",
+                }}
+              >
+                <Typography variant="body1">{parse(`${recipe.instructions}`)}</Typography>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexGrow: 1,
-          flexDirection: "column",
-          backgroundColor: "#f7a05e",
-          borderRadius: "1em",
-          marginRight: 4,
-          marginLeft: 3,
-          marginTop: 3,
-          paddingTop: "1em",
-        }}
-      >
-        <Typography sx={{ paddingLeft: "0.525em" }} variant="h4">
-          Description
-        </Typography>
         <Box
           sx={{
-            backgroundColor: "#f5efe9",
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: "column",
+            backgroundColor: "#f7a05e",
             borderRadius: "1em",
+            marginRight: 4,
+            marginLeft: 3,
+            marginTop: 3,
             paddingTop: "1em",
-            paddingLeft: "1.5em",
-            paddingBottom: "1.5em",
           }}
         >
-          <Typography variant="body1">{parse(`${recipe.summary}`)}</Typography>
+          <Typography sx={{ paddingLeft: "0.525em" }} variant="h4">
+            Description
+          </Typography>
+          <Box
+            sx={{
+              backgroundColor: "#f5efe9",
+              borderRadius: "1em",
+              paddingTop: "1em",
+              paddingLeft: "1.5em",
+              paddingBottom: "1.5em",
+            }}
+          >
+            <Typography variant="body1">{parse(`${recipe.summary}`)}</Typography>
+          </Box>
         </Box>
+        <Chip
+          label="Return"
+          variant="outlined"
+          color="success"
+          onClick={() => history.goBack()}
+          sx={{
+            fontSize: "1.5em",
+            fontWeight: "bold",
+            height: "2em",
+            borderWidth: "1.75px",
+            marginLeft: "35%",
+            marginRight: "35%",
+            marginTop: "2%",
+          }}
+        />
       </Box>
-      <Chip
-        label="Return"
-        variant="outlined"
-        color="success"
-        onClick={() => history.goBack()}
-        sx={{
-          fontSize: "1.5em",
-          fontWeight: "bold",
-          height: "2em",
-          borderWidth: "1.75px",
-          marginLeft: "35%",
-          marginRight: "35%",
-          marginTop: "2%",
-        }}
-      />
     </Box>
   );
 };

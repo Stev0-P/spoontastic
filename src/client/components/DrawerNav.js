@@ -14,6 +14,8 @@ import {
   MenuItem,
   OutlinedInput,
   TextField,
+  DialogActions,
+  NativeSelect,
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -30,8 +32,6 @@ import { ThemeProvider } from "@emotion/react";
 import UserContext from "..//context/User";
 
 import axios from "axios";
-
-const drawerWidth = "13%";
 
 const intoleranceList = [
   "Dairy",
@@ -50,7 +50,7 @@ const intoleranceList = [
 
 const useStyles = makeStyles({
   active: {
-    background: "#81c784",
+    background: "#64b5f6",
   },
 });
 
@@ -70,15 +70,23 @@ const DrawerNav = () => {
   const activeUser = useContext(UserContext);
   const [loggedInUser, setLoggedInUser] = useState({});
   const [logout, setLogout] = useState(false);
-  const [diet, setDiet] = useState(activeUser.diet);
+  const [diet, setDiet] = useState("");
   const [open, setOpen] = React.useState(false);
   const [intolerance, setIntolerance] = useState("");
-  const [intolToString, setIntolToString] = useState([activeUser.intolerance]);
+  const [intolToString, setIntolToString] = useState([]);
+
+  useEffect(() => {
+    console.log(activeUser.intolerance);
+    setIntolToString(activeUser.intolerance);
+  }, []);
 
   useEffect(() => {
     setLoggedInUser(activeUser);
-    let stringIntol = activeUser.intolerance.toString();
   }, [activeUser.userId]);
+
+  useEffect(() => {
+    setIntolerance(intolToString.join(","));
+  }, [intolToString]);
 
   const itemsList = [
     {
@@ -110,9 +118,6 @@ const DrawerNav = () => {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-
-    let stringIntol = intolToString.toString();
-    setIntolerance(stringIntol);
   };
 
   const handleSubmit = async () => {
@@ -149,16 +154,17 @@ const DrawerNav = () => {
     if (response === true) {
       history.push("/login");
     } else {
+      console.log("unable to logout");
     }
   };
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: "15vh",
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: "15vh",
             boxSizing: "border-box",
           },
         }}
@@ -183,20 +189,6 @@ const DrawerNav = () => {
           <Box>
             <List>
               <ThemeProvider theme={theme}>
-                <Avatar
-                  sx={{
-                    margin: "auto",
-                    width: "3.4em",
-                    height: "3.4em",
-                    bgcolor: "#f7a05e",
-                    color: "black",
-                  }}
-                >
-                  <img
-                    style={{ height: "3.025em", width: "3.025em", borderRadius: "50%" }}
-                    src={`${loggedInUser.picture}`}
-                  ></img>
-                </Avatar>
                 <ListItem>
                   <Button
                     variant="outlined"
@@ -268,13 +260,12 @@ const DrawerNav = () => {
                 <FormControl sx={{ width: "100%" }}>
                   <InputLabel htmlFor="your-diet">Your Diet</InputLabel>
                   <Select
-                    autoFocus
-                    value={diet}
+                    defaultValue={activeUser.diet}
                     onChange={handleDietChange}
                     label="Your Diet"
                     inputProps={{
                       name: "your-diet",
-                      id: "your-diet",
+                      id: "uncontrolled-native",
                     }}
                   >
                     <MenuItem value="regular">Regular</MenuItem>
@@ -295,14 +286,13 @@ const DrawerNav = () => {
                 <FormControl sx={{ width: "100%" }}>
                   <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
                   <Select
-                    autoFocus
-                    value={intolToString}
                     multiple
+                    value={intolToString}
                     onChange={handleIntoleranceChange}
                     label="Your-Intolerance"
                     inputProps={{
                       name: "your-intolerance",
-                      id: "your-intolerance",
+                      id: "uncontrolled",
                     }}
                     input={<OutlinedInput label="Your Intolerance" />}
                   >
@@ -311,23 +301,14 @@ const DrawerNav = () => {
                         {intolerance}
                       </MenuItem>
                     ))}
-                    {/* <MenuItem value="egg">Egg</MenuItem>
-                        <MenuItem value="gluten">Gluten</MenuItem>
-                        <MenuItem value="grain">Grain</MenuItem>
-                        <MenuItem value="peanut">Peanut</MenuItem>
-                        <MenuItem value="seafood">Seafood</MenuItem>
-                        <MenuItem value="sesame">Sesame</MenuItem>
-                        <MenuItem value="shellfish">Shellfish</MenuItem>
-                        <MenuItem value="soy">Soy</MenuItem>
-                        <MenuItem value="sulfite">Sulfite</MenuItem>
-                        <MenuItem value="tree-nut">Tree-Nut</MenuItem>
-                        <MenuItem value="">Wheat</MenuItem> */}
                   </Select>
                 </FormControl>
               </Box>
-              <Box sx={{ display: "flex", justifyContent: "center", padding: "2vh" }}>
-                <Button variant="outlined">Submit</Button>
-              </Box>
+              <DialogActions>
+                <Button variant="outlined" onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </DialogActions>
             </Box>
           </DialogContent>
         </Dialog>

@@ -78,7 +78,6 @@ const Account = () => {
       intolerance: intolerance === "" ? activeUser.intolerance : intolerance,
       email: activeUser.email,
     });
-
     handleClose();
     window.location.reload();
   };
