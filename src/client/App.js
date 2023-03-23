@@ -38,7 +38,7 @@ const App = ({ user }) => {
     userId,
     setUserId,
   };
-  console.log(activeUser.name);
+
   return (
     <React.Fragment>
       <CssBaseline>

@@ -76,11 +76,6 @@ const DrawerNav = () => {
   const [intolToString, setIntolToString] = useState([]);
 
   useEffect(() => {
-    console.log(activeUser.intolerance);
-    setIntolToString(activeUser.intolerance);
-  }, []);
-
-  useEffect(() => {
     setLoggedInUser(activeUser);
   }, [activeUser.userId]);
 
@@ -287,12 +282,11 @@ const DrawerNav = () => {
                   <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
                   <Select
                     multiple
-                    value={intolToString}
+                    value={intolToString === [] ? activeUser.intolerance : intolToString}
                     onChange={handleIntoleranceChange}
                     label="Your-Intolerance"
                     inputProps={{
                       name: "your-intolerance",
-                      id: "uncontrolled",
                     }}
                     input={<OutlinedInput label="Your Intolerance" />}
                   >
