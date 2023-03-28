@@ -26,11 +26,14 @@ recipesAPI.get("/", async (req, res, next) => {
 recipesAPI.get("/search/", async (req, res, next) => {
   const USER_QUERY = req.query.userQuery;
   const QUERY_PARAMS = req.query;
+  console.log(QUERY_PARAMS);
   let searchList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=1391bf8184c14fb8ab85695eaaf42cf8", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=eb8c7f0fd49b4483886ec7688277716a", {
       params: {
         query: USER_QUERY,
         diet: QUERY_PARAMS.diet,
+        intolerances: QUERY_PARAMS.intolerances,
+        type: QUERY_PARAMS.type,
         maxReadyTime: QUERY_PARAMS.maxReadyTime,
         minCalories: QUERY_PARAMS.minCalories,
         maxCalories: QUERY_PARAMS.maxCalories,

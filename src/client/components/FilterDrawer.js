@@ -29,6 +29,7 @@ import { FaceTwoTone } from "@mui/icons-material";
 const FilterDrawer = ({
   sendDiet,
   sendIntolerances,
+  sendType,
   sendReadyTime,
   sendMinCalories,
   sendMaxCalories,
@@ -46,6 +47,7 @@ const FilterDrawer = ({
   });
 
   const [diet, setDiet] = React.useState("");
+  const [type, setType] = React.useState("");
   const [maxReadyTime, setMaxReadyTime] = React.useState(0);
 
   const [calories, setCalories] = React.useState([0, 400]);
@@ -117,6 +119,10 @@ const FilterDrawer = ({
     setDiet(event.target.value);
   };
 
+  const handleTypeChange = (event) => {
+    setType(event.target.value);
+  };
+
   const handleTimeChange = (event, newValue) => {
     setMaxReadyTime(newValue);
   };
@@ -147,6 +153,7 @@ const FilterDrawer = ({
 
   const handleSubmit = (anchor) => {
     sendDiet(diet);
+    sendType(type);
     sendIntolerances(intolToString);
     sendReadyTime(maxReadyTime);
     sendMinCalories(minCalories);
@@ -196,7 +203,7 @@ const FilterDrawer = ({
         </FormControl>
       </Box>
       <Divider />
-      <Box sx={{ marginTop: "1vh", padding: "1vh" }}>
+      <Box sx={{ padding: "1vh" }}>
         <Box sx={{ paddingBottom: "1vh" }}>
           <FormControl sx={{ width: "100%" }}>
             <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
@@ -220,6 +227,37 @@ const FilterDrawer = ({
             </Select>
           </FormControl>
         </Box>
+        <Divider />
+        <Box sx={{ paddingTop: "1vh" }}>
+          <FormControl sx={{ width: "100%" }}>
+            <InputLabel htmlFor="food-type">Food Type</InputLabel>
+            <Select
+              autoFocus
+              value={type}
+              onChange={handleTypeChange}
+              label="Food Type"
+              inputProps={{
+                name: "food-type",
+                id: "food-type",
+              }}
+            >
+              <MenuItem value="main course">Main Course</MenuItem>
+              <MenuItem value="side dish">Side Dish</MenuItem>
+              <MenuItem value="dessert">Dessert</MenuItem>
+              <MenuItem value="appetizer">Appetizer</MenuItem>
+              <MenuItem value="salad">Salad</MenuItem>
+              <MenuItem value="breakfast">Breakfast</MenuItem>
+              <MenuItem value="soup">Soup</MenuItem>
+              <MenuItem value="beverage">Beverage</MenuItem>
+              <MenuItem value="sauce">Sauce</MenuItem>
+              <MenuItem value="marinade">Marinade</MenuItem>
+              <MenuItem value="snack">Snack</MenuItem>
+              <MenuItem value="fingerfood">Fingerfood</MenuItem>
+              <MenuItem value="drink">Drink</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Divider />
         <Box>
           <Typography variant={"h6"}>Ready in {maxReadyTime} minutes</Typography>
           <Box sx={{ paddingLeft: "0.25vh", paddingRight: "1vh", paddingBottom: "0.5vh" }}>

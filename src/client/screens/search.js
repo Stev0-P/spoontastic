@@ -30,6 +30,7 @@ const Search = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const [dietFilter, setDietFilter] = React.useState(activeUser.diet);
+  const [type, setType] = React.useState("");
 
   const [intolerances, setIntolerances] = React.useState("");
   const [intolerancesFilter, setIntolerancesFilter] = React.useState([]);
@@ -52,6 +53,12 @@ const Search = () => {
     // the callback. Use a better name
     setDietFilter(dietFilter);
     console.log(dietFilter);
+  };
+
+  const sendType = (typeFilter) => {
+    // the callback. Use a better name
+    setType(typeFilter);
+    console.log(typeFilter);
   };
 
   const sendIntolerances = (intolerancesFilter) => {
@@ -135,6 +142,8 @@ const Search = () => {
   };
 
   useEffect(() => {
+    setSubmitted(false);
+    console.log(type);
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.get("/api/recipes/search/", {
@@ -142,6 +151,7 @@ const Search = () => {
             userQuery: search,
             diet: dietFilter,
             intolerances: activeUser.intolerances || intolerances,
+            type: type,
             maxReadyTime: maxReadyTime,
             minCalories: minCalories,
             maxCalories: maxCalories,
@@ -210,6 +220,7 @@ const Search = () => {
           <FilterDrawer
             sendDiet={sendDiet}
             sendIntolerances={sendIntolerances}
+            sendType={sendType}
             sendReadyTime={sendReadyTime}
             sendMinCalories={sendMinCalories}
             sendMaxCalories={sendMaxCalories}
