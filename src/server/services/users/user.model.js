@@ -8,6 +8,7 @@ const userSchema = new Schema({
   intolerances: [{ type: String, required: true }],
   JWT: { type: String, required: false },
   favourites: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Favourites" }],
+  ratings: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Ratings" }],
   password: { type: String, required: false },
 });
 

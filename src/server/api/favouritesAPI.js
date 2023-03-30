@@ -23,6 +23,27 @@ favouritesAPI.get("/:uid", async (req, res, next) => {
   //console.log(res)
 });
 
+favouritesAPI.get("/:uid/:rid", async (req, res, next) => {
+  const userID = req.params.uid;
+  const recipeID = req.params.rid;
+  let recipes;
+
+  try {
+    recipes = await favouritesListItemSchema.find({ creator: userID, recipeID: recipeID });
+  } catch (err) {
+    const error = new Error("Something went wrong!");
+    error.code = 500;
+    console.log(err);
+    return next(error);
+  }
+
+  if (!recipes) {
+    res.json({ recipe: "N/A" });
+  }
+  res.json({ recipe: recipes.map((recipe) => recipe.toObject({ getters: true })) });
+  //console.log(res)
+});
+
 favouritesAPI.get("/recipe/:rid", async (req, res, next) => {
   const recipeID = req.params.rid;
   let recipe;
