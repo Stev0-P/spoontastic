@@ -1,6 +1,19 @@
 import React from "react";
 import { Box } from "@mui/system";
-import { Typography, List, ListItem, ListItemText, Chip, TextField } from "@mui/material";
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Chip,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContentText,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
@@ -36,6 +49,8 @@ const Recipe = () => {
   const [alert, setAlert] = useState(false);
   const [matched, setMatched] = useState();
   const [favourited, setFavourited] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [favRating, setFavRating] = React.useState(0);
   const activeUser = useContext(UserContext);
 
   useEffect(() => {
@@ -46,7 +61,7 @@ const Recipe = () => {
         setMethod(response.analyzedInstructions[0].steps);
         setIngredients(response.nutrition.ingredients);
         setDiets(response.diets);
-        ratingScore(response.healthScore);
+        //ratingScore(response.healthScore);
       } catch (err) {
         console.log(err);
       }
@@ -54,7 +69,7 @@ const Recipe = () => {
     };
     fetchApi();
     ratingScore();
-  }, []);
+  }, [recipeID]);
 
   useEffect(() => {
     setRecDiet(recipe.diets);
@@ -119,6 +134,14 @@ const Recipe = () => {
     }
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const onFavourite = (item) => {
     const fetchApi = async () => {
       try {
@@ -168,7 +191,14 @@ const Recipe = () => {
         <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Box sx={{ fontSize: "25px", display: "flex", flexDirection: "row", justifyContent: "center" }}>
-              <Rating name="read-only" size="relative" value={rating} sx={{}} readOnly />
+              <Rating
+                name="simple-controlled"
+                size="large"
+                value={rating}
+                onChange={(event, newValue) => {
+                  setRating(newValue);
+                }}
+              />
               <List
                 sx={{ display: "flex", flexDirection: "row", marginTop: "0px", marginBottom: "0px", paddingTop: "0px" }}
               >
@@ -190,9 +220,10 @@ const Recipe = () => {
                   size="large"
                   sx={{ marginRight: 3, marginLeft: 6 }}
                   selected={favourited}
-                  onClick={() => {
-                    onFavourite(recipe);
-                  }}
+                  onClick={
+                    //onFavourite(recipe);
+                    handleClickOpen
+                  }
                 >
                   <StarIcon fontSize="large" />
                 </IconButton>
@@ -206,9 +237,31 @@ const Recipe = () => {
                 </Typography>
               )}
             </Box>
+            <Dialog fullWidth={false} maxWidth="sm" open={open} onClose={handleClose}>
+              <DialogTitle>Rate This Recipe</DialogTitle>
+              <DialogContent>
+                <DialogContentText>Give this recipe a rating and add to favourites.</DialogContentText>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Box sx={{ display: "flex", justifyContent: "flex-start", paddingTop: "2vh" }}>
+                    <Rating
+                      name="simple-controlled"
+                      size="large"
+                      value={favRating}
+                      onChange={(event, newValue) => {
+                        setFavRating(newValue);
+                      }}
+                    />
+                  </Box>
+                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
+                    <Button sx={{ flex: "start" }}>Submit</Button>
+                    <Button>Close</Button>
+                  </Box>
+                </Box>
+              </DialogContent>
+            </Dialog>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", width: "65vh" }}>
               <Box>
                 <img
                   style={{
@@ -221,7 +274,15 @@ const Recipe = () => {
                 ></img>
               </Box>
 
-              <Box sx={{ display: "flex", justifyContent: "flex-start", paddingTop: "1vh", paddingBottom: "1vh" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  paddingTop: "1vh",
+                  paddingBottom: "1vh",
+                  overflowX: "auto",
+                }}
+              >
                 {!loading &&
                   diets.map((item) => (
                     <Chip sx={{ marginRight: "1vh" }} key={item} variant="outlined" label={item}></Chip>
@@ -229,7 +290,7 @@ const Recipe = () => {
               </Box>
             </Box>
 
-            <Box sx={{ padding: "2vh" }}>
+            <Box sx={{ paddingLeft: "2vh", paddingTop: "0px" }}>
               <Demo>
                 <List>
                   {!loading &&
