@@ -63,15 +63,28 @@ const Favourites = () => {
       <div style={{ marginLeft: "1em" }}>
         <h2>Your Favourite Recipes</h2>
       </div>
-      <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
-        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {!loading &&
-            recipes.map((item) => (
-              <Grid item key={item.id}>
-                <Widget recipe={item} loading={loading} />
-              </Grid>
-            ))}
-        </Grid>
+      <Box>
+        {loading === false ? (
+          <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {recipes.map((item) => (
+                <Grid item key={item.id}>
+                  <Widget recipe={item} loading={loading} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        ) : (
+          <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {[...Array(12)].map((_, i) => (
+                <Grid item key={i}>
+                  <Widget recipe={i} loading={true} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
       </Box>
     </Box>
   );

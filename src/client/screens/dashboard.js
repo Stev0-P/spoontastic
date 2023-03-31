@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { ListItem, Typography, List, Grid } from "@mui/material";
+import { ListItem, Typography, List, Grid, Skeleton } from "@mui/material";
 import RecipeList from "../components/RecipeList";
 import Container from "@mui/material/Container";
 import DashboardWidgets from "../client/components/DashboardWidgets";
@@ -13,6 +13,7 @@ import axios from "axios";
 const Dashboard = () => {
   const activeUser = useContext(UserContext);
   const [loading, setLoading] = React.useState(true);
+  const [timeR, setTimeR] = React.useState("");
   const time = useTime();
 
   const [recipe, setRecipe] = React.useState({});
@@ -31,6 +32,7 @@ const Dashboard = () => {
             num: "1",
           },
         });
+
         setLoading(false);
         setRecipe(recipe.recipes[0]);
         setDiets(recipe.recipes[0].diets);
@@ -54,6 +56,7 @@ const Dashboard = () => {
             num: "12",
           },
         });
+        console.log(time.text);
         setLoading(false);
         setRecipesList(list.recipes);
         //   setDiets(recipe.recipes[0].diets);
@@ -64,59 +67,50 @@ const Dashboard = () => {
 
     return () => controller.abort();
   }, []);
-  /*
-  useEffect(() => {
-    const controller = new AbortController();
-    (async () => {
-      try {
-        const { data: response } = await axios.get("/api/recipes/", {
-          params: {
-            mealType: time.type,
-            userDiet: activeUser.diet,
-            userIntolerances: activeUser.intolerance,
-          },
-        });
 
-        setRecipesList(response);
-      } catch (err) {
-        console.log(err);
-      }
-      setLoading(false);
-    })();
-    console.log(recipesList);
-    return () => controller.abort();
-  }, [time.type]);
-*/
-  //<RecipeList label="Recommended" />
-  const history = useHistory();
-  const location = useLocation();
-  /* <List>
-        {!loading &&
-          recipesList.map((item) => (
-            <ListItem key={item.id}>
-              <Widget recipe={item} loading={loading} />
-            </ListItem>
-          ))}
-      </List>*/
-  console.log(recipesList);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "15vh" }}>
       <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
-        <Typography variant="h4">We Recommend:</Typography>
+        {loading === false ? (
+          <Typography variant="h4">You Might Like:</Typography>
+        ) : (
+          <Box sx={{ width: "40vh" }}>
+            <Skeleton animation="wave" variant="text" sx={{ fontSize: "3rem" }} />
+          </Box>
+        )}
       </Box>
       <Widget recipe={recipe} loading={loading} diets={diets} />
       <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
-        <Typography variant="h4">Recommended {time.text}</Typography>
+        {loading === false ? (
+          <Typography variant="h4">Recommended For You</Typography>
+        ) : (
+          <Box sx={{ width: "60vh" }}>
+            <Skeleton animation="wave" variant="text" sx={{ fontSize: "3rem" }} />
+          </Box>
+        )}
       </Box>
-      <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
-        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {!loading &&
-            recipesList.map((item) => (
-              <Grid item key={item.id}>
-                <Widget recipe={item} loading={loading} diets={item.diets} />
-              </Grid>
-            ))}
-        </Grid>
+      <Box>
+        {loading === false ? (
+          <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {recipesList.map((item) => (
+                <Grid item key={item.id}>
+                  <Widget recipe={item} loading={loading} diets={item.diets} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        ) : (
+          <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {[...Array(12)].map((_, i) => (
+                <Grid item key={i}>
+                  <Widget recipe={i} loading={true} diets={i} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
       </Box>
     </Box>
   );

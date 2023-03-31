@@ -229,6 +229,7 @@ const Recipe = () => {
         const { data: response } = await axios.delete(`/api/favourites/delete/${recipeID}`);
         setDeleted((prevState) => prevState + 1);
         setFavourited(false);
+        setOpenSnack(true);
       } catch (err) {
         console.log(err);
       }
@@ -332,9 +333,17 @@ const Recipe = () => {
                 </DialogContent>
               </Dialog>
               <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
-                <Alert onClose={handleCloseSnack} severity="success" sx={{ width: "100%" }}>
-                  Added to Favourites!
-                </Alert>
+                {deleted === 0 ? (
+                  <Alert onClose={handleCloseSnack} severity="success" sx={{ width: "100%" }}>
+                    Added to Favourites!
+                  </Alert>
+                ) : (
+                  <Box>
+                    <Alert onClose={handleCloseSnack} severity="error" sx={{ width: "100%" }}>
+                      Deleted from Favourites!
+                    </Alert>
+                  </Box>
+                )}
               </Snackbar>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>

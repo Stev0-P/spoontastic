@@ -12,6 +12,8 @@ import {
   Button,
   List,
   ListItem,
+  Skeleton,
+  Stack,
 } from "@mui/material";
 import EggAltOutlinedIcon from "@mui/icons-material/EggAltOutlined";
 import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
@@ -28,61 +30,7 @@ const Widget = (props) => {
   const activeUser = useContext(UserContext);
   const [favourites, setFavourites] = React.useState([]);
   const [noMatch, setNotMatched] = useState(false);
-  /*
-  const fetchFavourites = async () => {
-    try {
-      const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}`);
-      setFavourites(response.recipe);
-      setNotMatched(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  useEffect(() => {
-    fetchFavourites();
-  }, []);
-
-  const onFavourite = (item) => {
-    const fetchApi = async () => {
-      try {
-        const { data: response } = await axios.post("/api/favourites/", {
-          title: item.title,
-          image: item.image,
-          creator: activeUser.userId,
-          recipeID: item.id,
-        });
-        setFavourited(true);
-        await fetchFavourites();
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
-  };
-
-  const onDelete = (item) => {
-    const itemID = item.id;
-    const fetchApi = async () => {
-      try {
-        const { data: response } = await axios.delete(`/api/favourites/delete/${itemID}`);
-        setDeleted((prevState) => prevState + 1);
-        setFavourited(false);
-        await fetchFavourites();
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
-  };
-
-  const matchIDs = (item) => {
-    if (favourites.find((fav) => fav.recipeID === `${item.id}`)) {
-      return true;
-    }
-    // console.log("matches if fav exists" + item.id);
-  };
-*/
   const MealWidget = () => {
     const history = useHistory();
 
@@ -146,7 +94,13 @@ const Widget = (props) => {
             </Box>
           </Box>
         ) : (
-          ""
+          <Box>
+            <Skeleton variant="rectangular" width={"22em"} height={"250px"} />
+            <Box sx={{}}>
+              <Skeleton />
+              <Skeleton width="60%" />
+            </Box>
+          </Box>
         )}
       </Box>
     );
