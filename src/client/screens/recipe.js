@@ -44,21 +44,27 @@ const Recipe = () => {
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState(0);
-  const [rating, setRating] = useState(0);
+
   const [refresh, setRefresh] = useState(false);
   const [recDiet, setRecDiet] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [method, setMethod] = useState([]);
-  const [diets, setDiets] = useState([]);
+
   const [currentDiet, setCurrentDiet] = useState("");
   const [alert, setAlert] = useState(false);
   const [matched, setMatched] = useState();
   const [favourited, setFavourited] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [favRating, setFavRating] = React.useState(0);
-  const activeUser = useContext(UserContext);
+
   const [openSnack, setOpenSnack] = React.useState(false);
   const [deleted, setDeleted] = useState(0);
+
+  const activeUser = useContext(UserContext);
+  const [rating, setRating] = useState(0);
+  const [diets, setDiets] = useState([]);
+  const [dishTypes, setDishTypes] = useState([]);
+  const [cuisines, setCuisines] = useState([]);
 
   const handleClickSnack = () => {
     setOpen(true);
@@ -80,6 +86,10 @@ const Recipe = () => {
         setMethod(response.analyzedInstructions[0].steps);
         setIngredients(response.nutrition.ingredients);
         setDiets(response.diets);
+        console.log(response);
+        setCuisines(response.cuisines);
+        setDishTypes(response.dishTypes);
+
         //ratingScore(response.healthScore);
       } catch (err) {
         console.log(err);
@@ -210,18 +220,32 @@ const Recipe = () => {
 
   useEffect(() => {
     const fetchApi = async () => {
+      console.log(recipe.title);
+      console.log(recipe.image);
+      console.log(cuisines);
+      console.log(diets);
+      console.log(dishTypes);
+      console.log(recipe.servings);
+      console.log(recipe.readyInMinutes);
       try {
         const { data: response } = await axios.post("/api/ratings/", {
           rating: rating,
           creator: activeUser.userId,
           recipeID: recipeID,
+          title: recipe.title,
+          image: recipe.image,
+          cuisine: cuisines,
+          type: dishTypes,
+          diets: diets,
+          servings: recipe.servings,
+          readyInMinutes: recipe.readyInMinutes,
         });
       } catch (err) {
         console.log(err);
       }
     };
     fetchApi();
-  }, [rating]);
+  }, [rating, recipeID, recipe, cuisines, dishTypes, diets]);
 
   const onDelete = () => {
     const fetchApi = async () => {

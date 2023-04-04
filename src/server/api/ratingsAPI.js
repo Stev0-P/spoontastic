@@ -32,12 +32,20 @@ ratingsAPI.get("/:uid/:rid", async (req, res, next) => {
 });
 
 ratingsAPI.post("/", async (req, res, next) => {
-  const { rating, creator, recipeID } = req.body;
+  const { rating, creator, recipeID, title, image, cuisine, type, diets, servings, readyInMinutes } = req.body;
 
+  console.log(req.body);
   const addedRating = new userRatingsSchema({
     creator,
     rating,
     recipeID,
+    title,
+    image,
+    cuisine,
+    type,
+    diets,
+    servings,
+    readyInMinutes,
   });
 
   let user;
@@ -93,7 +101,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
   });
 
   pyProg.stdout.on("data", function (data) {
-    //res.send(data);
+    res.send(data);
     res.end("end");
   });
   let recs;
@@ -116,7 +124,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
 
   //res.status(201).json({ hi: "hello" });
   // res.send("hello");
-  res.json(similarItem.data);
+  // res.json(similarItem.data);
 });
 
 export default ratingsAPI;
