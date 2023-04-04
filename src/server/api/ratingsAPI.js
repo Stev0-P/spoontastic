@@ -4,6 +4,10 @@ import mongoose from "mongoose";
 import userRatingsSchema from "../services/reccomender/reccomender.model";
 import userSchema from "../services/users/user.model";
 import { PlaceSharp } from "@mui/icons-material";
+import { spawn } from "child_process";
+import recommendedSchema from "../services/reccomender/recs.model";
+import { ObjectId } from "mongodb";
+import axios from "axios";
 
 const ratingsAPI = Router();
 
@@ -41,7 +45,7 @@ ratingsAPI.post("/", async (req, res, next) => {
 
   try {
     user = await userSchema.findById(creator);
-    rat = await userRatingsSchema.findOne({ recipeID: recipeID });
+    rat = await userRatingsSchema.findOne({ recipeID: recipeID, creator: creator });
   } catch (err) {
     const error = new Error("Adding to Favourites failed!");
     console.log(err);
@@ -78,6 +82,41 @@ ratingsAPI.post("/", async (req, res, next) => {
   }
 
   res.status(201).json({ rating: addedRating });
+});
+
+ratingsAPI.get("/recs/", async (req, res, next) => {
+  var dir = `${process.cwd()}\\src\\scripts\\ `;
+
+  const { spawn } = require("child_process");
+  const pyProg = spawn("python", ["recommender.py"], {
+    cwd: dir,
+  });
+
+  pyProg.stdout.on("data", function (data) {
+    //res.send(data);
+    res.end("end");
+  });
+  let recs;
+  const objectId = req.session.user ?? "";
+
+  try {
+    recs = await recommendedSchema.findOne({ creator: objectId });
+  } catch (err) {
+    const error = new Error("Finding Reccomended failed!");
+    console.log(err);
+    error.code = 500;
+    return next(error);
+  }
+
+  const recipeID = recs[1];
+
+  let similarItem = await axios
+    .get(`https://api.spoonacular.com/recipes/${recipeID}/similar?apiKey=55995d23319347f2b5cb64612e2b959a&number=5`)
+    .catch((err) => console.log(err));
+
+  //res.status(201).json({ hi: "hello" });
+  // res.send("hello");
+  res.json(similarItem.data);
 });
 
 export default ratingsAPI;

@@ -77,7 +77,7 @@ favouritesAPI.post("/", async (req, res, next) => {
 
   try {
     user = await userSchema.findById(creator);
-    fav = await favouritesListItemSchema.findOne({ recipeID: recipeID });
+    fav = await favouritesListItemSchema.findOne({ recipeID: recipeID, creator: creator });
   } catch (err) {
     const error = new Error("Adding to Favourites failed!");
     console.log(err);

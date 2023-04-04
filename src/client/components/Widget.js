@@ -77,7 +77,6 @@ const Widget = (props) => {
                   <Box sx={{ marginTop: "8px" }}>
                     <Typography variant="body2=">Servings: {props.recipe.servings} </Typography>
                   </Box>
-
                   <Box
                     sx={{ flexDirection: "row", display: "flex", marginTop: "8px", overflowY: "auto" }}
                     className="example"

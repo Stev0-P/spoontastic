@@ -11,7 +11,7 @@ recipesAPI.get("/", async (req, res, next) => {
   console.log("INTOLERANCES " + req.query.userIntolerances);
   console.log("DIET " + req.query.userDiet); */
   let recipesList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=1391bf8184c14fb8ab85695eaaf42cf8", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=49893dae331645b9a274b9c751583081", {
       params: {
         diet: USER_DIET,
         intolerances: USER_INTOLERANCES,
@@ -26,9 +26,9 @@ recipesAPI.get("/", async (req, res, next) => {
 recipesAPI.get("/search/", async (req, res, next) => {
   const USER_QUERY = req.query.userQuery;
   const QUERY_PARAMS = req.query;
-  console.log(QUERY_PARAMS);
+
   let searchList = await axios
-    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=eb8c7f0fd49b4483886ec7688277716a", {
+    .get("https://api.spoonacular.com/recipes/complexSearch?apiKey=49893dae331645b9a274b9c751583081", {
       params: {
         query: USER_QUERY,
         diet: QUERY_PARAMS.diet,
@@ -47,8 +47,6 @@ recipesAPI.get("/search/", async (req, res, next) => {
     })
     .catch((err) => console.log(err));
 
-  console.log(searchList.data.results);
-
   res.json(searchList.data.results);
 });
 
@@ -56,7 +54,7 @@ recipesAPI.get("/item/:rid", async (req, res, next) => {
   const RECIPE_ID = req.params.rid;
   let recipeItem = await axios
     .get(
-      `https://api.spoonacular.com/recipes/${RECIPE_ID}/information?apiKey=eb8c7f0fd49b4483886ec7688277716a&includeNutrition=true`
+      `https://api.spoonacular.com/recipes/${RECIPE_ID}/information?apiKey=49893dae331645b9a274b9c751583081&includeNutrition=true`
     )
     .catch((err) => console.log(err));
 
@@ -69,13 +67,29 @@ recipesAPI.get("/random/", async (req, res, next) => {
   const NUMBER = req.query.num;
   let randomItem = await axios
     .get(
-      `https://api.spoonacular.com/recipes/random?number=${NUMBER}&tags=${USER_DIET}&apiKey=eb8c7f0fd49b4483886ec7688277716a`
+      `https://api.spoonacular.com/recipes/random?number=${NUMBER}&tags=${USER_DIET}&apiKey=49893dae331645b9a274b9c751583081`
     )
     .catch((err) => console.log(err));
   // console.log(randomItem.data);55995d23319347f2b5cb64612e2b959a
   //eb8c7f0fd49b4483886ec7688277716a
-  //1391bf8184c14fb8ab85695eaaf42cf8
+  //55995d23319347f2b5cb64612e2b959a
+  //49893dae331645b9a274b9c751583081
+  //395a9e2f96d54634b79e0f249ee375b1
   res.json(randomItem.data);
+});
+
+recipesAPI.get("/similar/", async (req, res, next) => {
+  const RECIPE_ID = req.query.recipeID;
+
+  let similarItem = await axios
+    .get(`https://api.spoonacular.com/recipes/${RECIPE_ID}/similar&apiKey=49893dae331645b9a274b9c751583081`)
+    .catch((err) => console.log(err));
+  // console.log(randomItem.data);55995d23319347f2b5cb64612e2b959a
+  //eb8c7f0fd49b4483886ec7688277716a
+  //55995d23319347f2b5cb64612e2b959a
+  //49893dae331645b9a274b9c751583081
+  //395a9e2f96d54634b79e0f249ee375b1
+  res.json(similarItem.data);
 });
 
 export default recipesAPI;

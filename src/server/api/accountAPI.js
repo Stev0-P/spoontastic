@@ -43,10 +43,11 @@ accountAPI.post("/", async (req, res, next) => {
     if (password !== user.password) {
       res.status(400).send(false);
     }
-
+    console.log(user._id);
     //console.log("Logged in!");
     req.session.isAuth = true;
     req.session.user = user._id;
+    //console.log(req.session.user);
     res.status(201).json({ user });
   } catch (err) {
     const error = new Error("Signing up failed, please try again later.");

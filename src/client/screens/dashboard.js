@@ -13,6 +13,7 @@ import axios from "axios";
 const Dashboard = () => {
   const activeUser = useContext(UserContext);
   const [loading, setLoading] = React.useState(true);
+  const [loadingRecs, setLoadingRecs] = React.useState(true);
   const [timeR, setTimeR] = React.useState("");
   const time = useTime();
 
@@ -56,9 +57,12 @@ const Dashboard = () => {
             num: "12",
           },
         });
-        console.log(time.text);
+        //console.log(time.text);
         setLoading(false);
         setRecipesList(list.recipes);
+
+        // console.log(list);
+        //  console.log(list.recipes);
         //   setDiets(recipe.recipes[0].diets);
       } catch (err) {
         console.log(err);
@@ -67,6 +71,25 @@ const Dashboard = () => {
 
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const { data: response } = await axios.get(`/api/ratings/recs/`);
+        console.log(response);
+
+        //setRecipesList(response);
+        // setLoadingRecs(false);
+        // console.log(recipesList);
+        //ratingScore(response.healthScore);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+
+    return () => controller.abort();
+  }, [activeUser.userId]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "15vh" }}>
@@ -93,11 +116,15 @@ const Dashboard = () => {
         {loading === false ? (
           <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              {recipesList.map((item) => (
-                <Grid item key={item.id}>
-                  <Widget recipe={item} loading={loading} diets={item.diets} />
-                </Grid>
-              ))}
+              {recipesList.map(
+                (item) => (
+                  <Grid item key={item.id}>
+                    <Widget recipe={item} loading={loading} diets={item.diets} />
+                  </Grid>
+                )
+
+                //  console.log(item)
+              )}
             </Grid>
           </Box>
         ) : (
