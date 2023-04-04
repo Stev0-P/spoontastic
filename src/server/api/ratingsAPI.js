@@ -115,13 +115,13 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
     error.code = 500;
     return next(error);
   }
-
+  /*
   const recipeID = recs[1];
 
   let similarItem = await axios
     .get(`https://api.spoonacular.com/recipes/${recipeID}/similar?apiKey=55995d23319347f2b5cb64612e2b959a&number=5`)
     .catch((err) => console.log(err));
-
+*/
   //res.status(201).json({ hi: "hello" });
   // res.send("hello");
   // res.json(similarItem.data);

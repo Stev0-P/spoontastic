@@ -73,11 +73,13 @@ for i in predicted_ratings_df2.index:
 
 # Step 5: Recommend items
 # Recommend top 2 recipes with highest predicted ratings to each user
+
+d = 12
 recommendations_df2 = pd.DataFrame(
-    index=pivot_df.columns, columns=range(1, k+1))
+    index=pivot_df.columns, columns=range(1, d+1))
 for i in recommendations_df2.index:
     recommended_series = predicted_ratings_df2.loc[:, i].sort_values(ascending=False)[
-        :k]
+        :d]
     recommendations_df2.loc[i, :] = recommended_series.index
 
 
