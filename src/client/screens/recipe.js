@@ -97,6 +97,8 @@ const Recipe = () => {
       setLoading(false);
     };
 
+    fetchApi();
+
     const fetchApi2 = async () => {
       try {
         const { data: response } = await axios.get(`/api/ratings/${activeUser.userId}/${recipeID}`);
@@ -120,12 +122,50 @@ const Recipe = () => {
         console.log(err);
       }
     };
-    fetchApi3();
+
+    const fetchApi4 = async () => {
+      try {
+        const { data: response } = await axios.post("/api/recipes/addRecipe/", {
+          recipeID: recipeID,
+          title: recipe.title,
+          image: recipe.image,
+          cuisine: recipe.cuisines,
+          type: recipe.dishTypes,
+          diets: recipe.diets,
+          servings: recipe.servings,
+          readyInMinutes: recipe.readyInMinutes,
+        });
+
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchApi2();
-    fetchApi();
+    fetchApi3();
   }, [recipeID]);
 
   useEffect(() => {
+    const fetchApi4 = async () => {
+      try {
+        const { data: response } = await axios.post("/api/recipes/addRecipe/", {
+          recipeID: recipeID,
+          title: recipe.title,
+          image: recipe.image,
+          cuisine: recipe.cuisines,
+          type: recipe.dishTypes,
+          diets: recipe.diets,
+          servings: recipe.servings,
+          readyInMinutes: recipe.readyInMinutes,
+        });
+
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi4();
     setRecDiet(recipe.diets);
     setRefresh(true);
     dietParse();
@@ -220,17 +260,23 @@ const Recipe = () => {
 
   useEffect(() => {
     const fetchApi = async () => {
-      console.log(recipe.title);
-      console.log(recipe.image);
-      console.log(cuisines);
-      console.log(diets);
-      console.log(dishTypes);
-      console.log(recipe.servings);
-      console.log(recipe.readyInMinutes);
       try {
         const { data: response } = await axios.post("/api/ratings/", {
           rating: rating,
           creator: activeUser.userId,
+          recipeID: recipeID,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+  }, [rating]);
+
+  /* useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const { data: response } = await axios.post("/api/recipes/addRecipe/", {
           recipeID: recipeID,
           title: recipe.title,
           image: recipe.image,
@@ -240,13 +286,15 @@ const Recipe = () => {
           servings: recipe.servings,
           readyInMinutes: recipe.readyInMinutes,
         });
+
+        console.log(response);
       } catch (err) {
         console.log(err);
       }
     };
     fetchApi();
-  }, [rating, recipeID, recipe, cuisines, dishTypes, diets]);
-
+  }, [recipe]);
+*/
   const onDelete = () => {
     const fetchApi = async () => {
       try {

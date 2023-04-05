@@ -30,7 +30,9 @@ const Widget = (props) => {
   const activeUser = useContext(UserContext);
   const [favourites, setFavourites] = React.useState([]);
   const [noMatch, setNotMatched] = useState(false);
-
+  useEffect(() => {
+    console.log(props.recipe);
+  }, [props]);
   const MealWidget = () => {
     const history = useHistory();
 
@@ -50,57 +52,60 @@ const Widget = (props) => {
 
           boxShadow: 3,
         }}
-        onClick={() => history.push(`/recipe/${props.recipe.id}`)} //history.push("/recipe/:id")
       >
-        {props.loading === false && props.recipe ? (
-          <Box>
-            <img
-              style={{
-                height: "250px",
-                width: "22em",
-                borderRadius: "8px 8px 0 0",
-              }}
-              src={props.recipe.image}
-            />
-            <Box sx={{ padding: "8px" }}>
-              <Typography sx={{ height: "8vh" }} variant="h6" component="div">
-                {props.recipe.title}
-              </Typography>
-              {props.recipe.readyInMinutes != null ? (
-                <Box sx={{ flexDirection: "column", display: "flex" }}>
-                  <Box sx={{ flexDirection: "row", display: "flex", marginTop: "12px" }}>
-                    <AccessTimeIcon />
-                    <Typography variant="body2=" sx={{ paddingLeft: "5px" }}>
-                      {props.recipe.readyInMinutes} minutes
-                    </Typography>
+        <Box
+          onClick={() => history.push(`/recipe/${props.recipe.recipeID}`)} //history.push("/recipe/:id")
+        >
+          {props.loading === false && props.recipe ? (
+            <Box>
+              <img
+                style={{
+                  height: "250px",
+                  width: "22em",
+                  borderRadius: "8px 8px 0 0",
+                }}
+                src={props.recipe.image}
+              />
+              <Box sx={{ padding: "8px" }}>
+                <Typography sx={{ height: "12vh" }} variant="h6" component="div">
+                  {props.recipe.title}
+                </Typography>
+                {props.recipe.readyInMinutes != null ? (
+                  <Box sx={{ flexDirection: "column", display: "flex" }}>
+                    <Box sx={{ flexDirection: "row", display: "flex", marginTop: "12px" }}>
+                      <AccessTimeIcon />
+                      <Typography variant="body2=" sx={{ paddingLeft: "5px" }}>
+                        {props.recipe.readyInMinutes} minutes
+                      </Typography>
+                    </Box>
+                    <Box sx={{ marginTop: "8px" }}>
+                      <Typography variant="body2=">Servings: {props.recipe.servings} </Typography>
+                    </Box>
+                    <Box
+                      sx={{ flexDirection: "row", display: "flex", marginTop: "8px", overflowY: "auto" }}
+                      className="example"
+                    >
+                      {props.loading === false &&
+                        props.recipe.diets.map((item) => (
+                          <Chip sx={{ marginRight: "5px" }} variant="outlined" label={item}></Chip>
+                        ))}
+                    </Box>
                   </Box>
-                  <Box sx={{ marginTop: "8px" }}>
-                    <Typography variant="body2=">Servings: {props.recipe.servings} </Typography>
-                  </Box>
-                  <Box
-                    sx={{ flexDirection: "row", display: "flex", marginTop: "8px", overflowY: "auto" }}
-                    className="example"
-                  >
-                    {props.loading === false &&
-                      props.diets.map((item) => (
-                        <Chip sx={{ marginRight: "5px" }} variant="outlined" label={item}></Chip>
-                      ))}
-                  </Box>
-                </Box>
-              ) : (
-                <Box> </Box>
-              )}
+                ) : (
+                  <Box> </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        ) : (
-          <Box>
-            <Skeleton variant="rectangular" width={"22em"} height={"250px"} />
-            <Box sx={{}}>
-              <Skeleton />
-              <Skeleton width="60%" />
+          ) : (
+            <Box>
+              <Skeleton variant="rectangular" width={"22em"} height={"250px"} />
+              <Box sx={{}}>
+                <Skeleton />
+                <Skeleton width="60%" />
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
+        </Box>
       </Box>
     );
 

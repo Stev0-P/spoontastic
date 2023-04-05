@@ -19,9 +19,12 @@ const Dashboard = () => {
 
   const [recipe, setRecipe] = React.useState({});
   const [diets, setDiets] = React.useState([]);
+  const [recommended, setRecommended] = React.useState([{}]);
+  const [recsLoading, setRecsLoading] = React.useState(true);
 
   const [recipesList, setRecipesList] = React.useState([]);
   //get single random recipe
+
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -44,8 +47,9 @@ const Dashboard = () => {
 
     return () => controller.abort();
   }, []);
-  //get reccomended recipes
 
+  //get reccomended recipes
+  /*
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -71,14 +75,14 @@ const Dashboard = () => {
 
     return () => controller.abort();
   }, []);
-
+*/
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       try {
         const { data: response } = await axios.get(`/api/ratings/recs/`);
-        console.log(response);
-
+        setRecsLoading(false);
+        setRecommended(response.recommended);
         //setRecipesList(response);
         // setLoadingRecs(false);
         // console.log(recipesList);
@@ -94,7 +98,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "15vh" }}>
       <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
-        {loading === false ? (
+        {recsLoading === false ? (
           <Typography variant="h4">You Might Like:</Typography>
         ) : (
           <Box sx={{ width: "40vh" }}>
@@ -104,7 +108,7 @@ const Dashboard = () => {
       </Box>
       <Widget recipe={recipe} loading={loading} diets={diets} />
       <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
-        {loading === false ? (
+        {recsLoading === false ? (
           <Typography variant="h4">Recommended For You</Typography>
         ) : (
           <Box sx={{ width: "60vh" }}>
@@ -113,18 +117,19 @@ const Dashboard = () => {
         )}
       </Box>
       <Box>
-        {loading === false ? (
+        {recsLoading === false ? (
           <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              {recipesList.map(
-                (item) => (
-                  <Grid item key={item.id}>
-                    <Widget recipe={item} loading={loading} diets={item.diets} />
-                  </Grid>
-                )
+              {recsLoading === false &&
+                recommended.map(
+                  (item) => (
+                    <Grid item key={item}>
+                      <Widget recipe={item} loading={recsLoading} />
+                    </Grid>
+                  )
 
-                //  console.log(item)
-              )}
+                  //  console.log(item)
+                )}
             </Grid>
           </Box>
         ) : (

@@ -6,8 +6,10 @@ import userSchema from "../services/users/user.model";
 import { PlaceSharp } from "@mui/icons-material";
 import { spawn } from "child_process";
 import recommendedSchema from "../services/reccomender/recs.model";
+import recipeSchema from "../services/recipes/recipes.model";
 import { ObjectId } from "mongodb";
 import axios from "axios";
+import { ids } from "googleapis/build/src/apis/ids";
 
 const ratingsAPI = Router();
 
@@ -19,7 +21,6 @@ ratingsAPI.get("/:uid/:rid", async (req, res, next) => {
 
   try {
     ratings = await userRatingsSchema.find({ creator: userID, recipeID: recipeID });
-    console.log(ratings);
   } catch (err) {
     const error = new Error("Something went wrong!");
     error.code = 500;
@@ -32,20 +33,12 @@ ratingsAPI.get("/:uid/:rid", async (req, res, next) => {
 });
 
 ratingsAPI.post("/", async (req, res, next) => {
-  const { rating, creator, recipeID, title, image, cuisine, type, diets, servings, readyInMinutes } = req.body;
+  const { rating, creator, recipeID } = req.body;
 
-  console.log(req.body);
   const addedRating = new userRatingsSchema({
     creator,
     rating,
     recipeID,
-    title,
-    image,
-    cuisine,
-    type,
-    diets,
-    servings,
-    readyInMinutes,
   });
 
   let user;
@@ -83,7 +76,7 @@ ratingsAPI.post("/", async (req, res, next) => {
       }
     }
   } catch (err) {
-    const error = new Error("Adding to Favourites failed!");
+    const error = new Error("Adding Ratings failed!");
     console.log(err);
     error.code = 500;
     return next(error);
@@ -101,10 +94,11 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
   });
 
   pyProg.stdout.on("data", function (data) {
-    res.send(data);
+    //res.send(data);
     res.end("end");
   });
   let recs;
+  let recipes;
   const objectId = req.session.user ?? "";
 
   try {
@@ -115,6 +109,20 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
     error.code = 500;
     return next(error);
   }
+
+  if (recs) {
+    try {
+      recipes = await recipeSchema.find({ recipeID: { $in: recs.recs } });
+    } catch (err) {
+      const error = new Error("Finding Recipes failed!");
+      console.log(err);
+      error.code = 500;
+      return next(error);
+    }
+  } else {
+    console.log("no recs");
+  }
+
   /*
   const recipeID = recs[1];
 
@@ -124,7 +132,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
 */
   //res.status(201).json({ hi: "hello" });
   // res.send("hello");
-  // res.json(similarItem.data);
+  res.status(201).json({ recommended: recipes });
 });
 
 export default ratingsAPI;
