@@ -96,10 +96,17 @@ const Dashboard = () => {
   }, [activeUser.userId]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, marginLeft: "15vh" }}>
-      <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+        marginLeft: { xs: "10vh", md: "18vh" },
+      }}
+    >
+      <Box sx={{ marginTop: "1.5%" }}>
         {recsLoading === false ? (
-          <Typography variant="h4">You Might Like:</Typography>
+          <Typography variant="h4">You Might Like</Typography>
         ) : (
           <Box sx={{ width: "40vh" }}>
             <Skeleton animation="wave" variant="text" sx={{ fontSize: "3rem" }} />
@@ -107,7 +114,7 @@ const Dashboard = () => {
         )}
       </Box>
       <Widget recipe={recipe} loading={loading} diets={diets} />
-      <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+      <Box sx={{ marginTop: "1.5%" }}>
         {recsLoading === false ? (
           <Typography variant="h4">Recommended For You</Typography>
         ) : (
@@ -118,7 +125,7 @@ const Dashboard = () => {
       </Box>
       <Box>
         {recsLoading === false ? (
-          <Box sx={{ marginLeft: "1.5%", marginTop: "1.5%" }}>
+          <Box sx={{ marginTop: "1.5%" }}>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               {recsLoading === false &&
                 recommended.map(

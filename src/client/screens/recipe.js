@@ -310,7 +310,7 @@ const Recipe = () => {
   };
 
   return (
-    <Box sx={{ marginLeft: "15vh" }}>
+    <Box sx={{ marginLeft: { xs: "5vh", md: "18vh" } }}>
       {loading === false ? (
         <Box sx={{ display: " flex", flexDirection: "column" }}>
           {alert === true ? (
@@ -326,7 +326,7 @@ const Recipe = () => {
           </Box>
           <Box sx={{ marginLeft: 3, marginTop: 2, flexDirection: "row" }}>
             <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-              <Box sx={{ fontSize: "25px", display: "flex", flexDirection: "row", justifyContent: "center" }}>
+              <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
                 <Rating
                   name="simple-controlled"
                   size="large"
@@ -345,12 +345,22 @@ const Recipe = () => {
                   }}
                 >
                   <ListItemText
-                    sx={{ paddingLeft: "1em", marginTop: "0px", marginBottom: "0px", paddingTop: "0px" }}
+                    sx={{
+                      paddingLeft: { xs: "0.5em", md: "1em" },
+                      marginTop: "0px",
+                      marginBottom: "0px",
+                      paddingTop: "0px",
+                    }}
                     primary={"Cooking Time"}
                     secondary={`${recipe.readyInMinutes} minutes`}
                   ></ListItemText>
                   <ListItemText
-                    sx={{ paddingLeft: "1em", marginTop: "0px", marginBottom: "0px", paddingTop: "0px" }}
+                    sx={{
+                      paddingLeft: { xs: "0.5em", md: "1em" },
+                      marginTop: "0px",
+                      marginBottom: "0px",
+                      paddingTop: "0px",
+                    }}
                     primary={"Serving"}
                     secondary={`${recipe.servings}`}
                   ></ListItemText>
@@ -360,7 +370,7 @@ const Recipe = () => {
                 {favourited === false ? (
                   <IconButton
                     size="large"
-                    sx={{ marginRight: 3, marginLeft: 6 }}
+                    sx={{ marginRight: 0, marginLeft: 0 }}
                     selected={favourited}
                     onClick={handleClickOpen}
                   >
@@ -369,7 +379,7 @@ const Recipe = () => {
                 ) : (
                   <IconButton
                     size="large"
-                    sx={{ marginRight: 3, marginLeft: 6 }}
+                    sx={{ marginRight: 0, marginLeft: 0 }}
                     //selected={favourited}
                     onClick={
                       //onFavourite(recipe);
@@ -418,13 +428,20 @@ const Recipe = () => {
                 )}
               </Snackbar>
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <Box sx={{ display: "flex", flexDirection: "column", width: "65vh" }}>
-                <Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row", md: "row" },
+                height: "auto",
+                width: "auto",
+              }}
+            >
+              <Box sx={{ display: "flex", flexDirection: "column", width: "100%", justifyContent: "center" }}>
+                <Box sx={{ height: "100%", width: "100%" }}>
                   <img
                     style={{
-                      height: "50vh",
-                      width: "65vh",
+                      height: "100%",
+                      width: "100%",
                       borderRadius: "1em",
                       boxShadow: "inherit",
                     }}
@@ -448,18 +465,29 @@ const Recipe = () => {
                 </Box>
               </Box>
 
-              <Box sx={{ paddingLeft: "2vh", paddingTop: "0px" }}>
-                <Demo>
-                  <List>
+              <Box
+                sx={{
+                  paddingLeft: "2vh",
+                  paddingTop: "0px",
+                  overflowX: "auto",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: { xs: "row", sm: "column", md: "column", lg: "column" },
+                }}
+              >
+                <Demo sx={{ display: "flex", flexDirection: { xs: "row", sm: "column", md: "column", lg: "column" } }}>
+                  <List
+                    sx={{ display: "flex", flexDirection: { xs: "row", sm: "column", md: "column", lg: "column" } }}
+                  >
                     {!loading &&
                       recipe.nutrition.nutrients
                         .filter(
                           (nutrient) =>
                             nutrient.name === "Calories" ||
-                            nutrient.name === "Fat" ||
-                            nutrient.name === "Saturated Fat" ||
-                            nutrient.name === "Carbohydrates" ||
                             nutrient.name === "Protein" ||
+                            nutrient.name === "Carbohydrates" ||
+                            nutrient.name === "Saturated Fat" ||
+                            nutrient.name === "Fat" ||
                             nutrient.name === "Sugar"
                         )
                         .map((item) => (
@@ -476,8 +504,9 @@ const Recipe = () => {
             sx={{
               padding: "2vh",
               display: "flex",
+              width: { xs: "100%" },
               flexGrow: 1,
-              flexDirection: "row",
+              flexDirection: { xs: "column", sm: "row" },
               height: "70vh",
               borderRadius: "1em",
               borderColor: "#eaeaea",
@@ -487,16 +516,15 @@ const Recipe = () => {
             <Box
               sx={{
                 display: "flex",
-                width: "25%",
+                width: { xs: "100%", sm: "45%", md: "25%" },
+                marginLeft: "1vh",
                 flexDirection: "column",
                 backgroundColor: "#eaeaea",
                 borderRadius: "1em",
               }}
             >
-              <Box sx={{ marginLeft: "1.5vh" }}>
-                <Typography sx={{}} variant="h4">
-                  Ingredients
-                </Typography>
+              <Box sx={{ marginLeft: "1vh" }}>
+                <Typography variant="h4">Ingredients</Typography>
               </Box>
               <Box sx={{ overflowY: "auto" }}>
                 <List>

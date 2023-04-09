@@ -30,8 +30,10 @@ const Widget = (props) => {
   const activeUser = useContext(UserContext);
   const [favourites, setFavourites] = React.useState([]);
   const [noMatch, setNotMatched] = useState(false);
+
   useEffect(() => {
     console.log(props.recipe);
+    console.log(window.location.pathname.split("/"));
   }, [props]);
   const MealWidget = () => {
     const history = useHistory();
@@ -39,33 +41,34 @@ const Widget = (props) => {
     return (
       <Box
         sx={{
-          borderRadius: "8px",
-          width: "22em",
+          borderRadius: "2vh",
+          width: "35vh",
 
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
           backgroundColor: "#f6f5f4",
           marginRight: "1.5%",
-          marginLeft: "1.5%",
+
           marginTop: "1.5%",
 
           boxShadow: 3,
         }}
       >
         <Box
-          onClick={() => history.push(`/recipe/${props.recipe.recipeID}`)} //history.push("/recipe/:id")
+          onClick={() => history.push(`/recipe/${props.recipe.recipeID || props.recipe.id}`)} //history.push("/recipe/:id")
         >
           {props.loading === false && props.recipe ? (
             <Box>
               <img
                 style={{
-                  height: "250px",
-                  width: "22em",
+                  height: "100%",
+                  width: "100%",
                   borderRadius: "8px 8px 0 0",
                 }}
                 src={props.recipe.image}
               />
+
               <Box sx={{ padding: "8px" }}>
                 <Typography sx={{ height: "12vh" }} variant="h6" component="div">
                   {props.recipe.title}

@@ -94,7 +94,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
   });
 
   pyProg.stdout.on("data", function (data) {
-    //res.send(data);
+    // res.send(data);
     res.end("end");
   });
   let recs;
@@ -128,7 +128,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
 
   let similarItem = await axios
     .get(`https://api.spoonacular.com/recipes/${recipeID}/similar?apiKey=55995d23319347f2b5cb64612e2b959a&number=5`)
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err));d
 */
   //res.status(201).json({ hi: "hello" });
   // res.send("hello");

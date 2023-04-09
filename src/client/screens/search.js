@@ -183,19 +183,19 @@ const Search = () => {
         </Grid>*/
 
   return (
-    <Box sx={{ flexGrow: 1, marginLeft: "15vh" }}>
-      <Typography sx={{ padding: 2 }} variant={"h4"}>
+    <Box sx={{ flexGrow: 1, marginLeft: { xs: "10vh", md: "18vh" } }}>
+      <Typography sx={{ padding: 1 }} variant={"h4"}>
         Search
       </Typography>
       <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
         <Box
           sx={{
             flexGrow: 1,
-            marginLeft: 2,
+
             marginRight: 2,
             display: "flex",
             flexDirection: "row",
-            width: "65%",
+            width: { xs: "85", lg: "65%" },
           }}
         >
           <TextField

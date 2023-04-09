@@ -168,8 +168,8 @@ const DrawerNav = () => {
           location.pathname === "/login" ||
           location.pathname === "/preferences" ||
           location.pathname === "/register"
-            ? "persistent"
-            : "permanent"
+            ? "persistent" //1"persistent"
+            : "permanent" //2 "permanent"
         }
         anchor="left"
       >

@@ -18,6 +18,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import darkScrollbar from "@mui/material/darkScrollbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Container } from "@mui/material";
+import MiniDrawer from "./components/MiniDrawer";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const App = ({ user }) => {
   const [userId, setUserId] = useState(user?.userID ?? "");
@@ -27,6 +30,8 @@ const App = ({ user }) => {
   const [diet, setDiet] = useState(user?.diet ?? "");
   const [intolerance, setIntolerance] = useState(user?.intolerances ?? "");
   const [type, setType] = useState(user?.type ?? "");
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
 
   const activeUser = {
     name,
@@ -53,7 +58,8 @@ const App = ({ user }) => {
           }}
         >
           <UserContext.Provider value={activeUser}>
-            <DrawerNav />
+            {matches ? <MiniDrawer /> : <DrawerNav />}
+
             <Switch>
               <Route exact={true} path="/" component={LogIn} />
               <Route exact={true} path="/login" component={LogIn} />
