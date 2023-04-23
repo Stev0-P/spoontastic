@@ -2,7 +2,7 @@
 
 ## Spoontastic Overview
 
-Spoontastic is a Web-Application that  implements a Reccomender System that utilises Data Analytics techniques to provide users with personalized recommendations that adhere to suer specific dietary restrictions. Moreover, it provides users ability to easily search and filter thousands of recipes, add them to favourites in order to provide users with ability to save and keep track of recipes that match their requirements. Furthremore, users are able to change their dietary needs and intolerances at any given moment,recipes that don't match users dietary needs will display a warning message to ensure their safety.
+Spoontastic is a Web-Application that  implements a Reccomender System that utilises Data Analytics techniques to provide users with personalized recommendations that adhere to user specific dietary restrictions. Moreover, it provides users ability to easily search, filter thousands of recipes, and add them to favourites in order to provide users with ability to save and keep track of recipes that match their requirements. Furthremore, users are able to change their dietary needs and intolerances at any given moment,recipes that don't match users dietary needs will display a warning message to ensure their safety.
  
 
 Key features:
