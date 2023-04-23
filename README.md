@@ -3,6 +3,7 @@
 Spoontastic is a Web-Application that gives users ability to easily search thousands of recipes and add them to favourites in order to provide users with ability to save and keep track of recipes that match their requirements.
 Also, Spoontastic gives reccomendations to User based on their selected Dietary needs, Intolerances and time of day. Furthremore, user is able to change their dietary needs and intolerances at any given moment, if user wishes to do so
 recipes that don't match their dietary needs will display a warning message to ensure their safety.
+![image](https://user-images.githubusercontent.com/78304408/233866653-a959999d-7b98-4c11-8d5f-6eb8d7dff16c.png)
 
 ## Update 
 This project was initial part of my summer internship training, currently it is being improved on exapanded into my final year Project.
