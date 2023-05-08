@@ -13,18 +13,12 @@ import axios from "axios";
 const Dashboard = () => {
   const activeUser = useContext(UserContext);
   const [loading, setLoading] = React.useState(true);
-  const [loadingRecs, setLoadingRecs] = React.useState(true);
-  const [timeR, setTimeR] = React.useState("");
-  const time = useTime();
-
   const [recipe, setRecipe] = React.useState({});
   const [diets, setDiets] = React.useState([]);
   const [recommended, setRecommended] = React.useState([{}]);
   const [recsLoading, setRecsLoading] = React.useState(true);
 
-  const [recipesList, setRecipesList] = React.useState([]);
-  //get single random recipe
-
+  //Get Random Recipe that User Might Like
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -48,34 +42,7 @@ const Dashboard = () => {
     return () => controller.abort();
   }, []);
 
-  //get reccomended recipes
-  /*
-  useEffect(() => {
-    const controller = new AbortController();
-    (async () => {
-      try {
-        const { data: list } = await axios.get("/api/recipes/random/", {
-          params: {
-            diet: activeUser.diet,
-            intolerance: activeUser.intolerance,
-            num: "12",
-          },
-        });
-        //console.log(time.text);
-        setLoading(false);
-        setRecipesList(list.recipes);
-
-        // console.log(list);
-        //  console.log(list.recipes);
-        //   setDiets(recipe.recipes[0].diets);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-
-    return () => controller.abort();
-  }, []);
-*/
+  //Get Recommended Recipes
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -83,10 +50,6 @@ const Dashboard = () => {
         const { data: response } = await axios.get(`/api/ratings/recs/`);
         setRecsLoading(false);
         setRecommended(response.recommended);
-        //setRecipesList(response);
-        // setLoadingRecs(false);
-        // console.log(recipesList);
-        //ratingScore(response.healthScore);
       } catch (err) {
         console.log(err);
       }
@@ -102,6 +65,7 @@ const Dashboard = () => {
         flexDirection: "column",
         flexGrow: 1,
         marginLeft: { xs: "10vh", md: "18vh" },
+        paddingBottom: "1vh",
       }}
     >
       <Box sx={{ marginTop: "1.5%" }}>

@@ -101,7 +101,7 @@ const Widget = (props) => {
             </Box>
           ) : (
             <Box>
-              <Skeleton variant="rectangular" width={"22em"} height={"250px"} />
+              <Skeleton variant="rectangular" width={"35vh"} height={"250px"} />
               <Box sx={{}}>
                 <Skeleton />
                 <Skeleton width="60%" />

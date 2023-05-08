@@ -13,6 +13,7 @@ import { ids } from "googleapis/build/src/apis/ids";
 
 const ratingsAPI = Router();
 
+//get Individual Rating
 ratingsAPI.get("/:uid/:rid", async (req, res, next) => {
   const userID = req.params.uid;
   const recipeID = req.params.rid;
@@ -28,10 +29,9 @@ ratingsAPI.get("/:uid/:rid", async (req, res, next) => {
     return next(error);
   }
   res.json({ rating: ratings.map((rating) => rating.toObject({ getters: true })) });
-
-  //console.log(res)
 });
 
+//Post Rating to Database
 ratingsAPI.post("/", async (req, res, next) => {
   const { rating, creator, recipeID } = req.body;
 
@@ -55,6 +55,7 @@ ratingsAPI.post("/", async (req, res, next) => {
   }
 
   if (!user) {
+    //check if user exists with this id
     const error = new Error("Could not find user for provided id.");
     error.code = 404;
     return next(error);
@@ -62,10 +63,12 @@ ratingsAPI.post("/", async (req, res, next) => {
 
   try {
     if (rat === null) {
+      //check if rating doesnt exist and save
       await addedRating.save();
       user.ratings.push(addedRating);
       await user.save();
     } else if (rat !== null) {
+      //else if rating does exist update it
       rat.rating = rating;
       try {
         await rat.save();
@@ -76,6 +79,7 @@ ratingsAPI.post("/", async (req, res, next) => {
       }
     }
   } catch (err) {
+    //otherwise error
     const error = new Error("Adding Ratings failed!");
     console.log(err);
     error.code = 500;
@@ -85,16 +89,16 @@ ratingsAPI.post("/", async (req, res, next) => {
   res.status(201).json({ rating: addedRating });
 });
 
+//Get Reccomended Recipes
 ratingsAPI.get("/recs/", async (req, res, next) => {
   var dir = `${process.cwd()}\\src\\scripts\\ `;
 
-  const { spawn } = require("child_process");
+  const { spawn } = require("child_process"); //cread a child process to run a python script
   const pyProg = spawn("python", ["recommender.py"], {
     cwd: dir,
   });
 
   pyProg.stdout.on("data", function (data) {
-    // res.send(data);
     res.end("end");
   });
   let recs;
@@ -102,7 +106,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
   const objectId = req.session.user ?? "";
 
   try {
-    recs = await recommendedSchema.findOne({ creator: objectId });
+    recs = await recommendedSchema.findOne({ creator: objectId }); //find reccomended recipes of the user from current session
   } catch (err) {
     const error = new Error("Finding Reccomended failed!");
     console.log(err);
@@ -111,6 +115,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
   }
 
   if (recs) {
+    //if reccomended exist find recipes with same recipeID and send data to front end
     try {
       recipes = await recipeSchema.find({ recipeID: { $in: recs.recs } });
     } catch (err) {
@@ -123,16 +128,8 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
     console.log("no recs");
   }
 
-  /*
-  const recipeID = recs[1];
-
-  let similarItem = await axios
-    .get(`https://api.spoonacular.com/recipes/${recipeID}/similar?apiKey=55995d23319347f2b5cb64612e2b959a&number=5`)
-    .catch((err) => console.log(err));d
-*/
-  //res.status(201).json({ hi: "hello" });
-  // res.send("hello");
   res.status(201).json({ recommended: recipes });
+  console.log({ reccomended: recipes });
 });
 
 export default ratingsAPI;

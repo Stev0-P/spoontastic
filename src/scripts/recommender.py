@@ -5,6 +5,10 @@ import pprint
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
+from surprise import SVD, Dataset, Reader, accuracy, dump
+from surprise.model_selection import train_test_split
+from bson import ObjectId
+import os
 
 
 # Step 1: Collect data
@@ -17,12 +21,21 @@ db = myclient.test
 collection = db.ratings
 collection2 = db.users
 collection3 = db.recommended
+collection4 = db.recipes
 
 
 x = collection.find({}, {"_id": 0, "creator": 1, "rating": 1, "recipeID": 1})
-
+y = collection2.find({}, {"_id": 1, "diet": 1})
+z = collection4.find({}, {"_id": 0, "recipeID": 1, "cuisine": 1})
 
 r_data = pd.DataFrame(list(x))
+
+user_data = pd.DataFrame(list(y))
+
+recipe_data = pd.DataFrame(list(z))
+
+merged_data = pd.merge(r_data, recipe_data, on='recipeID')
+
 
 pivot_df = pd.pivot_table(r_data, values='rating',
                           index='recipeID', columns='creator')
@@ -49,8 +62,40 @@ for i in neighbors_df2.index:
     neighbors_df2.loc[i, :] = neighbor_series.index
 
 
+def compute_context_similarity(user1, user2, merged_data, user_data,  recipe_id):
+    user1_data = user_data[user_data['_id'] == user1]
+    user2_data = user_data[user_data['_id'] == user2]
+
+    if user1_data.empty or user2_data.empty:
+        return 0
+
+    diet_similarity = 1 if user1_data.iloc[0]['diet'] == user2_data.iloc[0]['diet'] else 0.5
+
+    # Get cuisine for the desired recipe_id
+    desired_recipe_cuisine = merged_data[merged_data['recipeID']
+                                         == recipe_id]['cuisine'].iloc[0]
+
+    # Get the nearest neighbors' recipe cuisines
+    user1_recipe_cuisine = merged_data[merged_data['creator']
+                                       == user1]['cuisine'].iloc[0]
+    user2_recipe_cuisine = merged_data[merged_data['creator']
+                                       == user2]['cuisine'].iloc[0]
+
+    # Compute cuisine similarity
+    if desired_recipe_cuisine == user1_recipe_cuisine and desired_recipe_cuisine == user2_recipe_cuisine:
+        cuisine_similarity = 1
+    elif desired_recipe_cuisine == user1_recipe_cuisine or desired_recipe_cuisine == user2_recipe_cuisine:
+        cuisine_similarity = 0.75
+    else:
+        cuisine_similarity = 0.5
+
+    return diet_similarity * cuisine_similarity
+
+    # * cuisine_similarity
+
+
 # Step 4: Calculate Predicted Ratings
-# Calculate predicted ratings for unrated recipes based on similar users
+# Calculate predicted ratings for unrated recipes based on similar users, diets, and cuisines
 predicted_ratings_df2 = pd.DataFrame(
     index=pivot_df.index, columns=pivot_df.columns)
 for i in predicted_ratings_df2.index:
@@ -60,10 +105,11 @@ for i in predicted_ratings_df2.index:
             denominator = 0
             for neighbor in neighbors_df2.loc[j]:
                 if pivot_df.loc[i, neighbor] != 0:
-                    numerator += similarity_df2.loc[j,
-                                                    neighbor]*pivot_df.loc[i, neighbor]
+                    
+                    context_similarity = compute_context_similarity( j, neighbor, merged_data, user_data, i)
 
-                    denominator += similarity_df2.loc[j, neighbor]
+                    numerator += context_similarity * similarity_df2.loc[j,neighbor]*pivot_df.loc[i, neighbor]
+                    denominator += context_similarity * similarity_df2.loc[j, neighbor]
 
             if denominator != 0:
                 predicted_ratings_df2.loc[i, j] = numerator/denominator
@@ -72,7 +118,7 @@ for i in predicted_ratings_df2.index:
 
 
 # Step 5: Recommend items
-# Recommend top 2 recipes with highest predicted ratings to each user
+# Recommend top 12 recipes with highest predicted ratings to each user
 
 d = 12
 recommendations_df2 = pd.DataFrame(
@@ -96,7 +142,7 @@ print("\nRecommendations:")
 print(recommendations_df2.to_string())
 
 
-# define collums if rec df and convert them ti strings, then convert dataframe to dictionary
+# define collums of rec df and convert them to strings, then convert dataframe to dictionary
 recommendations_df2.columns = recommendations_df2.columns.astype(str)
 
 # rec_dist = recommendations_df2.to_dict('index')
@@ -151,12 +197,10 @@ for creator_id, recipe_dict in rec_dict.items():
 
 # ----------------------------------------------------------------------------------------------------
 for creator_id, recipe_dict in rec_dict.items():
-    # print(creator_id)
+
     existing_recipe = collection3.find_one({"creator": creator_id})
-   # print(existing_recipe)
+
     if existing_recipe:
-        print(creator_id)
-        print(recipe_dict['recs'])
         collection3.update_one({'creator': creator_id}, {
                                '$set': {'recs': recipe_dict['recs']}})
 
@@ -164,3 +208,6 @@ for creator_id, recipe_dict in rec_dict.items():
 
         collection3.insert_one(
             {'creator': creator_id, 'recs': recipe_dict['recs']})
+
+
+# ------------------------------------------------------------------------------------------------

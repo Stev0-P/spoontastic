@@ -143,7 +143,7 @@ const Search = () => {
 
   useEffect(() => {
     setSubmitted(false);
-    console.log(type);
+
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.get("/api/recipes/search/", {

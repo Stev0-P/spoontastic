@@ -62,13 +62,10 @@ const App = ({ user }) => {
 
             <Switch>
               <Route exact={true} path="/" component={LogIn} />
-              <Route exact={true} path="/login" component={LogIn} />
-              <Route exact={true} path="/preferences" component={Preferences} />
               <Route exact={true} path="/dashboard" component={Dashboard} />
               <Route exact={true} path="/search" component={Search} />
               <Route exact={true} path="/favourites" component={Favourites} />
               <Route exact={true} path="/recipe/:id" component={Recipe} />
-              <Route exact={true} path="/account" component={Account} />
               <Route exact={true} path="/register" component={Register} />
             </Switch>
           </UserContext.Provider>

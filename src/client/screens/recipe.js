@@ -78,6 +78,7 @@ const Recipe = () => {
     setOpen(false);
   };
 
+  //Get Recipe Information
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -99,6 +100,7 @@ const Recipe = () => {
 
     fetchApi();
 
+    //Get Rating of the Recipe if Exists
     const fetchApi2 = async () => {
       try {
         const { data: response } = await axios.get(`/api/ratings/${activeUser.userId}/${recipeID}`);
@@ -108,9 +110,9 @@ const Recipe = () => {
       }
     };
 
+    //Check if this recipe already favourited
     const fetchApi3 = async () => {
       try {
-        // When hooks update if(activeUser.favourites === null) {
         const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}/${recipeID}`);
         console.log(response.recipe.length);
         if (response.recipe.length === 0) {
@@ -123,29 +125,11 @@ const Recipe = () => {
       }
     };
 
-    const fetchApi4 = async () => {
-      try {
-        const { data: response } = await axios.post("/api/recipes/addRecipe/", {
-          recipeID: recipeID,
-          title: recipe.title,
-          image: recipe.image,
-          cuisine: recipe.cuisines,
-          type: recipe.dishTypes,
-          diets: recipe.diets,
-          servings: recipe.servings,
-          readyInMinutes: recipe.readyInMinutes,
-        });
-
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     fetchApi2();
     fetchApi3();
   }, [recipeID]);
 
+  //add Recipe to database
   useEffect(() => {
     const fetchApi4 = async () => {
       try {
@@ -236,8 +220,8 @@ const Recipe = () => {
     setOpen(false);
   };
 
+  //Add Recipe to Favourites
   const onFavourite = (item) => {
-    // setFavRating(item);
     const fetchApi = async () => {
       try {
         const { data: response } = await axios.post("/api/favourites/", {
@@ -258,6 +242,7 @@ const Recipe = () => {
     setRating(favRating);
   };
 
+  //save Rating to the databse
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -273,28 +258,7 @@ const Recipe = () => {
     fetchApi();
   }, [rating]);
 
-  /* useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const { data: response } = await axios.post("/api/recipes/addRecipe/", {
-          recipeID: recipeID,
-          title: recipe.title,
-          image: recipe.image,
-          cuisine: cuisines,
-          type: dishTypes,
-          diets: diets,
-          servings: recipe.servings,
-          readyInMinutes: recipe.readyInMinutes,
-        });
-
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
-  }, [recipe]);
-*/
+  //Delete The recipe from database
   const onDelete = () => {
     const fetchApi = async () => {
       try {
@@ -316,7 +280,7 @@ const Recipe = () => {
           {alert === true ? (
             <Alert severity="warning" sx={{ padding: "10px" }}>
               <AlertTitle>Warning</AlertTitle>
-              This recipe does not match your dietary and intolerance preferences.
+              This recipe may not match your dietary and/or intolerance preferences.
             </Alert>
           ) : (
             ""
