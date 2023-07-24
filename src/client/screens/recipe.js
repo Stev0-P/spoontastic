@@ -87,7 +87,7 @@ const Recipe = () => {
         setMethod(response.analyzedInstructions[0].steps);
         setIngredients(response.nutrition.ingredients);
         setDiets(response.diets);
-        console.log(response);
+        // console.log(response);
         setCuisines(response.cuisines);
         setDishTypes(response.dishTypes);
 
@@ -114,7 +114,7 @@ const Recipe = () => {
     const fetchApi3 = async () => {
       try {
         const { data: response } = await axios.get(`/api/favourites/${activeUser.userId}/${recipeID}`);
-        console.log(response.recipe.length);
+        // console.log(response.recipe.length);
         if (response.recipe.length === 0) {
           setFavourited(false);
         } else {
@@ -144,7 +144,7 @@ const Recipe = () => {
           readyInMinutes: recipe.readyInMinutes,
         });
 
-        console.log(response);
+        // console.log(response);
       } catch (err) {
         console.log(err);
       }

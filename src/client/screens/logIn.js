@@ -15,7 +15,7 @@ export const LogIn = () => {
   const [userPassword, setUserPassword] = useState("");
 
   const handleCallbackResponse = async (response) => {
-    console.log(response);
+    //console.log(response);
     const { data: res } = await axios.post("/api/account/", {
       JWT: response.credential,
     });

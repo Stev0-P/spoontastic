@@ -41,8 +41,7 @@ class CustomAlgorithmOne(AlgoBase):
             index=pivot_df.columns, columns=pivot_df.columns)
         for i in similarity_df.columns:
             for j in similarity_df.columns:
-                similarity_df.loc[i, j] = np.dot(
-                    pivot_df[i], pivot_df[j]) / (np.linalg.norm(pivot_df[i]) * np.linalg.norm(pivot_df[j]))
+                similarity_df.loc[i, j] = np.dot(pivot_df[i], pivot_df[j]) / (np.linalg.norm(pivot_df[i]) * np.linalg.norm(pivot_df[j]))
 
         # Select the top k most similar users as neighbors for each user
         self.neighbors_df = pd.DataFrame(

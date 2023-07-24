@@ -41,10 +41,8 @@ class CustomAlgorithm(AlgoBase):
                         if self.trainset.ur[neighbor]:
                             context_similarity = self.compute_context_similarity(
                                 u, neighbor, i)
-                            numerator += context_similarity * \
-                                self.sim[u, neighbor] * neighbor_rating
-                            denominator += context_similarity * \
-                                self.sim[u, neighbor]
+                            numerator += context_similarity * self.sim[u, neighbor] * neighbor_rating
+                            denominator += context_similarity * self.sim[u, neighbor]
 
                     if denominator != 0:
                         predicted_ratings[i_idx,

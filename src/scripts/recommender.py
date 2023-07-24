@@ -105,11 +105,15 @@ for i in predicted_ratings_df2.index:
             denominator = 0
             for neighbor in neighbors_df2.loc[j]:
                 if pivot_df.loc[i, neighbor] != 0:
-                    
-                    context_similarity = compute_context_similarity( j, neighbor, merged_data, user_data, i)
 
-                    numerator += context_similarity * similarity_df2.loc[j,neighbor]*pivot_df.loc[i, neighbor]
-                    denominator += context_similarity * similarity_df2.loc[j, neighbor]
+                    context_similarity = compute_context_similarity(
+                        j, neighbor, merged_data, user_data, i)
+
+                    numerator += context_similarity * \
+                        similarity_df2.loc[j, neighbor] * \
+                        pivot_df.loc[i, neighbor]
+                    denominator += context_similarity * \
+                        similarity_df2.loc[j, neighbor]
 
             if denominator != 0:
                 predicted_ratings_df2.loc[i, j] = numerator/denominator
@@ -157,42 +161,6 @@ for creator_id, recipe_dict in rec_dict.items():
     for recipe_id in recipe_dict:
         recs.append(recipe_dict[recipe_id])
     rec_dict[creator_id] = {'recs': recs}
-
-# print(rec_dict)
-# item_example = '6429903461a5315f99330597'
-
-# print(rec_dist[1])
-# if user id exists in the collection update recipe else insert the data into collection
-# for rec_item in recommendations_df2.index:
-
-#   item = collection3.find_one({"creator": rec_item})
-#  if (item):
-#     print("found")
-#    item_dict = []
-#   for i in rec_dict:
-#      print(i)
-#     for key in i:
-#        if rec_item == i[key]:
-#           item_dict = i
-#          print(item_dict)
-# collection3.update_one({"creator": rec_item}, {"$set": item_dist})
-# print("succsess")
-# update the reccomended values
-# else:
-#   print("notfound")
-#  item_dict = []
-# for i in rec_dict:
-#    for key in i:
-#       if rec_item != i[key]:
-#          item_dict = i
-#         print(item_dict)
-# collection3.insert_one(item_dist)
-
-# add new user reccomended values
-
-# inserted_all = collection3.insert_many(rec_dist)
-# print(inserted_all.inserted_ids)
-# db.recommended.insert_many(recs_data_dict)
 
 
 # ----------------------------------------------------------------------------------------------------

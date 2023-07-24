@@ -11,6 +11,8 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Card,
+  CardContent,
 } from "@mui/material";
 import UserContext from "..//context/User";
 import { useHistory } from "react-router-dom";
@@ -71,16 +73,16 @@ export const Register = () => {
 
   const handleNameChange = (event) => {
     setUserName(event.target.value);
-    console.log(userName);
+    // console.log(userName);
   };
 
   const handleEmailChange = (event) => {
     setUserEmail(event.target.value);
-    console.log(userEmail);
+    //  console.log(userEmail);
   };
   const handlePasswordChange = (event) => {
     setUserPass(event.target.value);
-    console.log(userPass);
+    //  console.log(userPass);
   };
   const userExists = (response) => {
     if (response === true) {
@@ -109,125 +111,111 @@ export const Register = () => {
   };
 
   return (
-    <Container className="signInDiv" sx={{ width: "75%", height: "100%" }}>
+    <React.Fragment>
       <Box
-        className="WelcomeBox1"
-        style={{
+        sx={{
           display: "flex",
-          height: "50%",
-          fontSize: "1.5em",
-          padding: "em",
-          flexGrow: 1,
-          backgroundColor: "#f7a05e",
-          borderRadius: "35px",
-          margin: 15,
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          backgroundColor: "lightgray",
         }}
       >
-        <Box
-          className="WelcomeBox3"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "2em",
-            height: "75",
-            textAlign: "center",
-            padding: "em",
-            flexGrow: 1,
-            backgroundColor: "#fff",
-            borderRadius: "35px",
-            marginTop: "2em",
-            flexDirection: "column",
-            backgroundColor: "snow",
-          }}
-        >
-          <Box sx={{ display: "flex", flexDirection: "column", borderRadius: "1em" }}>
-            <Box sx={{ margin: 1 }}>
-              <TextField
-                id="outlined-basic"
-                label="Full Name"
-                variant="outlined"
-                value={userName}
-                onChange={handleNameChange}
-              />
-            </Box>
-            <Box>
-              <FormControl sx={{ width: "93%" }}>
-                <InputLabel htmlFor="your-diet">Your Diet</InputLabel>
-                <Select
-                  autoFocus
-                  value={diet}
-                  onChange={handleDietChange}
-                  label="Your Diet"
-                  inputProps={{
-                    name: "your-diet",
-                    id: "your-diet",
-                  }}
-                >
-                  <MenuItem value="regular">Regular</MenuItem>
-                  <MenuItem value="gluten free">Gluten Free</MenuItem>
-                  <MenuItem value="ketogenic">Ketogenic</MenuItem>
-                  <MenuItem value="vegetarian">Vegetarian</MenuItem>
-                  <MenuItem value="lacto-vegetarian">Lacto-Vegetarian</MenuItem>
-                  <MenuItem value="ovo-vegetarian">Ovo-Vegetarian</MenuItem>
-                  <MenuItem value="vegan">Vegan</MenuItem>
-                  <MenuItem value="pescaterian">Pescaterian</MenuItem>
-                  <MenuItem value="paleo">Paleo</MenuItem>
-                  <MenuItem value="primal">Primal</MenuItem>
-                  <MenuItem value="whole30">Whole 30</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl sx={{ width: "93%", marginTop: 1 }}>
-                <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
-                <Select
-                  autoFocus
-                  value={intolToString}
-                  multiple
-                  onChange={handleIntoleranceChange}
-                  label="your-Intolerance"
-                  inputProps={{
-                    name: "your-intolerance",
-                    id: "your-intolerance",
-                  }}
-                  input={<OutlinedInput label="Your Intolerance" />}
-                >
-                  {intoleranceList.map((intolerance) => (
-                    <MenuItem key={intolerance} value={intolerance}>
-                      {intolerance}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-            <Box sx={{ margin: 1 }}>
-              <TextField
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                value={userEmail}
-                onChange={handleEmailChange}
-              />
-            </Box>
-            <Box>
-              <TextField
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
-                value={userPass}
-                onChange={handlePasswordChange}
-              />
-            </Box>
-            <Box sx={{ margin: 1 }}>
-              <Button variant="outlined" onClick={() => handleSubmit()}>
-                Register
-              </Button>
-            </Box>
-          </Box>
-        </Box>
+        <Card variant="outlined" raised={true} sx={{ boxShadow: 5 }}>
+          <CardContent>
+            <Container className="signInDiv" sx={{ height: "100%" }}>
+              <Box sx={{ display: "flex", flexDirection: "column", borderRadius: "1em" }}>
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    label="Full Name"
+                    variant="outlined"
+                    value={userName}
+                    onChange={handleNameChange}
+                  />
+                </Box>
+                <Box>
+                  <Box sx={{ marginTop: 1 }}>
+                    <FormControl sx={{ display: "flex", flexGrow: 1 }}>
+                      <InputLabel htmlFor="your-diet">Your Diet</InputLabel>
+                      <Select
+                        autoFocus
+                        value={diet}
+                        onChange={handleDietChange}
+                        label="Your Diet"
+                        inputProps={{
+                          name: "your-diet",
+                          id: "your-diet",
+                        }}
+                      >
+                        <MenuItem value="regular">Regular</MenuItem>
+                        <MenuItem value="gluten free">Gluten Free</MenuItem>
+                        <MenuItem value="ketogenic">Ketogenic</MenuItem>
+                        <MenuItem value="vegetarian">Vegetarian</MenuItem>
+                        <MenuItem value="lacto-vegetarian">Lacto-Vegetarian</MenuItem>
+                        <MenuItem value="ovo-vegetarian">Ovo-Vegetarian</MenuItem>
+                        <MenuItem value="vegan">Vegan</MenuItem>
+                        <MenuItem value="pescaterian">Pescaterian</MenuItem>
+                        <MenuItem value="paleo">Paleo</MenuItem>
+                        <MenuItem value="primal">Primal</MenuItem>
+                        <MenuItem value="whole30">Whole 30</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <Box sx={{ marginTop: 1 }}>
+                    <FormControl sx={{ display: "flex", flexGrow: 1, marginTop: 1 }}>
+                      <InputLabel htmlFor="your-intolerance">Your Intolerance</InputLabel>
+                      <Select
+                        sx={{ paddingRight: "0px" }}
+                        autoFocus
+                        value={intolToString}
+                        multiple
+                        onChange={handleIntoleranceChange}
+                        label="your-Intolerance"
+                        inputProps={{
+                          name: "your-intolerance",
+                          id: "your-intolerance",
+                        }}
+                        input={<OutlinedInput label="Your Intolerance" />}
+                      >
+                        {intoleranceList.map((intolerance) => (
+                          <MenuItem key={intolerance} value={intolerance}>
+                            {intolerance}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Box>
+                <Box sx={{ marginTop: 1 }}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Email"
+                    variant="outlined"
+                    value={userEmail}
+                    onChange={handleEmailChange}
+                  />
+                </Box>
+                <Box sx={{ marginTop: 1 }}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Password"
+                    variant="outlined"
+                    value={userPass}
+                    onChange={handlePasswordChange}
+                  />
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }}>
+                  <Button variant="outlined" onClick={() => handleSubmit()}>
+                    Register
+                  </Button>
+                </Box>
+              </Box>
+            </Container>
+          </CardContent>
+        </Card>
       </Box>
-    </Container>
+    </React.Fragment>
   );
 };
 

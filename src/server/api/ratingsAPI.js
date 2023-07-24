@@ -129,7 +129,7 @@ ratingsAPI.get("/recs/", async (req, res, next) => {
   }
 
   res.status(201).json({ recommended: recipes });
-  console.log({ reccomended: recipes });
+  // console.log({ reccomended: recipes });
 });
 
 export default ratingsAPI;

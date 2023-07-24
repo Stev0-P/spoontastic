@@ -61,7 +61,6 @@ const FavouritesList = (props) => {
       try {
         const { data: response } = await axios.delete(`/api/favourites/delete/${item.recipeID}`);
         setDeleted((prevState) => prevState + 1);
-        console.log(response);
       } catch (err) {
         console.log(err);
       }

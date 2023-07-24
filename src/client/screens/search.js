@@ -52,13 +52,13 @@ const Search = () => {
   const sendDiet = (dietFilter) => {
     // the callback. Use a better name
     setDietFilter(dietFilter);
-    console.log(dietFilter);
+    // console.log(dietFilter);
   };
 
   const sendType = (typeFilter) => {
     // the callback. Use a better name
     setType(typeFilter);
-    console.log(typeFilter);
+    //  console.log(typeFilter);
   };
 
   const sendIntolerances = (intolerancesFilter) => {
@@ -71,56 +71,47 @@ const Search = () => {
   const sendReadyTime = (maxReadyTime) => {
     // the callback. Use a better name
     setMaxReadyTime(maxReadyTime);
-    console.log(maxReadyTime);
   };
 
   const sendMinCalories = (minCalories) => {
     // the callback. Use a better name
     setMinCalories(minCalories);
-    console.log(minCalories);
   };
   const sendMaxCalories = (maxCalories) => {
     // the callback. Use a better name
     setMaxCalories(maxCalories);
-    console.log(maxCalories);
   };
   const sendMinProtein = (minProtein) => {
     // the callback. Use a better name
     setMinProtein(minProtein);
-    console.log(minProtein);
   };
   const sendMaxProtein = (maxProtein) => {
-    // the callback. Use a better name
+    // the callback.
     setMaxProtein(maxProtein);
-    console.log(maxProtein);
   };
 
   const sendMinCarbs = (minCarbs) => {
-    // the callback. Use a better name
+    // the callback.
     setMinCarbs(minCarbs);
-    console.log(minCarbs);
   };
   const sendMaxCarbs = (maxCarbs) => {
-    // the callback. Use a better name
+    // the callback.
     setMaxCarbs(maxCarbs);
-    console.log(maxCarbs);
   };
 
   const sendMinFat = (minFat) => {
-    // the callback. Use a better name
+    // the callback.
     setMinFat(minFat);
-    console.log(minFat);
   };
 
   const sendMaxFat = (maxFat) => {
-    // the callback. Use a better name
+    // the callback.
     setMaxFat(maxFat);
-    console.log(maxFat);
   };
 
   const sendSubmitted = (submitted) => {
     setSubmitted(submitted);
-    console.log(submitted);
+    //console.log(submitted);
   };
   //const time = useTime();
 
@@ -172,15 +163,6 @@ const Search = () => {
 
     fetchApi();
   }, [time.type, search, submitted]);
-
-  /* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {!loading &&
-            recipes.map((item) => (
-              <Grid item key={item.id}>
-                <Widget recipe={item} loading={loading} />
-              </Grid>
-            ))}
-        </Grid>*/
 
   return (
     <Box sx={{ flexGrow: 1, marginLeft: { xs: "10vh", md: "18vh" } }}>

@@ -1,8 +1,5 @@
 import React, { useEffect, useContext } from "react";
 import { ListItem, Typography, List, Grid, Skeleton } from "@mui/material";
-import RecipeList from "../components/RecipeList";
-import Container from "@mui/material/Container";
-import DashboardWidgets from "../client/components/DashboardWidgets";
 import { Box } from "@mui/system";
 import Widget from "../components/Widget";
 import { useHistory, useLocation } from "react-router-dom";
@@ -94,7 +91,7 @@ const Dashboard = () => {
               {recsLoading === false &&
                 recommended.map(
                   (item) => (
-                    <Grid item key={item}>
+                    <Grid item key={item.id}>
                       <Widget recipe={item} loading={recsLoading} />
                     </Grid>
                   )

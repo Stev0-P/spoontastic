@@ -32,8 +32,7 @@ const Widget = (props) => {
   const [noMatch, setNotMatched] = useState(false);
 
   useEffect(() => {
-    console.log(props.recipe);
-    console.log(window.location.pathname.split("/"));
+    // console.log(props.recipe);
   }, [props]);
   const MealWidget = () => {
     const history = useHistory();
@@ -43,7 +42,6 @@ const Widget = (props) => {
         sx={{
           borderRadius: "2vh",
           width: "35vh",
-
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
@@ -55,9 +53,7 @@ const Widget = (props) => {
           boxShadow: 3,
         }}
       >
-        <Box
-          onClick={() => history.push(`/recipe/${props.recipe.recipeID || props.recipe.id}`)} //history.push("/recipe/:id")
-        >
+        <Box onClick={() => history.push(`/recipe/${props.recipe.recipeID || props.recipe.id}`)}>
           {props.loading === false && props.recipe ? (
             <Box>
               <img
@@ -89,8 +85,8 @@ const Widget = (props) => {
                       className="example"
                     >
                       {props.loading === false &&
-                        props.recipe.diets.map((item) => (
-                          <Chip sx={{ marginRight: "5px" }} variant="outlined" label={item}></Chip>
+                        props.recipe.diets.map((item, i) => (
+                          <Chip key={i} sx={{ marginRight: "5px" }} variant="outlined" label={item}></Chip>
                         ))}
                     </Box>
                   </Box>
@@ -111,32 +107,7 @@ const Widget = (props) => {
         </Box>
       </Box>
     );
-
-    /*
-
-    return (
-      <Card sx={{ maxWidth: 345 }}>
-        <CardContent>
-          <CardMedia />
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents
-            except Antarctica
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </Card>
-    );
-    */
   };
-
-  // {UserName()}
-  //{TimeOfDay()}
 
   return (
     <Box sx={{ display: "flex", justifyContent: "flex-start" }}>

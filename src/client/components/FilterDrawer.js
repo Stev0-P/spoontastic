@@ -48,23 +48,23 @@ const FilterDrawer = ({
 
   const [diet, setDiet] = React.useState("");
   const [type, setType] = React.useState("");
-  const [maxReadyTime, setMaxReadyTime] = React.useState(0);
+  const [maxReadyTime, setMaxReadyTime] = React.useState(60);
 
   const [calories, setCalories] = React.useState([0, 400]);
   const [minCalories, setMinCalories] = React.useState(0);
-  const [maxCalories, setMaxCalories] = React.useState(0);
+  const [maxCalories, setMaxCalories] = React.useState(400);
 
   const [protein, setProtein] = React.useState([10, 150]);
-  const [minProtein, setMinProtein] = React.useState(0);
-  const [maxProtein, setMaxProtein] = React.useState(0);
+  const [minProtein, setMinProtein] = React.useState(10);
+  const [maxProtein, setMaxProtein] = React.useState(150);
 
   const [carbs, setCarbs] = React.useState([10, 150]);
-  const [minCarbs, setMinCarbs] = React.useState(0);
-  const [maxCarbs, setMaxCarbs] = React.useState(0);
+  const [minCarbs, setMinCarbs] = React.useState(10);
+  const [maxCarbs, setMaxCarbs] = React.useState(150);
 
   const [fat, setFat] = React.useState([10, 150]);
-  const [minFat, setMinFat] = React.useState(0);
-  const [maxFat, setMaxFat] = React.useState(0);
+  const [minFat, setMinFat] = React.useState(10);
+  const [maxFat, setMaxFat] = React.useState(150);
 
   const [intolerance, setIntolerance] = React.useState("");
   const [intolToString, setIntolToString] = React.useState([]);
@@ -165,9 +165,7 @@ const FilterDrawer = ({
     sendMinFat(minFat);
     sendMaxFat(maxFat);
     sendSubmitted(true);
-    console.log(state);
     toggleDrawer(anchor, false);
-    console.log(state);
   };
 
   const list = (anchor) => (
